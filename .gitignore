@@ -6,3 +6,6 @@ client/tmp
 **/typings
 client/e2e/*.js
 client/e2e/*.map
+
+# Database
+geekychat/
