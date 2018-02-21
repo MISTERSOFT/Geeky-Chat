@@ -1,0 +1,8 @@
+.vscode/
+**/node_modules/
+client/dist
+client/tmp
+**/npm-debug.log
+**/typings
+client/e2e/*.js
+client/e2e/*.map

@@ -1,0 +1,7 @@
+{
+    "name": "geekychat-projet",
+    "version": "1.0.0",
+    "scripts": {
+        "install": "cd client && npm install && cd ../server && npm install"
+    }
+}
