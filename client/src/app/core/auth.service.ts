@@ -14,12 +14,16 @@ export class AuthService extends WebSocketService {
     super();
   }
 
-  signup(user: User) {
+  getUser() {
+    return this.user;
+  }
+
+  signup(user) {
     this.emit('SIGNUP', user);
     return this.waitResponse('SIGNUP_RESPONSE');
   }
 
-  signin(user: User): Observable<Response<SignInResponse>> {
+  signin(user): Observable<Response<SignInResponse>> {
     this.emit('SIGNIN', user);
     return this.waitResponse('SIGNIN_RESPONSE').pipe(
       tap((response: Response<SignInResponse>) => {

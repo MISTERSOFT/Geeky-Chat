@@ -1,3 +1,9 @@
-<p>
-  chat works!
-</p>
+<main>
+  <div class="messages-container">
+    <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
+  </div>
+  <div class="inputs-container">
+    <input type="text" [(ngModel)]="text">
+    <button (click)="onSend()">Send</button>
+  </div>
+</main>

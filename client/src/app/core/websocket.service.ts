@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
@@ -8,7 +9,7 @@ export class WebSocketService extends Socket {
     super(environment.socketConfig);
   }
 
-  protected waitResponse(eventName: string) {
+  protected waitResponse(eventName: string): Observable<any> {
     return this.fromEvent(eventName);
   }
 }

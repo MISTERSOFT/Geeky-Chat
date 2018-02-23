@@ -8,12 +8,10 @@ app.listen(3000, () => {
     console.log('# Server is running: http://localhost:3000');
 })
 
-const users = []
-const messages = []
 
 io.on('connection', (socket) => {
     socket.on('SIGNUP', (userInfo) => {
-        const model = ModelBuilder.user(userInfo)
+        const model = ModelBuilder.user.toEntity(userInfo)
         // Create the user
         Database.storeUser(model).then(users => {
             socket.emit('SIGNUP_RESPONSE', ResponseBuilder.compose(
@@ -25,13 +23,13 @@ io.on('connection', (socket) => {
 
     socket.on('SIGNIN', (user) => {
         console.log('LOGIN...', user)
-        const model = ModelBuilder.user(user)
+        const model = ModelBuilder.user.toEntity(user)
         Database.getUser(model).then(response => {
             if (response.founded) {
                 socket.emit('SIGNIN_RESPONSE', ResponseBuilder.compose(
                     ResponseBuilder.success(true),
                     ResponseBuilder.errors(),
-                    { user: response.user }
+                    { user: ModelBuilder.user.toDTO(response.user) }
                 ))
             } else {
                 socket.emit('SIGNIN_RESPONSE', ResponseBuilder.compose(
@@ -45,10 +43,35 @@ io.on('connection', (socket) => {
     // On connection, send all message to user
     // socket.emit('FIRST_CONNECTION', messages)
 
-    // On message sent by the user, add message to messages array
     socket.on('SEND_MESSAGE', (message) => {
-        console.log('SEND_MESSAGE', message)
-        messages.push(message)
-        socket.broadcast.emit('NEW_MESSAGE_RECEIVED', message)
+        console.log('SEND_MESSAGE...', message)
+        // Store the message sent
+        const model = ModelBuilder.message.toEntity(message)
+        Database.storeMessage(model).then((response) => {
+            console.log('Message stored', response)
+            // Emit the message with user data to the emitter
+            socket.emit('SEND_MESSAGE_OK', ModelBuilder.user.toDTO(response[0]))
+            // Broadcast the message sent by the user.
+            // The message broadcasted contains the text message
+            // and data about the emitter
+            socket.broadcast.emit('BROADCAST_SEND_MESSAGE', ModelBuilder.user.toDTO(response[0]))
+        })
+    })
+
+    socket.on('FETCH_ALL_MESSAGES', () => {
+        console.log('FETCH_ALL_MESSAGES...')
+        Database.getMessages().then(response => {
+            console.log('Messages fetched', response)
+            const messages = []
+            response.forEach(message => {
+                // message.user = ModelBuilder.user.toDTO(message.user)
+                messages.push(ModelBuilder.message.toDTO(message))
+            })
+            socket.emit('FETCH_ALL_MESSAGES_RESPONSE', ResponseBuilder.compose(
+                ResponseBuilder.success(true),
+                ResponseBuilder.errors(),
+                { messages: messages }
+            ))
+        })
     })
 })

@@ -10,7 +10,6 @@ class Database {
             messages: 'messages',
             message: 'message'
         }
-        // this.dbUrl = 'http://localhost:3001/'
         this.db = new PouchDB(this.databaseName)
 
         this.db.setSchema([
@@ -36,39 +35,18 @@ class Database {
     }
 
     getMessages() {
-        return this.db.rel.find(this.collections.message);
-        // return this.db.allDocs({
-        //     include_docs: true,
-        //     startkey: this.collections.messages,
-        //     endkey: this.collections.messages + '\uffff'
-        // })
-        // .then(result => {
-        //     console.log('# Fetch messages result:', result)
-        //     const messages = []
-        //     result.rows.forEach(message => messages.push(message))
-
-        //     return Promise.resolve(messages)
-        // })
-        // .catch(error => Promise.reject(error))
+        return this.db.rel.find(this.collections.message)
+        .then((docs) => {
+            console.log('docs', docs)
+            docs.messages.map(message => {
+                message.user = docs.users.find(u => u.id === message.user)
+            })
+            return docs.messages
+        })
     }
 
     storeMessage(obj) {
-        return this.db.rel.save(this.collections.user, obj)
-        // return this.db.put(obj)
-        // .then(result => {
-        //     if (result.ok) {
-        //         console.log('# Message added', result.id)
-        //         return Promise.resolve(result)
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log('Error happened, the message couln\'t be added !', error);
-        //     return Promise.reject({
-        //         success: false,
-        //         message: 'Error happened, the message couln\'t be added !',
-        //         error: error
-        //     })
-        // })
+        return this.db.rel.save(this.collections.message, obj)
     }
 
     getUser(user) {

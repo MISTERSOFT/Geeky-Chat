@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
-import { User } from '../shared/models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,7 +27,7 @@ export class SigninComponent implements OnInit {
   onSignin(e) {
     console.log('onSignin', this.form.valid);
     if (this.form.valid) {
-      const user: User = this.form.value;
+      const user = this.form.value;
       const subscribe = this.auth.signin(user).subscribe(data => {
         console.log('response for signin', data);
         subscribe.unsubscribe();

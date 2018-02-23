@@ -1,22 +1,34 @@
-// generateID = (type) => {
-//     return type + '/' + Math.random().toString(36).substr(2, 9);
-// }
-
-const message = (obj, sender) => {
-    return {
-        // id: generateID('messages'),
-        createdAt: new Date(),
-        text: obj.text,
-        user: sender.id
+const message = {
+    toEntity: (obj) => {
+        return {
+            createdAt: new Date(),
+            text: obj.text,
+            user: obj.userId
+        }
+    },
+    toDTO: (obj) => {
+        return {
+            createdAt: obj.createdAt,
+            text: obj.text,
+            user: ModelBuilder.user.toDTO(obj.user)
+        }
     }
 }
 
-const user = (data) => {
-    return {
-        // id: generateID('users'),
-        login: data.login,
-        password: data.password, // Password not encrypted
-        username: data.username
+const user = {
+    toEntity: (obj) => {
+        return {
+            email: obj.email,
+            password: obj.password, // Password not encrypted
+            username: obj.username
+        }
+    },
+    toDTO: (obj) => {
+        return {
+            email: obj.email,
+            username: obj.username,
+            id: obj.id
+        }
     }
 }
 
