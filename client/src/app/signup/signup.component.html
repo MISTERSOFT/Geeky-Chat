@@ -1,6 +1,6 @@
 <main>
   <form [formGroup]="form" (ngSubmit)="onSignup($event)" class="card">
-    <h1>Signup</h1>
+    <h1>Sign up</h1>
     <label for="email">Email</label>
     <input formControlName="email" type="email" id="email" autocomplete="off">
     <label for="password">Password</label>
@@ -13,4 +13,9 @@
       </div>
     </div>
   </form>
+  <div class="row">
+    <div class="col-xs-12">
+        <a routerLink="/signin">Go back</a>
+    </div>
+  </div>
 </main>

@@ -1,0 +1,78 @@
+main {
+  height: 100vh;
+  background-color: rgba(64,64,122,1);
+  background: rgba(64,64,122,1);
+  background: -moz-linear-gradient(-45deg, rgba(64,64,122,1) 0%, rgba(113,111,211,1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(64,64,122,1)), color-stop(100%, rgba(113,111,211,1)));
+  background: -webkit-linear-gradient(-45deg, rgba(64,64,122,1) 0%, rgba(113,111,211,1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(64,64,122,1) 0%, rgba(113,111,211,1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(64,64,122,1) 0%, rgba(113,111,211,1) 100%);
+  background: linear-gradient(135deg, rgba(64,64,122,1) 0%, rgba(113,111,211,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40407a', endColorstr='#716fd3', GradientType=1 );
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  padding: 20px;
+  // background: #fff;
+  box-shadow: 0 5px 10px rgba(0,0,0,.5);
+  border-radius: 3px;
+  background: rgba(113,111,211,1);
+  background: -moz-linear-gradient(-45deg, rgba(113,111,211,1) 0%, rgba(64,64,122,1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(113,111,211,1)), color-stop(100%, rgba(64,64,122,1)));
+  background: -webkit-linear-gradient(-45deg, rgba(113,111,211,1) 0%, rgba(64,64,122,1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(113,111,211,1) 0%, rgba(64,64,122,1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(113,111,211,1) 0%, rgba(64,64,122,1) 100%);
+  background: linear-gradient(135deg, rgba(113,111,211,1) 0%, rgba(64,64,122,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#716fd3', endColorstr='#40407a', GradientType=1 );
+  & h1, label, input {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  & h1 {
+    margin-top: 0;
+    text-align: center;
+    // color: #232323;
+    color: #fff;
+    font-weight: 100;
+  }
+  & label {
+    color: #fff;
+    font-size: 14px;
+  }
+  & input {
+    display: block;
+    height: 32px;
+    width: 480px;
+    margin: 5px 0;
+    // border: none;
+    // border-bottom: 1px solid #000;
+    margin-bottom: 30px;
+    outline: none;
+    padding: 0 10px;
+    border: 1px solid #6a68c6;
+    font-size: 18px;
+    border-radius: 3px;
+    &.ng-valid.ng-dirty {
+      border: 1px solid #00f600;
+    }
+    &.ng-invalid.ng-dirty {
+      border: 1px solid red;
+    }
+  }
+  & .row .col-xs-12 {
+    text-align: center;
+    & button {
+      padding: 10px 0;
+      border: 2px solid #7e7ce8;
+      width: 160px;
+      background: transparent;
+      color: white;
+      opacity: 0;
+      transition: .2s opacity;
+    }
+  }
+}

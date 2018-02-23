@@ -71,6 +71,14 @@ class Database {
         // })
     }
 
+    getUser(user) {
+        return this.db.rel.find(this.collections.user)
+        .then(response => {
+            const userData = response.users.find(u => u.email === user.email && u.password === user.password)
+            return {user: userData, founded: userData !== undefined}
+        })
+    }
+
     storeUser(obj) {
         return this.db.rel.save(this.collections.user, obj)
     }

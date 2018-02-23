@@ -1,19 +1,23 @@
-import { NgModule } from '@angular/core';
-import { SocketIoModule, SocketIoConfig  } from 'ng-socket-io';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { SocketIoModule } from 'ng-socket-io';
 import { WebSocketService } from './websocket.service';
-
-const config: SocketIoConfig = {
-  url: 'http://localhost:3000',
-  options: {}
-}
+import { AuthService } from './auth.service';
 
 @NgModule({
   imports: [
-    SocketIoModule.forRoot(config)
+    SocketIoModule
   ],
   declarations: [],
   providers: [
-    WebSocketService
+    WebSocketService,
+    AuthService
   ]
 })
-export class CoreModule { }
+export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [AuthService, WebSocketService]
+    }
+  }
+}

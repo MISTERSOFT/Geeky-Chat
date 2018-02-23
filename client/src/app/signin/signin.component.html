@@ -1,0 +1,14 @@
+<main>
+  <form [formGroup]="form" (ngSubmit)="onSignin($event)" class="card">
+    <h1>Sign in</h1>
+    <label for="email">Email</label>
+    <input formControlName="email" type="email" id="email" autocomplete="off">
+    <label for="password">Password</label>
+    <input formControlName="password" type="password" id="password" autocomplete="off">
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" [style.opacity]="form.valid ? 1 : 0">Sign in</button>
+      </div>
+    </div>
+  </form>
+</main>
