@@ -31,6 +31,7 @@ export class AuthService extends WebSocketService {
   }
 
   isAuth() {
-    return this.user !== null || this.user !== undefined;
+    console.log('isAuth', this.user);
+    return (this.user === null || this.user === undefined) ? false : true;
   }
 }

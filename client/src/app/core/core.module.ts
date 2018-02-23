@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SocketIoModule } from 'ng-socket-io';
 import { WebSocketService } from './websocket.service';
 import { AuthService } from './auth.service';
+import { AuthGuard } from './guards';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { AuthService } from './auth.service';
   declarations: [],
   providers: [
     WebSocketService,
-    AuthService
+    AuthService,
+    AuthGuard
   ]
 })
 export class CoreModule {

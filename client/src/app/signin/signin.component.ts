@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
 import { User } from '../shared/models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -11,7 +12,10 @@ import { User } from '../shared/models';
 export class SigninComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router) {
     this.form = this.fb.group({
       email: ['admin@gmail.com', Validators.compose([Validators.required, Validators.email])],
       password: ['rootroot', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -28,8 +32,9 @@ export class SigninComponent implements OnInit {
       const subscribe = this.auth.signin(user).subscribe(data => {
         console.log('response for signin', data);
         subscribe.unsubscribe();
-        // TODO: If success navigate to signin
-        // else display error
+        if (this.auth.isAuth()) {
+          this.router.navigate(['chat']);
+        }
       });
     }
   }
