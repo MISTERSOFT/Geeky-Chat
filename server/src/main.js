@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     socket.on('SIGNIN', (user) => {
         console.log('LOGIN...', user)
         const model = ModelBuilder.user.toEntity(user)
-        Database.getUser(model).then(response => {
+        Database.isUserExist(model).then(response => {
             if (response.founded) {
                 socket.emit('SIGNIN_RESPONSE', ResponseBuilder.compose(
                     ResponseBuilder.success(true),
@@ -40,21 +40,30 @@ io.on('connection', (socket) => {
         })
     })
 
-    // On connection, send all message to user
-    // socket.emit('FIRST_CONNECTION', messages)
-
     socket.on('SEND_MESSAGE', (message) => {
         console.log('SEND_MESSAGE...', message)
         // Store the message sent
         const model = ModelBuilder.message.toEntity(message)
-        Database.storeMessage(model).then((response) => {
-            console.log('Message stored', response)
+        const promises = [
+            Database.storeMessage(model),
+            Database.findUserById(message.userId)
+        ]
+        Promise.all(promises).then((responses) => {
+            const msg = responses[0].messages[0]
+            const user = responses[1].users[0]
+            msg.user = user
+
+            const dto = ModelBuilder.message.toDTO(msg)
             // Emit the message with user data to the emitter
-            socket.emit('SEND_MESSAGE_OK', ModelBuilder.user.toDTO(response[0]))
+            socket.emit('SEND_MESSAGE_OK', ResponseBuilder.compose(
+                ResponseBuilder.success(true),
+                ResponseBuilder.errors(),
+                dto
+            ))
             // Broadcast the message sent by the user.
             // The message broadcasted contains the text message
             // and data about the emitter
-            socket.broadcast.emit('BROADCAST_SEND_MESSAGE', ModelBuilder.user.toDTO(response[0]))
+            socket.broadcast.emit('BROADCAST_SEND_MESSAGE', dto)
         })
     })
 
@@ -70,7 +79,7 @@ io.on('connection', (socket) => {
             socket.emit('FETCH_ALL_MESSAGES_RESPONSE', ResponseBuilder.compose(
                 ResponseBuilder.success(true),
                 ResponseBuilder.errors(),
-                { messages: messages }
+                messages
             ))
         })
     })

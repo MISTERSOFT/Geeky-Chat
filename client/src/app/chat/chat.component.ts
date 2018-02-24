@@ -19,7 +19,11 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.chat.getAllMessages().subscribe(response => {
       console.log('getAllMessages()', response);
-      this.messages = response.data.messages;
+      this.messages = response.data;
+    });
+    this.chat.on('BROADCAST_SEND_MESSAGE', (message) => {
+      console.log('BROADCAST_SEND_MESSAGE', message);
+      this.messages.push(message);
     });
   }
 
@@ -28,8 +32,11 @@ export class ChatComponent implements OnInit {
       text: this.text,
       userId: this.auth.getUser().id
     };
-    this.chat.sendMessage(message).subscribe(response => {
-      console.log('message stored and now we can add it to the chat', response);
-    })
+    const subscribe = this.chat.sendMessage(message).subscribe(response => {
+      this.messages.push(response.data);
+      this.text = '';
+      subscribe.unsubscribe();
+    });
   }
+
 }

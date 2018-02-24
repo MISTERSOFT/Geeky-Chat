@@ -2,7 +2,6 @@ import { Observable } from 'rxjs/Observable';
 import { WebSocketService } from './../core/websocket.service';
 import { Injectable } from '@angular/core';
 import { Message, MessageSent, Response } from '../shared/models';
-import { FetchMessages } from './models';
 
 @Injectable()
 export class ChatService extends WebSocketService {
@@ -10,7 +9,7 @@ export class ChatService extends WebSocketService {
     super()
   }
 
-  getAllMessages(): Observable<Response<FetchMessages>> {
+  getAllMessages(): Observable<Response<Message[]>> {
     this.emit('FETCH_ALL_MESSAGES');
     return this.waitResponse('FETCH_ALL_MESSAGES_RESPONSE');
   }

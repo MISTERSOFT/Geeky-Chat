@@ -49,7 +49,7 @@ class Database {
         return this.db.rel.save(this.collections.message, obj)
     }
 
-    getUser(user) {
+    isUserExist(user) {
         return this.db.rel.find(this.collections.user)
         .then(response => {
             const userData = response.users.find(u => u.email === user.email && u.password === user.password)
@@ -59,6 +59,10 @@ class Database {
 
     storeUser(obj) {
         return this.db.rel.save(this.collections.user, obj)
+    }
+
+    findUserById(userId) {
+        return this.db.rel.find(this.collections.user, userId)
     }
 }
 

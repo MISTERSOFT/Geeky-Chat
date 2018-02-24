@@ -4,6 +4,7 @@ export interface Message {
   createdAt: Date;
   text: string;
   user: User;
+  isMine: boolean;
 }
 
 export interface MessageSent {
