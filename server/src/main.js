@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 
             const dto = ModelBuilder.message.toDTO(msg)
             // Emit the message with user data to the emitter
-            socket.emit('SEND_MESSAGE_OK', ResponseBuilder.compose(
+            socket.emit('SEND_MESSAGE_RESPONSE', ResponseBuilder.compose(
                 ResponseBuilder.success(true),
                 ResponseBuilder.errors(),
                 dto

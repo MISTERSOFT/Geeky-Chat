@@ -16,6 +16,6 @@ export class ChatService extends WebSocketService {
 
   sendMessage(message: MessageSent): Observable<Response<Message>> {
     this.emit('SEND_MESSAGE', message);
-    return this.waitResponse('SEND_MESSAGE_OK');
+    return this.waitResponse('SEND_MESSAGE_RESPONSE');
   }
 }

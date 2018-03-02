@@ -7,6 +7,7 @@ import { ChatService } from './chat.service';
 
 import { ChatComponent } from './chat.component';
 import { MessageComponent } from './message/message.component';
+import { InputComponent } from './input/input.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MessageComponent } from './message/message.component';
   ],
   declarations: [
     ChatComponent,
-    MessageComponent
+    MessageComponent,
+    InputComponent
   ],
   providers: [
     ChatService

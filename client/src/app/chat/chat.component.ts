@@ -27,16 +27,20 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  onSend() {
-    const message: MessageSent = {
-      text: this.text,
-      userId: this.auth.getUser().id
-    };
-    const subscribe = this.chat.sendMessage(message).subscribe(response => {
-      this.messages.push(response.data);
-      this.text = '';
-      subscribe.unsubscribe();
-    });
+  onMessageSent(message) {
+    this.messages.push(message);
   }
+
+  // onSend() {
+  //   const message: MessageSent = {
+  //     text: this.text,
+  //     userId: this.auth.getUser().id
+  //   };
+  //   const subscribe = this.chat.sendMessage(message).subscribe(response => {
+  //     this.messages.push(response.data);
+  //     this.text = '';
+  //     subscribe.unsubscribe();
+  //   });
+  // }
 
 }
