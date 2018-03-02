@@ -1,0 +1,22 @@
+.message-container {
+  position: relative;
+  min-height: 32px;
+  line-height: 32px;
+  margin: 20px;
+}
+.message {
+  background: #778ca3;
+  padding: 5px 10px;
+  color: #fff;
+  border-radius: 5px;
+  float: left;
+  clear: both;
+  margin: 10px 60px 10px 20px;
+  animation: bounce .5s linear both;
+}
+
+.is-mine {
+  float: right !important;
+  background: #4b6584 !important;
+  margin: 10px 20px 10px 60px !important;
+}

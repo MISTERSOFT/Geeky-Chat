@@ -1,17 +1,18 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Message } from '../../shared/models';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-chat-message',
-  templateUrl: 'message.component.html'
+  templateUrl: 'message.component.html',
+  styleUrls: ['message.component.scss']
 })
 
-export class MessageComponent implements AfterViewInit {
+export class MessageComponent implements OnChanges {
   @Input() message: Message;
   constructor(private auth: AuthService) { }
 
-  ngAfterViewInit() {
+  ngOnChanges(changes) {
     this.message.isMine = this.auth.getUser().id === this.message.user.id;
   }
 
