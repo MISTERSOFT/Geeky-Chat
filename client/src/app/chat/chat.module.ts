@@ -8,6 +8,7 @@ import { ChatService } from './chat.service';
 import { ChatComponent } from './chat.component';
 import { MessageComponent } from './message/message.component';
 import { InputComponent } from './input/input.component';
+import { InputAutoResizeDirective } from './input/input-autoresize.directive';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { InputComponent } from './input/input.component';
   declarations: [
     ChatComponent,
     MessageComponent,
-    InputComponent
+    InputComponent,
+    InputAutoResizeDirective
   ],
   providers: [
     ChatService
