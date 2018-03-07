@@ -16,7 +16,9 @@
       <textarea [(ngModel)]="text" (keypress)="onKeyPress($event)"></textarea>
     </div>
     <div class="buttons-container">
-      <button>😄</button>
+      <button appEmojiTriggerer>😄</button>
     </div>
   </div>
 </div>
+
+<app-emoji-picker (onEmojiPicked)="onEmojiPicked($event)"></app-emoji-picker>

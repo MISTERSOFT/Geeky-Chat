@@ -1,0 +1,5 @@
+<div #emojiContainer class="emoji-container" [ngClass]="{ 'hidden': !visible }">
+  <div class="emoji" *ngFor="let emoji of emojis" (click)="onPickEmoji(emoji.emoji)">
+    {{ emoji.emoji }}
+  </div>
+</div>

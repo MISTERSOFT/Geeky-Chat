@@ -1,0 +1,19 @@
+.emoji-container {
+  position: absolute;
+  height: 250px;
+  width: 330px;
+  padding: 10px;
+  overflow-y: scroll;
+  background: grey;
+  &.hidden {
+    display: none;
+  }
+  & .emoji {
+    display: inline-block;
+    height: 26px;
+    width: 26px;
+    font-size: 18px;
+    user-select: none;
+    cursor: pointer;
+  }
+}

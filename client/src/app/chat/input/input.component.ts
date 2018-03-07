@@ -11,7 +11,7 @@ import { ChatService } from './../chat.service';
 
 export class InputComponent implements OnInit {
   @Output() onMessageSent: EventEmitter<Message> = new EventEmitter<Message>();
-  text: string; // Message to send
+  text: string = ''; // Message to send
 
   constructor(
     private auth: AuthService,
@@ -19,15 +19,32 @@ export class InputComponent implements OnInit {
 
   ngOnInit() { }
 
+  onKeyPress(e) {
+    // If "Enter" has been pressed
+    if (e.keyCode === 13 && !e.shiftKey) {
+      setTimeout(() => {
+        this.text = this.text;
+        this.onSend();
+      }, 0);
+    }
+  }
+
   onSend() {
-    const message: MessageSent = {
-      text: this.text,
-      userId: this.auth.getUser().id
-    };
-    const subscribe = this.chat.sendMessage(message).subscribe(response => {
-      this.onMessageSent.next(response.data);
+    if (this.text.trim() !== '') {
+      const copy = this.text;
       this.text = '';
-      subscribe.unsubscribe();
-    });
+      const message: MessageSent = {
+        text: copy,
+        userId: this.auth.getUser().id
+      };
+      const subscribe = this.chat.sendMessage(message).subscribe(response => {
+        this.onMessageSent.next(response.data);
+        subscribe.unsubscribe();
+      });
+    }
+  }
+
+  onEmojiPicked(emoji) {
+    this.text += emoji;
   }
 }
