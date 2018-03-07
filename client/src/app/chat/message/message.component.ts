@@ -16,4 +16,7 @@ export class MessageComponent implements OnChanges {
     this.message.isMine = this.auth.getUser().id === this.message.user.id;
   }
 
+  formatWithBreakLine(value: string) {
+    return value.replace(/(\r\n|\n|\r)/g, '<br />');
+  }
 }

@@ -4,8 +4,6 @@
       {{ message.user.username }}
       <span>{{ message.createdAt }}</span>
     </div>
-    <div class="text">
-      {{ message.text }}
-    </div>
+    <div class="text" [innerHtml]="formatWithBreakLine(message.text)"></div>
   </div>
 <!-- </div> -->

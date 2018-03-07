@@ -1,8 +1,22 @@
-<div class="inputs-container">
+<!-- <div class="inputs-container">
   <div class="textarea-container">
     <textarea [(ngModel)]="text" appInputAutoResize></textarea>
   </div>
+  <button (click)="isEmojiPickerVisible = !isEmojiPickerVisible">
+    😄
+    <app-emoji-picker [visible]="isEmojiPickerVisible"></app-emoji-picker>
+  </button>
   <button (click)="onSend()">
     <img src="assets/send.svg">
   </button>
+</div> -->
+<div class="inputs-container">
+  <div class="inputs">
+    <div class="textarea">
+      <textarea [(ngModel)]="text" (keypress)="onKeyPress($event)"></textarea>
+    </div>
+    <div class="buttons-container">
+      <button>😄</button>
+    </div>
+  </div>
 </div>
