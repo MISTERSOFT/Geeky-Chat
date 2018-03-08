@@ -2,7 +2,9 @@
   <div class="search-emoji">
     <input type="text" placeholder="Search..." [(ngModel)]="searchValue" (keyup)="onSearch.next($event)">
   </div>
-  <div class="emoji" *ngFor="let emoji of emojis" (click)="onPickEmoji(emoji.emoji)">
-    {{ emoji.emoji }}
+  <div class="emojis">
+    <div class="emoji" *ngFor="let emoji of emojis" (click)="onPickEmoji(emoji.emoji)">
+      {{ emoji.emoji }}
+    </div>
   </div>
 </div>

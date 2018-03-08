@@ -3,32 +3,39 @@
 .emoji-container {
   position: absolute;
   height: 250px;
-  width: 330px;
+  width: 320px;
   padding: 10px;
-  overflow-y: scroll;
   background: white;
   box-shadow: 2px 2px 6px #000;
-  text-align: center;
-  @include scroll-bar-stylizer();
+  border-radius: 3px;
   &.hidden {
     display: none;
   }
-  & .search-emoji input {
-    height: 24px;
-    outline: none;
-    border-radius: 3px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid darkgrey;
-    box-sizing: border-box;
-    padding: 3px;
+  & .search-emoji {
+    padding-bottom: 10px;
+    border-bottom: 1px solid darkgrey;
+    & input {
+      height: 24px;
+      outline: none;
+      border-radius: 3px;
+      width: 100%;
+      border: 1px solid darkgrey;
+      box-sizing: border-box;
+      padding: 3px;
+    }
   }
-  & .emoji {
-    display: inline-block;
-    height: 26px;
-    width: 26px;
-    font-size: 18px;
-    user-select: none;
-    cursor: pointer;
+  & .emojis {
+    height: 205px;
+    margin-top: 10px;
+    overflow-y: scroll;
+    @include scroll-bar-stylizer();
+    & .emoji {
+      display: inline-block;
+      height: 26px;
+      width: 26px;
+      font-size: 20px;
+      user-select: none;
+      cursor: pointer;
+    }
   }
 }

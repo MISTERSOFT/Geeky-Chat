@@ -18,6 +18,11 @@ export class EmojiService {
     this.isEmojiPopupVisible.next(this._isEmojiPopupVisible);
   }
 
+  forceCloseEmojiPopup() {
+    this._isEmojiPopupVisible = false;
+    this.isEmojiPopupVisible.next(this._isEmojiPopupVisible);
+  }
+
   setElementTriggerer(element: any) {
     this.elementTriggerer.next(element);
   }

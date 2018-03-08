@@ -70,7 +70,7 @@ export class EmojiPickerComponent implements OnInit, OnDestroy {
 
   @HostListener('window:click') onClickOutsidePopup() {
     // Close emoji popup if we click outside of the container
-    this.emojiSvc.toggleEmojiPopup();
+    this.emojiSvc.forceCloseEmojiPopup();
   }
 
   onClickInPopup(e: MouseEvent) {
