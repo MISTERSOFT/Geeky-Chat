@@ -84,7 +84,7 @@ export class EmojiPickerComponent implements OnInit, OnDestroy {
   }
 
   private calculatePopupPosition() {
-    const margin = 5;
+    const margin = 15;
     const bodyBCR = document.body.getBoundingClientRect();
     const btnBCR = this.$elementTriggerer.getBoundingClientRect();
     const bottom = Math.abs(btnBCR.bottom - bodyBCR.bottom) + this.$elementTriggerer.clientHeight + margin;
