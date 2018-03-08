@@ -13,7 +13,7 @@
 <div class="inputs-container">
   <div class="inputs">
     <div class="textarea">
-      <textarea [(ngModel)]="text" (keypress)="onKeyPress($event)"></textarea>
+      <textarea placeholder="Message..." [(ngModel)]="text" (keypress)="onKeyPress($event)"></textarea>
     </div>
     <div class="buttons-container">
       <button appEmojiTriggerer>😄</button>

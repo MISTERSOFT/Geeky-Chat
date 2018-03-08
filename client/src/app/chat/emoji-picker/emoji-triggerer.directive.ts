@@ -11,7 +11,9 @@ export class EmojiTriggererDirective implements AfterViewInit {
     this.emojiSvc.setElementTriggerer(this.el.nativeElement);
   }
 
-  @HostListener('click') onClick() {
+  @HostListener('click', ['$event']) onClick(e: MouseEvent) {
+    // Stop propagation to prevent click on window (cf. EmojiPickerComponent)
+    e.stopPropagation();
     this.emojiSvc.toggleEmojiPopup();
   }
 }

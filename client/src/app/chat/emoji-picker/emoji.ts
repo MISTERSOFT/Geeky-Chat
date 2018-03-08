@@ -1,9 +1,4 @@
-interface Emoji {
-  emoji: string;
-  description: string;
-  aliases: string[];
-  tags: string[];
-}
+import { Emoji } from '../../shared/models';
 
 export const EMOJIS: Emoji[] = [
   {
@@ -41,15 +36,6 @@ export const EMOJIS: Emoji[] = [
     ],
     "tags": [
       "proud"
-    ]
-  }, {
-    "emoji": "☺️",
-    "description": "white smiling face",
-    "aliases": [
-      "relaxed"
-    ],
-    "tags": [
-      "blush", "pleased"
     ]
   }, {
     "emoji": "😉",

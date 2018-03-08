@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { EMOJIS } from './emoji';
 import { Subject } from 'rxjs/Subject';
+import { EMOJIS } from './emoji';
+import { Emoji } from '../../shared/models';
 
 @Injectable()
 export class EmojiService {
@@ -23,5 +24,15 @@ export class EmojiService {
 
   getEmojis() {
     return EMOJIS;
+  }
+
+  findEmojis(search) {
+    return EMOJIS.filter((emoji: Emoji) => {
+      if (emoji.description.toLowerCase().includes(search) ||
+        emoji.tags.join(' ').toLowerCase().includes(search) ||
+        emoji.aliases.join(' ').toLowerCase().includes(search)) {
+        return emoji;
+      }
+    });
   }
 }
