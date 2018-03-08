@@ -1,20 +1,12 @@
-%base-container {
+@import '../../assets/scss/_mixins.scss';
+
+.messages-container {
   position: absolute;
   left: 0;
   right: 0;
-}
-
-.messages-container {
-  @extend %base-container;
   top: 0;
   bottom: 50px;
   background: #3d3d3d;
   overflow-y: scroll;
+  @include scroll-bar-stylizer();
 }
-
-// .inputs-container {
-//   @extend %base-container;
-//   bottom: 0;
-//   height: 50px;
-//   background: green;
-// }
