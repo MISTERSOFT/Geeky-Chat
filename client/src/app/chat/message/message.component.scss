@@ -1,22 +1,29 @@
 .message-container {
-  position: relative;
-  min-height: 32px;
-  line-height: 32px;
-  margin: 20px;
+  float: left;
+  clear: both;
 }
 .message {
-  background: #778ca3;
+  background: #e6e6e6;
   padding: 5px 10px;
-  color: #fff;
+  color: #000;
   border-radius: 5px;
   float: left;
   clear: both;
   margin: 10px 60px 10px 20px;
-  animation: bounce .5s linear both;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.from {
+  & .date {
+    font-size: 10px;
+  }
 }
 
 .is-mine {
   float: right !important;
-  background: #4b6584 !important;
-  margin: 10px 20px 10px 60px !important;
+  & .message {
+    background: #1D94BF !important;
+    color: #fff;
+    margin: 10px 20px 10px 60px !important;
+  }
 }

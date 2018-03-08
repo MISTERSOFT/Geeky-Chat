@@ -1,9 +1,9 @@
-<!-- <div class="message-container"> -->
-  <div class="message" [ngClass]="{ 'is-mine': message.isMine }">
+<div class="message-container" [ngClass]="{ 'is-mine': message.isMine }">
+  <div class="message" >
     <div class="from">
       {{ message.user.username }}
-      <span>{{ message.createdAt }}</span>
+      <span class="date">─ {{ message.createdAt | humanize }}</span>
     </div>
     <div class="text" [innerHtml]="formatWithBreakLine(message.text)"></div>
   </div>
-<!-- </div> -->
+</div>
