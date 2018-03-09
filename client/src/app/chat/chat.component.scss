@@ -8,5 +8,6 @@
   bottom: 50px;
   background: #fff;
   overflow-y: scroll;
+  overflow-x: hidden;
   @include scroll-bar-stylizer();
 }

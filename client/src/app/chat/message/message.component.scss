@@ -11,12 +11,9 @@
   clear: both;
   margin: 10px 60px 10px 20px;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.from {
-  & .date {
-    font-size: 10px;
-  }
+  position: relative;
+  left: -170px;
+  animation: slide-ltr 0.1s ease-in 0s forwards;
 }
 
 .is-mine {
@@ -25,5 +22,23 @@
     background: #1D94BF !important;
     color: #fff;
     margin: 10px 20px 10px 60px !important;
+    left: 170px !important;
+    animation: slide-rtl 0.1s ease-in 0s forwards !important;
   }
+}
+
+.from {
+  & .date {
+    font-size: 10px;
+  }
+}
+
+@keyframes slide-ltr {
+  from { left: -170px; }
+  to { left: 0; }
+}
+
+@keyframes slide-rtl {
+  from { left: 170px; }
+  to { left: 0; }
 }
