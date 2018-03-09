@@ -1,0 +1,52 @@
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  width: 250px;
+  background: #13637F;
+  font-family: Arial, Helvetica, sans-serif;
+
+  & .user-profile {
+    padding: 15px;
+    color: #fff;
+
+    & .settings {
+      float: left;
+      background: none;
+      border: none;
+      color: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+    & .username {
+      position: relative;
+      float: right;
+      & .user-profile-more {
+        position: absolute;
+        right: -8px;
+        top: 24px;
+        border-radius: 3px;
+        list-style-type: none;
+        background: #fff;
+        color: #000;
+        font-size: 14px;
+        filter: drop-shadow(rgba(0,0,0,0.4) 1px 1px 4px);
+        &:before {
+          content: '';
+          position: absolute;
+          right: 10px;
+          top: -6px;
+          width: 0;
+          height: 0;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-bottom: 6px solid #fff;
+        }
+        & li {
+          padding: 5px 15px;
+        }
+      }
+    }
+  }
+}

@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "../node_modules/flexboxgrid/css/flexboxgrid.css",
+        "../node_modules/mdi/scss/materialdesignicons.scss",
         "styles.scss"
       ],
       "scripts": [],

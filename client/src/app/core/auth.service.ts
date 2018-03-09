@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators'
@@ -9,9 +10,11 @@ import { SignInResponse } from './models';
 @Injectable()
 export class AuthService extends WebSocketService {
   private user: User;
+  isAuthentificated: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
     super();
+    this.isAuthentificated.next(false);
   }
 
   getUser() {
@@ -29,6 +32,7 @@ export class AuthService extends WebSocketService {
       tap((response: Response<SignInResponse>) => {
         if (response.success) {
           this.user = response.data.user;
+          this.isAuthentificated.next(true);
         }
       })
     );

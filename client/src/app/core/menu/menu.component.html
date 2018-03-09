@@ -1,0 +1,18 @@
+<nav>
+  <div class="user-profile">
+    <div>
+      <button class="settings">
+        <i class="mdi mdi-settings mdi-18px"></i>
+      </button>
+      <span class="username">
+        {{ user.username }}
+        <i class="mdi mdi-chevron-down" (click)="toggleShowMore()"></i>
+        <ul class="user-profile-more" [ngClass]="{ 'hidden': !showMore }">
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+        </ul>
+      </span>
+    </div>
+  </div>
+</nav>
