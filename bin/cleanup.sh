@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
 
+clientPkg="client/node_modules/"
+serverPkg="server/node_modules/"
+
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
         -a|--all)
         echo "Deleting database and node_modules..."
         rm -rf geekychat/
-        rm -rf ../client/node_modules/
-        rm -rf ../server/node_modules/
+        rm -rf "$clientPkg"
+        rm -rf "$serverPkg"
         shift # past argument
         ;;
-        -n|--node-modules)
+        -p|--packages)
         echo "Deleting node_modules..."
-        rm -rf ../client/node_modules/
-        rm -rf ../server/node_modules/
+        rm -rf "$clientPkg"
+        rm -rf "$serverPkg"
         shift # past argument
         ;;
         -d|--database)
@@ -27,4 +30,5 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+echo
 echo "All done !"

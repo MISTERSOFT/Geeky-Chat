@@ -6,7 +6,7 @@
         "client": "cd client && npm run start",
         "server": "node ./server/src/main.js",
         "cleanup:all": "bash ./bin/cleanup.sh -a",
-        "cleanup:packages": "bash ./bin/cleanup.sh -n",
+        "cleanup:pkg": "bash ./bin/cleanup.sh -p",
         "cleanup:db": "bash ./bin/cleanup.sh -d"
     }
 }
