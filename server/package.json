@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "GeekyChat server",
   "scripts": {
-    "start": "node server/src/main.js"
+    "start": "npm run compile && npm run serve",
+    "serve": "nodemon dist/main.js",
+    "watch-ts": "tsc -w",
+    "compile": "tsc"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/pouchdb": "^6.3.2",
     "@types/socket.io": "^1.4.31",
+    "nodemon": "^1.17.1",
     "pouchdb": "^6.4.3"
   },
   "dependencies": {

@@ -32,10 +32,11 @@ const user = {
     }
 }
 
+
 const ModelBuilder = {
     // generateID = generateID,
     message: message,
-    user: user
+    user: user,
 }
 
 module.exports = ModelBuilder

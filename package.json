@@ -4,7 +4,7 @@
     "scripts": {
         "install": "cd client && npm install && cd ../server && npm install",
         "client": "cd client && npm run start",
-        "server": "node ./server/src/main.js",
+        "server": "cd server && npm run start",
         "cleanup:all": "bash ./bin/cleanup.sh -a",
         "cleanup:pkg": "bash ./bin/cleanup.sh -p",
         "cleanup:db": "bash ./bin/cleanup.sh -d"

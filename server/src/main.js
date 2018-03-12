@@ -5,9 +5,8 @@ const ModelBuilder = require('./models')
 const ResponseBuilder = require('./response')
 
 app.listen(3000, () => {
-    console.log('# Server is running: http://localhost:3000');
+    console.log('# Server is running: http://localhost:3000')
 })
-
 
 io.on('connection', (socket) => {
     socket.on('SIGNUP', (userInfo) => {
