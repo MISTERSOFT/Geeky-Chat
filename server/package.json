@@ -5,8 +5,8 @@
   "scripts": {
     "start": "npm run compile && npm run serve",
     "serve": "nodemon dist/main.js",
-    "watch-ts": "tsc -w",
-    "compile": "tsc"
+    "watch-ts": "node_modules/.bin/tsc -w",
+    "compile": "node_modules/.bin/tsc"
   },
   "author": "",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "@types/pouchdb": "^6.3.2",
     "@types/socket.io": "^1.4.31",
     "nodemon": "^1.17.1",
-    "pouchdb": "^6.4.3"
+    "pouchdb": "^6.4.3",
+    "typescript": "^2.7.2"
   },
   "dependencies": {
     "relational-pouch": "^3.0.1",

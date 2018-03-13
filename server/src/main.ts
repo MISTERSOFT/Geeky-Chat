@@ -1,8 +1,7 @@
 import { createServer } from 'http';
 import * as socketIO from 'socket.io';
-import { Env } from './env';
-import { DB } from './database';
-import { Response } from './response-builder';
+import { Env, Response } from './core';
+import { messageRepository, userRepository } from './database';
 import { UserConverter, MessageConverter } from './converters';
 import { UserDTO } from './dtos';
 
@@ -20,7 +19,7 @@ io.on('connection', (socket) => {
     // const model = ModelBuilder.user.toEntity(userInfo)
     const model = _userConverter.toEntity(userInfo);
     // Create the user
-    DB.storeUser(model).then(users => {
+    userRepository.storeUser(model).then(users => {
       socket.emit('SIGNUP_RESPONSE', Response.compose())
     })
   })
@@ -28,7 +27,7 @@ io.on('connection', (socket) => {
   socket.on('SIGNIN', (user) => {
     console.log('LOGIN...', user)
     const model = _userConverter.toEntity(user);
-    DB.isUserExist(model).then(response => {
+    userRepository.isUserExist(model).then(response => {
       if (response.founded) {
         socket.emit('SIGNIN_RESPONSE', Response.compose(_userConverter.toDTO(response.user)))
       } else {
@@ -44,8 +43,8 @@ io.on('connection', (socket) => {
     const model = _messageConverter.toEntity(message);
     model.createdAt = new Date();
     const promises = [
-      DB.storeMessage(model),
-      DB.findUserById(message.userId)
+      messageRepository.storeMessage(model),
+      userRepository.findUserById(message.userId)
     ];
     Promise.all(promises).then((responses) => {
       const msg = responses[0].messages[0]
@@ -64,7 +63,7 @@ io.on('connection', (socket) => {
 
   socket.on('FETCH_ALL_MESSAGES', () => {
     console.log('FETCH_ALL_MESSAGES...')
-    DB.getMessages().then(response => {
+    messageRepository.getMessages().then(response => {
       console.log('Messages fetched', response)
       const messages = []
       response.forEach(message => {
