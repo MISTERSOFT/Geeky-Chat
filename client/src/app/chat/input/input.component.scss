@@ -1,10 +1,12 @@
+@import '../../../assets/scss/_variables';
+
 .inputs-container {
   position: fixed;
   left: 250px;
   right: 0;
   bottom: 0;
   height: 50px;
-  background: #1D94BF;
+  background: $app-color-03;
   & .inputs {
     position: absolute;
     top: 10px;

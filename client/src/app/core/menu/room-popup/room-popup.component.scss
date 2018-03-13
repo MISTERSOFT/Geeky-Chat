@@ -1,0 +1,37 @@
+@import '../../../../assets/scss/_variables';
+@import '../../../../assets/scss/_extends';
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px;
+  background: $app-color-01;
+  z-index: 1000;
+  @extend %shadow;
+
+  & input {
+    height: 38px;
+    width: 100%;
+    outline: none;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+  }
+  & .btn {
+    height: 38px;
+    width: 49%;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    &.join { background: $btn-danger; }
+    &.create { background: $btn-success; }
+    &:hover {
+      @extend %shadow;
+    }
+  }
+}

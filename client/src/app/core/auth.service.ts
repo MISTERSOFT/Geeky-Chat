@@ -5,7 +5,6 @@ import { tap } from 'rxjs/operators'
 import { Socket } from 'ng-socket-io';
 import { User, Response } from '../shared/models';
 import { WebSocketService } from './websocket.service';
-import { SignInResponse } from './models';
 
 @Injectable()
 export class AuthService extends WebSocketService {

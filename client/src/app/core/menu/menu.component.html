@@ -1,9 +1,17 @@
 <nav>
-  <div class="user-profile">
-    <div>
-      <button class="settings">
+  <div class="rooms">
+    <div class="room new" (click)="openRoomPopup()">
+      <i class="mdi mdi-plus"></i>
+    </div>
+    <!-- TODO: Remove and loop on rooms -->
+    <div class="room"></div>
+    <div class="room"></div>
+  </div>
+  <div class="current-room">
+    <div class="user-profile">
+      <a class="settings">
         <i class="mdi mdi-settings mdi-18px"></i>
-      </button>
+      </a>
       <span class="username">
         {{ user.username }}
         <i class="mdi mdi-chevron-down" (click)="toggleShowMore()"></i>
@@ -16,3 +24,5 @@
     </div>
   </div>
 </nav>
+
+<app-room-popup [visible]="showRoomPopup"></app-room-popup>

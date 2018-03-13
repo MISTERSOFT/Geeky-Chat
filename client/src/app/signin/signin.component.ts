@@ -25,11 +25,9 @@ export class SigninComponent implements OnInit {
   }
 
   onSignin(e) {
-    console.log('onSignin', this.form.valid);
     if (this.form.valid) {
       const user = this.form.value;
       const subscribe = this.auth.signin(user).subscribe(data => {
-        console.log('response for signin', data);
         subscribe.unsubscribe();
         if (this.auth.isAuth()) {
           this.router.navigate(['chat']);
