@@ -2,13 +2,14 @@
 
 clientPkg="client/node_modules/"
 serverPkg="server/node_modules/"
+db="server/geekychat"
 
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
         -a|--all)
         echo "Deleting database and node_modules..."
-        rm -rf geekychat/
+        rm -rf "$db"
         rm -rf "$clientPkg"
         rm -rf "$serverPkg"
         shift # past argument
@@ -21,7 +22,7 @@ while [[ $# -gt 0 ]]; do
         ;;
         -d|--database)
         echo "Deleting database..."
-        rm -rf geekychat/
+        rm -rf "$db"
         shift # past argument
         ;;
         *)    # unknown option
