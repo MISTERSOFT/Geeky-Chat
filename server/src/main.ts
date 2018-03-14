@@ -1,9 +1,10 @@
 import { createServer } from 'http';
 import * as socketIO from 'socket.io';
 import { Env, Response } from './core';
-import { messageRepository, userRepository } from './database';
+import { messageRepository, userRepository, roomRepository } from './database';
 import { UserConverter, MessageConverter } from './converters';
 import { UserDTO } from './dtos';
+import { Room } from './entities';
 
 const server = createServer();
 const io = socketIO(server);
@@ -61,7 +62,10 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('FETCH_ALL_MESSAGES', () => {
+  /**
+   * We user signin, load all messages for each rooms where the user connected
+   */
+  socket.on('FETCH_ALL_MESSAGES', (userId) => {
     console.log('FETCH_ALL_MESSAGES...')
     messageRepository.getMessages().then(response => {
       console.log('Messages fetched', response)
@@ -72,5 +76,19 @@ io.on('connection', (socket) => {
       })
       socket.emit('FETCH_ALL_MESSAGES_RESPONSE', Response.compose(messages))
     })
+    roomRepository.getAllForUser(userId).then(result => {
+      console.log('all rooms for user', result)
+    })
   })
+
+  socket.on('CREATE_ROOM', (obj) => {
+    console.log('create room: ', obj.roomName);
+    const room = new Room();
+    room.name = obj.roomName;
+    room.owner = obj.userId;
+    roomRepository.store(room).then(result => {
+      console.log('create room done, result:', result);
+    })
+  })
+
 })

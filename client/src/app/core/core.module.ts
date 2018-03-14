@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { SocketIoModule } from 'ng-socket-io';
 
 import { WebSocketService } from './websocket.service';
@@ -9,11 +10,13 @@ import { MenuComponent } from './menu/menu.component';
 import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
 import { ShadowService } from './shadow/shadow.service';
 import { ShadowComponent } from './shadow/shadow.component';
+import { CoreService } from './core.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    SocketIoModule
+    SocketIoModule,
+    FormsModule
   ],
   exports: [
     MenuComponent,
@@ -28,7 +31,8 @@ import { ShadowComponent } from './shadow/shadow.component';
     WebSocketService,
     AuthService,
     AuthGuard,
-    ShadowService
+    ShadowService,
+    CoreService
   ]
 })
 export class CoreModule {

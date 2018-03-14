@@ -1,7 +1,7 @@
 import * as PouchDB from 'pouchdb';
 import * as RelationalPouch from 'relational-pouch';
-import { Message, User } from '../entities';
 PouchDB.plugin(RelationalPouch);
+import { Message, User } from '../entities';
 
 export class Database {
   protected readonly DATABASE_NAME = 'geekychat';
@@ -12,7 +12,9 @@ export class Database {
     messages: 'messages',
     message: 'message',
     rooms: 'rooms',
-    room: 'room'
+    room: 'room',
+    owners: 'owners',
+    owner: 'owner'
   };
   constructor() {
     this.DB.setSchema([
@@ -20,14 +22,16 @@ export class Database {
         singular: this.KEYS.user,
         plural: this.KEYS.users,
         relations: {
-          messages: { hasMany: this.KEYS.message }
+          messages: { hasMany: this.KEYS.message },
+          rooms: { hasMany: this.KEYS.room }
         }
       },
       {
         singular: this.KEYS.message,
         plural: this.KEYS.messages,
         relations: {
-          user: { belongsTo: this.KEYS.user }
+          user: { belongsTo: this.KEYS.user },
+          room: { belongsTo: this.KEYS.room }
         }
       },
       {
@@ -35,8 +39,14 @@ export class Database {
         plural: this.KEYS.rooms,
         relations: {
           users: { hasMany: this.KEYS.user },
-          messages: { hasMany: this.KEYS.message }
+          messages: { hasMany: this.KEYS.message },
+          owner: { belongsTo: this.KEYS.owner }
         }
+      },
+      {
+        singular: this.KEYS.owner,
+        plural: this.KEYS.owners,
+        documentType: this.KEYS.user
       }
     ]);
   }

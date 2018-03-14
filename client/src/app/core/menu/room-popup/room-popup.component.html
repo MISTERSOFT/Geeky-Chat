@@ -1,5 +1,5 @@
 <div class="popup" [ngClass]="{ 'hidden': !visible }">
-  <input type="text" placeholder="Room name...">
+  <input [(ngModel)]="roomName" type="text" placeholder="Room name...">
   <button class="btn join">Join</button>
-  <button class="btn create">Create</button>
+  <button class="btn create" (click)="createRoom()">Create</button>
 </div>
