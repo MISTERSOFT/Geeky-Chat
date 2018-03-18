@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, Input } from '@angular/core';
 import { MessageSent, Message } from '../../shared/models';
 import { AuthService } from '../../core/auth.service';
 import { ChatService } from './../chat.service';
@@ -10,6 +10,7 @@ import { ChatService } from './../chat.service';
 })
 
 export class InputComponent implements OnInit {
+  @Input() roomId: string;
   @Output() onMessageSent: EventEmitter<Message> = new EventEmitter<Message>();
   text: string = ''; // Message to send
 
@@ -35,8 +36,10 @@ export class InputComponent implements OnInit {
       this.text = '';
       const message: MessageSent = {
         text: copy,
-        userId: this.auth.getUser().id
+        userId: this.auth.getUser().id,
+        roomId: this.roomId
       };
+      console.log('Send message...', message);
       const subscribe = this.chat.sendMessage(message).subscribe(response => {
         this.onMessageSent.next(response.data);
         subscribe.unsubscribe();

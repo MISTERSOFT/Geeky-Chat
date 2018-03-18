@@ -10,4 +10,5 @@ export interface Message {
 export interface MessageSent {
   text: string;
   userId: string; // User UUID
+  roomId: string;
 }

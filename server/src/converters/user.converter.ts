@@ -21,4 +21,9 @@ export class UserConverter {
 
     return target;
   }
+
+  toDTOs(source: User[]): UserDTO[] {
+    if (!source) return null;
+    return source.map(user => this.toDTO(user));
+  }
 }

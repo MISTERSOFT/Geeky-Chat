@@ -1,13 +1,18 @@
 <nav>
   <div class="rooms">
     <div class="room new" (click)="openRoomPopup()">
-      <i class="mdi mdi-plus"></i>
+      <div class="room-name">
+        <i class="mdi mdi-plus"></i>
+      </div>
     </div>
-    <!-- TODO: Remove and loop on rooms -->
-    <div class="room"></div>
-    <div class="room"></div>
+    <div class="room"
+      *ngFor="let room of rooms"
+      [ngClass]="{ 'current-room': isCurrentRoom(room) }"
+      (click)="onSelectRoom(room)">
+      <div class="room-name">{{ room.name | slice:0:1 }}</div>
+    </div>
   </div>
-  <div class="current-room">
+  <div class="current-room-info">
     <div class="user-profile">
       <a class="settings">
         <i class="mdi mdi-settings mdi-18px"></i>
@@ -21,6 +26,12 @@
           <li>Item 3</li>
         </ul>
       </span>
+    </div>
+    <div *ngIf="currentRoom" class="room-users">
+      <div *ngFor="let user of currentRoom.users" class="room-user">
+        <span class="status"></span>
+        {{ user.username }}
+      </div>
     </div>
   </div>
 </nav>

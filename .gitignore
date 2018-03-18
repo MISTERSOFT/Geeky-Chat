@@ -9,4 +9,4 @@ client/e2e/*.map
 server/dist
 
 # Database
-geekychat/
+server/geekychat/
