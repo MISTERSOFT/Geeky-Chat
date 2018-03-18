@@ -19,10 +19,20 @@ export class CoreService extends WebSocketService {
   }
   createRoom(roomName: string, userId: string) {
     this.emit('CREATE_ROOM', { roomName, userId });
-    this.waitResponse('CREATE_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
+    const sub = this.waitResponse('CREATE_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
       this.rooms.push(response.data);
       this.onRoomsChanged.next(this.rooms);
       this.onCurrentRoomChanged.next(response.data);
+      sub.unsubscribe();
+    });
+  }
+  joinRoom(roomName: string, userId: string) {
+    this.emit('JOIN_ROOM', { roomName, userId });
+    const sub = this.waitResponse('JOIN_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
+      this.rooms.push(response.data);
+      this.onRoomsChanged.next(this.rooms);
+      this.onCurrentRoomChanged.next(response.data);
+      sub.unsubscribe();
     });
   }
   loadData(): Observable<Response<Room[]>> {

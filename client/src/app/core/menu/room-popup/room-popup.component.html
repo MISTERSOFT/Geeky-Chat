@@ -1,5 +1,36 @@
 <div class="popup" [ngClass]="{ 'hidden': !visible }">
-  <input [(ngModel)]="roomName" type="text" placeholder="Room name...">
+  <div #slideMenu class="slide slide-menu">
+    <h3 class="slide-title">What are we doing now ?</h3>
+    <div class="card card-join">
+      <h3>Join</h3>
+      <div class="icon icon-join">
+        <i class="mdi mdi-account"></i>
+        <i class="mdi mdi-arrow-right"></i>
+        <i class="mdi mdi-account-group"></i>
+      </div>
+      <button class="btn join">Join a room</button>
+    </div>
+    <div class="card card-create" (click)="slideToCreateRoom()">
+      <h3>Create</h3>
+      <div class="icon icon-create">
+        <i class="mdi mdi-comment-text-outline"></i>
+      </div>
+      <button class="btn create">Create a room</button>
+    </div>
+    <div class="clear-float"></div>
+  </div>
+  <div #slideCreate class="slide slide-create">
+    <h3 class="slide-title">Let's create a new room so !</h3>
+    <div class="slide-content">
+      <input [(ngModel)]="roomName" type="text" placeholder="Room name...">
+    </div>
+    <div class="slide-footer">
+      <button>Back</button>
+      <button>Create</button>
+    </div>
+  </div>
+
+  <!-- <input [(ngModel)]="roomName" type="text" placeholder="Room name...">
   <button class="btn join">Join</button>
-  <button class="btn create" (click)="createRoom()">Create</button>
+  <button class="btn create" (click)="createRoom()">Create</button> -->
 </div>

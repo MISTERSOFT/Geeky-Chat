@@ -28,7 +28,12 @@ export class ChatComponent implements OnInit {
     //   const msgB = new Date(b.createdAt).getTime();
     //   return (msgA === msgB) ? 0 : (msgA < msgB) ? -1 : 1;
     // });
-    this.chat.on('BROADCAST_SEND_MESSAGE', (message) => {
+
+    // this.chat.on('BROADCAST_SEND_MESSAGE', (message) => {
+    //   console.log('BROADCAST_SEND_MESSAGE', message);
+    //   this.room.messages.push(message);
+    // });
+    this.chat.listenEmittedMessages().subscribe((message) => {
       console.log('BROADCAST_SEND_MESSAGE', message);
       this.room.messages.push(message);
     });

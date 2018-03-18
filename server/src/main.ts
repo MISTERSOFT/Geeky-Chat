@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
       // Broadcast the message sent by the user to the room.
       // The message broadcasted contains the text message
       // and data about the emitter
-      socket.to(room.name_slug).emit('BROADCAST_SEND_MESSAGE', dto)
+      socket.to(room.name_slug).emit('BROADCAST_SEND_MESSAGE', Response.compose(dto))
       // socket.broadcast.emit('BROADCAST_SEND_MESSAGE', dto)
     })
   })
@@ -77,14 +77,12 @@ io.on('connection', (socket) => {
     console.log('FETCH_ALL_DATA...');
     roomRepository.getRoomsByUser(userId)
     .then((rooms: Room[]) => {
-      console.log('ROOMS', rooms);
       rooms.forEach(room => {
         // Join each rooms
-        socket.join(room.name_slug, (err) => {
-          console.log('NOT ENABLE TO JOIN ROOM: ' + room.name_slug, err);
-        });
+        socket.join(room.name_slug);
       });
       const data = _roomConverter.toDTOs(rooms);
+      console.log('ROOMS', data);
       socket.emit('FETCH_ALL_USER_DATA_RESPONSE', Response.compose(data))
     });
 
@@ -128,13 +126,13 @@ io.on('connection', (socket) => {
     console.log('room', room);
     roomRepository.store(room).then(result => {
       console.log('create room done, result:', result)
-      socket.emit('CREATE_ROOM_RESPONSE', Response.compose(result))
+      const data = _roomConverter.toDTO(result)
+      socket.emit('CREATE_ROOM_RESPONSE', Response.compose(data))
     })
   });
 
   // TODO: Later
   // socket.on('JOIN_ROOM', (obj) => {
-
   // })
 
 })

@@ -6,10 +6,69 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
   padding: 15px;
-  background: $app-color-01;
+  background: #fff;
   z-index: 1000;
+  height: 202px;
+  width: 450px;
+  border-radius: 5px;
+  overflow: hidden;
   @extend %shadow;
+
+  & .slide {
+    position: absolute;
+    height: 172px;
+    width: 420px;
+    &.slide-create { left: 450px; }
+    & .slide-title {
+      color: $app-color-01;
+    }
+  }
+
+  & .card {
+    position: relative;
+    width: 200px;
+    padding: 10px 0 35px 0;
+    border: 1px solid #d8d8d8;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
+    &:hover {
+      @extend %shadow;
+    }
+
+    & h3 {
+      text-transform: uppercase;
+      font-weight: 100;
+    }
+    &.card-join {
+      float: left;
+      margin: 10px 10px 0 0;
+      & h3 { color: $app-color-danger }
+    }
+    &.card-create {
+      float: right;
+      margin: 10px 0 0 10px;
+      & h3 { color: $app-color-success }
+    }
+    & .icon {
+      & i.mdi-account, & i.mdi-account-group {
+        color: lighten($app-color-danger, 30%);
+        font-size: 60px;
+      }
+      & i.mdi-arrow-right {
+        position: relative;
+        top: -10px;
+        color: lighten($app-color-danger, 30%);
+        font-size: 32px;
+      }
+      & i.mdi-comment-text-outline {
+        color: lighten($app-color-success, 30%);
+        font-size: 60px;
+      }
+    }
+  }
 
   & input {
     height: 38px;
@@ -20,18 +79,22 @@
     border-radius: 4px;
   }
   & .btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     height: 38px;
-    width: 49%;
     color: #fff;
     border: none;
-    margin-top: 10px;
-    border-radius: 4px;
+    // margin-top: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     font-size: 14px;
-    cursor: pointer;
-    &.join { background: $btn-danger; }
-    &.create { background: $btn-success; }
-    &:hover {
-      @extend %shadow;
-    }
+    cursor: default;
+    &.join { background: $app-color-danger; }
+    &.create { background: $app-color-success; }
+    // &:hover {
+    //   @extend %shadow;
+    // }
   }
 }
