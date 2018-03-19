@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "description": "GeekyChat server",
   "scripts": {
-    "start": "npm run compile && npm run serve",
-    "serve": "nodemon dist/main.js",
-    "watch-ts": "node_modules/.bin/tsc -w",
-    "compile": "node_modules/.bin/tsc"
+    "start": "nodemon",
+    "build": "node_modules/.bin/tsc"
   },
   "author": "",
   "license": "MIT",
@@ -15,6 +13,7 @@
     "@types/socket.io": "^1.4.31",
     "nodemon": "^1.17.1",
     "pouchdb": "^6.4.3",
+    "ts-node": "^5.0.1",
     "typescript": "^2.7.2"
   },
   "dependencies": {
