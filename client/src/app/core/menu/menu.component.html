@@ -1,8 +1,8 @@
 <nav>
   <div class="rooms">
-    <div class="room new" (click)="openRoomPopup()">
+    <div class="room new button-new-room" (click)="openRoomPopup()">
       <div class="room-name">
-        <i class="mdi mdi-plus"></i>
+        <i class="mdi mdi-plus button-new-room"></i>
       </div>
     </div>
     <div class="room"
@@ -36,4 +36,4 @@
   </div>
 </nav>
 
-<app-room-popup [visible]="showRoomPopup"></app-room-popup>
+<app-room-popup [(visible)]="showRoomPopup"></app-room-popup>
