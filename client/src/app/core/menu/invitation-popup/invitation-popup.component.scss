@@ -1,0 +1,33 @@
+@import '../../../../assets/scss/_variables';
+
+.popup-title {
+  color: $app-color-01;
+}
+
+
+.popup-content {
+  margin-top: 10px;
+  & .generated-code {
+    margin-top: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    color: $app-color-01;
+  }
+}
+
+.popup-footer {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  & button {
+    border: none;
+    padding: 8px 20px;
+    color: #fff;
+    outline: none;
+    font-size: 14px;
+    float: right;
+    cursor: pointer;
+    background: $app-color-success;
+  }
+}

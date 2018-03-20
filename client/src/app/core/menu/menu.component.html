@@ -27,6 +27,10 @@
         </ul>
       </span>
     </div>
+    <div (click)="openInvitationPopup()" class="invitation button-invitation">
+      <i class="mdi mdi-plus button-invitation"></i>
+      Invite friends
+    </div>
     <div *ngIf="currentRoom" class="room-users">
       <div *ngFor="let user of currentRoom.users" class="room-user">
         <span class="status"></span>
@@ -37,3 +41,4 @@
 </nav>
 
 <app-room-popup [(visible)]="showRoomPopup"></app-room-popup>
+<app-invitation-popup [(visible)]="showInvitationPopup"></app-invitation-popup>

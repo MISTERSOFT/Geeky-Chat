@@ -32,19 +32,22 @@ export class RoomPopupComponent implements OnInit {
     private auth: AuthService,
     private shadow: ShadowService) { }
   ngOnInit() { }
-  @HostListener('click', ['$event']) onHostClicked(e: MouseEvent) {
-    // Prevent popup close when we click on container
-    e.stopPropagation();
+  onClickOutside() {
+    this.close();
   }
-  @HostListener('window:click', ['$event']) onClickOutsidePopup(e) {
-    // Check if we have clicked in the add/join new room button
-    if (!e.target.classList.contains('button-new-room')) {
-      // Close the popup if we click outside of the container
-      this.reset();
-      this.visibleChange.next(false);
-      this.shadow.onShadowVisibilityChanged.next(false);
-    }
-  }
+  // @HostListener('click', ['$event'])
+  // onHostClicked(e: MouseEvent) {
+  //   // Prevent popup close when we click on container
+  //   console.log('click HOST ROOM POPUP');
+  //   e.stopPropagation();
+  // }
+  // @HostListener('window:click', ['$event']) onClickOutsidePopup(e) {
+  //   // Check if we have clicked in the add/join new room button
+  //   if (!e.target.classList.contains('button-new-room')) {
+  //     // Close the popup if we click outside of the container
+  //     this.close();
+  //   }
+  // }
   slideTo(goTo: SLIDE) {
     if (goTo === SLIDE.CREATE) {
       this.slide(this.$slideMenu.nativeElement, -this.slideBy);
@@ -65,9 +68,7 @@ export class RoomPopupComponent implements OnInit {
   }
   createRoom() {
     this.core.createRoom(this.roomName, this.auth.getUser().id);
-    this.visible = false;
-    this.visibleChange.next(this.visible);
-    this.shadow.onShadowVisibilityChanged.next(false);
+    this.close();
   }
 
   private slide(el, value) {
@@ -78,5 +79,11 @@ export class RoomPopupComponent implements OnInit {
     this.roomName = '';
     this.invitationCode = '';
     this.slideTo(SLIDE.MENU);
+  }
+
+  private close() {
+    this.reset();
+    this.visibleChange.next(false);
+    this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

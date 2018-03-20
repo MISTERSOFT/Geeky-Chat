@@ -1,60 +1,58 @@
-<div class="popup" [ngClass]="{ 'hidden': !visible }">
-  <div #slideMenu class="slide slide-menu">
-    <h3 class="slide-title">What are we doing now ?</h3>
-    <div class="slide-content">
-      <div class="card card-join" (click)="slideTo(_SLIDE.JOIN)">
-        <h3>Join</h3>
-        <div class="icon icon-join">
-          <i class="mdi mdi-account"></i>
-          <i class="mdi mdi-arrow-right"></i>
-          <i class="mdi mdi-account-group"></i>
+<app-popup *ngIf="visible" (clickOutside)="onClickOutside()">
+  <!-- <div class="popup" (click)="onHostClicked($event)"> -->
+    <div #slideMenu class="slide slide-menu">
+      <h3 class="slide-title">What are we doing now ?</h3>
+      <div class="slide-content">
+        <div class="card card-join" (click)="slideTo(_SLIDE.JOIN)">
+          <h3>Join</h3>
+          <div class="icon icon-join">
+            <i class="mdi mdi-account"></i>
+            <i class="mdi mdi-arrow-right"></i>
+            <i class="mdi mdi-account-group"></i>
+          </div>
+          <div class="card-footer">Join a room</div>
         </div>
-        <div class="card-footer">Join a room</div>
-      </div>
-      <div class="card card-create" (click)="slideTo(_SLIDE.CREATE)">
-        <h3>Create</h3>
-        <div class="icon icon-create">
-          <i class="mdi mdi-comment-text-outline"></i>
+        <div class="card card-create" (click)="slideTo(_SLIDE.CREATE)">
+          <h3>Create</h3>
+          <div class="icon icon-create">
+            <i class="mdi mdi-comment-text-outline"></i>
+          </div>
+          <div class="card-footer">Create a room</div>
         </div>
-        <div class="card-footer">Create a room</div>
+        <div class="clear-float"></div>
       </div>
-      <div class="clear-float"></div>
     </div>
-  </div>
 
-  <!-- Slide Create -->
-  <div #slideCreate class="slide slide-out">
-    <h3 class="slide-title">Let's create a new room so !</h3>
-    <div class="slide-content">
-      <p>Give a name to your room :)</p>
-      <input class="input-create" [(ngModel)]="roomName" type="text" placeholder="Room name...">
+    <!-- Slide Create -->
+    <div #slideCreate class="slide slide-out">
+      <h3 class="slide-title">Let's create a new room so !</h3>
+      <div class="slide-content">
+        <p>Give a name to your room :)</p>
+        <input class="input-create" [(ngModel)]="roomName" type="text" placeholder="Room name...">
+      </div>
+      <div class="slide-footer">
+        <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
+          <i class="mdi mdi-chevron-left"></i>
+          Back
+        </button>
+        <button class="btn btn-create" (click)="createRoom()">Create</button>
+      </div>
     </div>
-    <div class="slide-footer">
-      <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
-        <i class="mdi mdi-chevron-left"></i>
-        Back
-      </button>
-      <button class="btn btn-create" (click)="createRoom()">Create</button>
-    </div>
-  </div>
 
-  <!-- Slide Join -->
-  <div #slideJoin class="slide slide-out">
-    <h3 class="slide-title">Let's join an existing room !</h3>
-    <div class="slide-content">
-      <p>Paste the invitation code given by your friend :)</p>
-      <input class="input-join" [(ngModel)]="invitationCode" type="text" placeholder="Invitation code">
+    <!-- Slide Join -->
+    <div #slideJoin class="slide slide-out">
+      <h3 class="slide-title">Let's join an existing room !</h3>
+      <div class="slide-content">
+        <p>Paste the invitation code given by your friend :)</p>
+        <input class="input-join" [(ngModel)]="invitationCode" type="text" placeholder="Invitation code">
+      </div>
+      <div class="slide-footer">
+        <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
+          <i class="mdi mdi-chevron-left"></i>
+          Back
+        </button>
+        <button class="btn btn-join">Join</button>
+      </div>
     </div>
-    <div class="slide-footer">
-      <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
-        <i class="mdi mdi-chevron-left"></i>
-        Back
-      </button>
-      <button class="btn btn-join">Join</button>
-    </div>
-  </div>
-
-  <!-- <input [(ngModel)]="roomName" type="text" placeholder="Room name...">
-  <button class="btn join">Join</button>
-  <button class="btn create" (click)="createRoom()">Create</button> -->
-</div>
+  <!-- </div> -->
+</app-popup>

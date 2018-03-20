@@ -16,6 +16,7 @@ export class MenuComponent implements OnInit {
   user: User;
   showMore = false;
   showRoomPopup = false;
+  showInvitationPopup = false;
 
   constructor(
     private core: CoreService,
@@ -38,6 +39,11 @@ export class MenuComponent implements OnInit {
   openRoomPopup() {
     this.shadow.onShadowVisibilityChanged.next(true);
     this.showRoomPopup = true;
+  }
+
+  openInvitationPopup() {
+    this.shadow.onShadowVisibilityChanged.next(true);
+    this.showInvitationPopup = true;
   }
 
   isCurrentRoom(room: Room) {

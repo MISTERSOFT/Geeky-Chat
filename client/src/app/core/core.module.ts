@@ -11,12 +11,15 @@ import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
 import { ShadowService } from './shadow/shadow.service';
 import { ShadowComponent } from './shadow/shadow.component';
 import { CoreService } from './core.service';
+import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
+import { LayoutModule } from '../layout/layout.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SocketIoModule,
-    FormsModule
+    FormsModule,
+    LayoutModule
   ],
   exports: [
     MenuComponent,
@@ -25,6 +28,7 @@ import { CoreService } from './core.service';
   declarations: [
     MenuComponent,
     RoomPopupComponent,
+    InvitationPopupComponent,
     ShadowComponent
   ],
   providers: [

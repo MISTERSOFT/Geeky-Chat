@@ -22,7 +22,7 @@ export class RoomConverter {
     const target = new RoomDTO();
     target.id = source.id;
     target.name = source.name;
-    target.name_slug = source.name_slug;
+    // target.name_slug = source.name_slug;
     target.owner = source.owner;
     target.messages = this._messageConverter.toDTOs(<Message[]>source.messages);
     target.users = this._userConverter.toDTOs(<User[]>source.users);
