@@ -51,6 +51,7 @@ export class MenuComponent implements OnInit {
   }
 
   onSelectRoom(room) {
-    this.core.onCurrentRoomChanged.next(room);
+    // this.core.onCurrentRoomChanged.next(room);
+    this.core.changeRoom(room);
   }
 }

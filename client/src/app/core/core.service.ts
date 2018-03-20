@@ -10,6 +10,7 @@ import { Socket } from 'ng-socket-io';
 @Injectable()
 export class CoreService extends WebSocketService {
   private rooms: Room[];
+  currentRoom: Room;
   onRoomsChanged = new Subject<Room[]>();
   onCurrentRoomChanged = new Subject<Room>();
   constructor(private auth: AuthService) {
@@ -22,15 +23,21 @@ export class CoreService extends WebSocketService {
     const sub = this.waitResponse('CREATE_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
       this.rooms.push(response.data);
       this.onRoomsChanged.next(this.rooms);
+      this.currentRoom = response.data;
       this.onCurrentRoomChanged.next(response.data);
       sub.unsubscribe();
     });
+  }
+  generateJoinToken(roomId: string) {
+    this.emit('GENERATE_JOIN_CODE', roomId);
+    return this.waitResponse('GENERATE_JOIN_CODE_RESPONSE');
   }
   joinRoom(roomName: string, userId: string) {
     this.emit('JOIN_ROOM', { roomName, userId });
     const sub = this.waitResponse('JOIN_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
       this.rooms.push(response.data);
       this.onRoomsChanged.next(this.rooms);
+      this.currentRoom = response.data;
       this.onCurrentRoomChanged.next(response.data);
       sub.unsubscribe();
     });
@@ -51,11 +58,16 @@ export class CoreService extends WebSocketService {
             return room;
           });
           if (this.rooms.length > 0) {
+            this.currentRoom = this.rooms[0];
             this.onCurrentRoomChanged.next(this.rooms[0]);
           }
           this.onRoomsChanged.next(this.rooms);
         }
       })
     );
+  }
+  changeRoom(room: Room) {
+    this.currentRoom = room;
+    this.onCurrentRoomChanged.next(room);
   }
 }

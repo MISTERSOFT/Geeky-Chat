@@ -14,7 +14,9 @@ export class Database {
     rooms: 'rooms',
     room: 'room',
     owners: 'owners',
-    owner: 'owner'
+    owner: 'owner',
+    join_tokens: 'join_tokens',
+    join_token: 'join_token'
   };
   constructor() {
     this.DB.setSchema([
@@ -47,6 +49,13 @@ export class Database {
         singular: this.KEYS.owner,
         plural: this.KEYS.owners,
         documentType: this.KEYS.user
+      },
+      {
+        singular: this.KEYS.join_token,
+        plural: this.KEYS.join_tokens,
+        relations: {
+          room: { belongsTo: this.KEYS.room }
+        }
       }
     ]);
   }

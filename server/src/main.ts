@@ -1,18 +1,20 @@
-import { createServer } from 'http';
-import * as socketIO from 'socket.io';
-import { Env, Response } from './core';
-import { messageRepository, userRepository, roomRepository } from './database';
-import { UserConverter, MessageConverter, RoomConverter } from './converters';
-import { UserDTO, MessageDTO, MessageLiteDTO } from './dtos';
-import { Room, Message, MessageDOC, User, RoomDOC } from './entities';
+import { createServer } from 'http'
+import * as socketIO from 'socket.io'
+import * as UIDGenerator from 'uid-generator'
+import * as moment from 'moment'
+import { Env, Response } from './core'
+import { messageRepository, userRepository, roomRepository, joinTokenRepository } from './database'
+import { UserConverter, MessageConverter, RoomConverter, JoinTokenConverter } from './converters'
+import { UserDTO, MessageDTO, MessageLiteDTO } from './dtos'
+import { Room, Message, MessageDOC, User, RoomDOC, JoinToken } from './entities'
 
-const server = createServer();
-const io = socketIO(server);
-const _userConverter = new UserConverter();
-const _messageConverter = new MessageConverter();
-const _roomConverter = new RoomConverter();
-
-const ROOMS: Room[] = [];
+const server = createServer()
+const io = socketIO(server)
+const uidgen = new UIDGenerator()
+const _userConverter = new UserConverter()
+const _messageConverter = new MessageConverter()
+const _roomConverter = new RoomConverter()
+const _joinTokenConverter = new JoinTokenConverter()
 
 server.listen(Env.PORT, () => {
   console.log(`# Server is running: http://localhost:${Env.PORT}`);
@@ -130,6 +132,21 @@ io.on('connection', (socket) => {
       socket.emit('CREATE_ROOM_RESPONSE', Response.compose(data))
     })
   });
+
+  socket.on('GENERATE_JOIN_CODE', (roomId: string) => {
+    const genToken = uidgen.generateSync()
+    console.log('Generated token = ', genToken);
+    const token = new JoinToken()
+    token.token = genToken
+    token.room = roomId
+    // TODO: Check time zone
+    token.expireAt = moment(new Date()).add(10, 'minutes').toDate() // Token is valid 10 minutes
+    joinTokenRepository.store(token).then(doc => {
+      const data = _joinTokenConverter.toDTO(doc)
+      console.log('DTO token', data)
+      socket.emit('GENERATE_JOIN_CODE_RESPONSE', Response.compose(data))
+    })
+  })
 
   // TODO: Later
   // socket.on('JOIN_ROOM', (obj) => {
