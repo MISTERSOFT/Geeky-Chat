@@ -35,7 +35,7 @@
           <i class="mdi mdi-chevron-left"></i>
           Back
         </button>
-        <button class="btn btn-create" (click)="createRoom()">Create</button>
+        <button [disabled]="!roomName" class="btn btn-create" (click)="createRoom()">Create</button>
       </div>
     </div>
 
@@ -44,14 +44,14 @@
       <h3 class="slide-title">Let's join an existing room !</h3>
       <div class="slide-content">
         <p>Paste the invitation code given by your friend :)</p>
-        <input class="input-join" [(ngModel)]="invitationCode" type="text" placeholder="Invitation code">
+        <input class="input-join" [(ngModel)]="joinToken" type="text" placeholder="Invitation code">
       </div>
       <div class="slide-footer">
         <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
           <i class="mdi mdi-chevron-left"></i>
           Back
         </button>
-        <button class="btn btn-join">Join</button>
+        <button [disabled]="!joinToken" class="btn btn-join" (click)="joinRoom()">Join</button>
       </div>
     </div>
   <!-- </div> -->

@@ -21,7 +21,7 @@ export class RoomPopupComponent implements OnInit {
   @ViewChild('slideCreate') $slideCreate: ElementRef;
   @ViewChild('slideJoin') $slideJoin: ElementRef;
   roomName: string;
-  invitationCode: string;
+  joinToken: string;
   _SLIDE = SLIDE;
   private slideBy = 450;
   private slideDefaultLeftPosition = 0;
@@ -35,19 +35,6 @@ export class RoomPopupComponent implements OnInit {
   onClickOutside() {
     this.close();
   }
-  // @HostListener('click', ['$event'])
-  // onHostClicked(e: MouseEvent) {
-  //   // Prevent popup close when we click on container
-  //   console.log('click HOST ROOM POPUP');
-  //   e.stopPropagation();
-  // }
-  // @HostListener('window:click', ['$event']) onClickOutsidePopup(e) {
-  //   // Check if we have clicked in the add/join new room button
-  //   if (!e.target.classList.contains('button-new-room')) {
-  //     // Close the popup if we click outside of the container
-  //     this.close();
-  //   }
-  // }
   slideTo(goTo: SLIDE) {
     if (goTo === SLIDE.CREATE) {
       this.slide(this.$slideMenu.nativeElement, -this.slideBy);
@@ -70,14 +57,16 @@ export class RoomPopupComponent implements OnInit {
     this.core.createRoom(this.roomName, this.auth.getUser().id);
     this.close();
   }
-
+  joinRoom() {
+    this.core.joinRoom(this.joinToken);
+  }
   private slide(el, value) {
     this.renderer.setStyle(el, 'transform', 'translateX(' + value + 'px)');
   }
 
   private reset() {
     this.roomName = '';
-    this.invitationCode = '';
+    this.joinToken = '';
     this.slideTo(SLIDE.MENU);
   }
 

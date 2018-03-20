@@ -2,7 +2,7 @@ import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { WebSocketService } from './websocket.service';
 import { Observable } from 'rxjs/Observable';
-import { Response, Room } from '../shared/models';
+import { Response, Room, JoinToken } from '../shared/models';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators'
 import { Socket } from 'ng-socket-io';
@@ -28,17 +28,22 @@ export class CoreService extends WebSocketService {
       sub.unsubscribe();
     });
   }
-  generateJoinToken(roomId: string) {
+  generateJoinToken(roomId: string): Observable<Response<JoinToken>> {
     this.emit('GENERATE_JOIN_CODE', roomId);
     return this.waitResponse('GENERATE_JOIN_CODE_RESPONSE');
   }
-  joinRoom(roomName: string, userId: string) {
-    this.emit('JOIN_ROOM', { roomName, userId });
+  joinRoom(token: string) {
+    this.emit('JOIN_ROOM', token);
     const sub = this.waitResponse('JOIN_ROOM_RESPONSE').subscribe((response: Response<Room>) => {
-      this.rooms.push(response.data);
-      this.onRoomsChanged.next(this.rooms);
-      this.currentRoom = response.data;
-      this.onCurrentRoomChanged.next(response.data);
+      if (response.success) {
+        this.rooms.push(response.data);
+        this.onRoomsChanged.next(this.rooms);
+        this.currentRoom = response.data;
+        this.onCurrentRoomChanged.next(response.data);
+      } else {
+        // TODO: Display alert for error
+        console.log('JOINROOM(): ' + response.errors.join(' | '));
+      }
       sub.unsubscribe();
     });
   }

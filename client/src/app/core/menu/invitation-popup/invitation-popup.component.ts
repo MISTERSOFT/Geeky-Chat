@@ -11,6 +11,7 @@ import { CoreService } from '../../core.service';
 export class InvitationPopupComponent implements OnInit {
   @Input() visible;
   @Output() visibleChange = new EventEmitter<boolean>();
+  token: string;
   constructor(
     private core: CoreService,
     private shadow: ShadowService) { }
@@ -19,13 +20,14 @@ export class InvitationPopupComponent implements OnInit {
     this.close();
   }
   onGenerateCode() {
-    // TODO: Generate go later
     const currentRoomId = this.core.currentRoom.id;
-    this.core.generateJoinToken(currentRoomId).subscribe(response => {
-      console.log('response', response);
+    const sub = this.core.generateJoinToken(currentRoomId).subscribe(response => {
+      this.token = response.data.token;
+      sub.unsubscribe();
     });
   }
   private close() {
+    this.token = '';
     this.visibleChange.next(false);
     this.shadow.onShadowVisibilityChanged.next(false);
   }

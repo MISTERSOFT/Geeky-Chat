@@ -1,3 +1,5 @@
+@import 'assets/scss/_variables';
+
 * {
   margin: 0;
   padding: 0;
@@ -32,4 +34,9 @@ body {
 
 .clear-float {
   clear: both;
+}
+
+button[disabled] {
+  background: $app-color-disabled !important;
+  cursor: default !important;
 }

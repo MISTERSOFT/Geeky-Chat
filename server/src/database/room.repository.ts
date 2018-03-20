@@ -36,6 +36,11 @@ export class RoomRepository extends Database {
       room.name = roomDoc.name
       room.name_slug = roomDoc.name_slug
       room.owner = roomDoc.owner
+      docs.users.forEach((user: User) => {
+        if (roomDoc.users.findIndex(u => u === user.id) !== -1) {
+          room.users.push(user);
+        }
+      })
       return room
     })
   }

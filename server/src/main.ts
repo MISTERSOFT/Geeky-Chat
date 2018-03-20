@@ -87,35 +87,6 @@ io.on('connection', (socket) => {
       console.log('ROOMS', data);
       socket.emit('FETCH_ALL_USER_DATA_RESPONSE', Response.compose(data))
     });
-
-    // -- start test :: TODO: Remove ?
-    // const promises = [
-    //   messageRepository.getMessages(),
-    //   roomRepository.getAllForUser(userId)
-    // ];
-    // Promise.all(promises).then(response => {
-    //   console.log('promises', response);
-    //   const messages: Message[] = response[0];
-    //   const rooms: Room[] = response[1];
-    //   const messagesDto: MessageDTO[] = []
-    //   const userRoomsDto = [];
-    //   messages.forEach(msg => messagesDto.push(_messageConverter.toDTO(msg)));
-    //   rooms.forEach(room => userRoomsDto.push(_roomConverter.toDTO(room)));
-    //   socket.emit('FETCH_ALL_USER_DATA_RESPONSE', Response.compose(messages))
-    // })
-    // -- end test
-    // messageRepository.getMessages().then(response => {
-    //   console.log('Messages fetched', response)
-    //   const messages: MessageDTO[] = []
-    //   response.forEach(message => {
-    //     // messages.push(ModelBuilder.message.toDTO(message))
-    //     messages.push(_messageConverter.toDTO(message));
-    //   })
-    //   socket.emit('FETCH_ALL_MESSAGES_RESPONSE', Response.compose(messages))
-    // })
-    // roomRepository.getAllForUser(userId).then(result => {
-    //   console.log('all rooms for user', result)
-    // })
   })
 
   socket.on('CREATE_ROOM', (obj) => {
@@ -128,6 +99,7 @@ io.on('connection', (socket) => {
     console.log('room', room);
     roomRepository.store(room).then(result => {
       console.log('create room done, result:', result)
+      socket.join(result.name_slug)
       const data = _roomConverter.toDTO(result)
       socket.emit('CREATE_ROOM_RESPONSE', Response.compose(data))
     })
@@ -143,13 +115,32 @@ io.on('connection', (socket) => {
     token.expireAt = moment(new Date()).add(10, 'minutes').toDate() // Token is valid 10 minutes
     joinTokenRepository.store(token).then(doc => {
       const data = _joinTokenConverter.toDTO(doc)
-      console.log('DTO token', data)
       socket.emit('GENERATE_JOIN_CODE_RESPONSE', Response.compose(data))
     })
   })
 
   // TODO: Later
-  // socket.on('JOIN_ROOM', (obj) => {
-  // })
+  socket.on('JOIN_ROOM', (token: string) => {
+    joinTokenRepository.findByToken(token).then((tokenDoc) => {
+      if (!tokenDoc) {
+        socket.emit('JOIN_ROOM_RESPONSE', Response.compose({}, false, ['E_JOIN_TOKEN_INVALID']))
+        return null
+      }
+      // Check if the token expired, and also check if tokenDoc has been founded
+      const hasTokenNotExpired = new Date(tokenDoc.expireAt) > new Date()
+      console.log('has not expired', hasTokenNotExpired)
+      // TOKEN TEST : GCvepZqqkc8wVrUzLZjqsZ
+      if (hasTokenNotExpired) {
+        return roomRepository.getById(tokenDoc.room).then(room => {
+          socket.join(room.name_slug)
+          const data = _roomConverter.toDTO(room)
+          console.log('Token -> Room', data)
+          socket.emit('JOIN_ROOM_RESPONSE', Response.compose(data))
+        })
+      } else {
+        socket.emit('JOIN_ROOM_RESPONSE', Response.compose({}, false, ['E_JOIN_TOKEN_EXPIRED']))
+      }
+    })
+  })
 
 })

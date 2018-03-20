@@ -5,16 +5,15 @@ class JoinTokenRepository extends Database {
     super();
   }
   store(token: JoinToken): Promise<JoinToken> {
-    return this.DB.rel.save(this.KEYS.join_token, token).then(docs => {
-      return docs.join_tokens
+    return this.DB.rel.save(this.KEYS.join_token, token)
+    .then(docs => {
+      return docs.join_tokens[0]
     })
   }
-  findByToken(token: string) {
-    const opts = {
-      selector: { token: token }
-    }
-    this.DB.find(opts).then((docs) => {
-      console.log('tokens docs', docs)
+  findByToken(token: string): Promise<JoinToken> {
+    return this.DB.rel.find(this.KEYS.join_token)
+    .then((docs) => {
+      return docs.join_tokens.find((t: JoinToken) => t.token === token)
     })
   }
 }

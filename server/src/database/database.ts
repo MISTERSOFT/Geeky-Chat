@@ -1,6 +1,8 @@
 import * as PouchDB from 'pouchdb';
+import * as PouchDBFind from 'pouchdb-find';
 import * as RelationalPouch from 'relational-pouch';
 PouchDB.plugin(RelationalPouch);
+PouchDB.plugin(PouchDBFind);
 import { Message, User } from '../entities';
 
 export class Database {

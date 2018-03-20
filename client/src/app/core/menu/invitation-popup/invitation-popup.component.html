@@ -1,12 +1,12 @@
 <app-popup *ngIf="visible" (clickOutside)="onClickOutside()">
   <h3 class="popup-title">Invite friends</h3>
   <div class="popup-content">
-    <p>Share the generated code to your friends to allow them to join your channel ! :)</p>
+    <p>Share the given code to your friends to allow them to join your channel ! :)</p>
     <div class="generated-code">
-     4FCD65422df
+      {{ token }}
     </div>
   </div>
   <div class="popup-footer">
-    <button (click)="onGenerateCode()">Create invitation code</button>
+    <button [disabled]="token" (click)="onGenerateCode()">Create invitation code</button>
   </div>
 </app-popup>
