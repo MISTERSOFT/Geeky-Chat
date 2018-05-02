@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
 import { Router } from '@angular/router';
@@ -8,8 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, DoCheck {
   form: FormGroup;
+  disableButton = false;
+  dataSent = false;
 
   constructor(
     private fb: FormBuilder,
@@ -23,9 +25,13 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  ngDoCheck() {
+    this.disableButton = !this.form.valid;
+  }
   onSignin(e) {
     if (this.form.valid) {
+      this.disableButton = true;
+      this.dataSent = true;
       const user = this.form.value;
       const subscribe = this.auth.signin(user).subscribe(data => {
         subscribe.unsubscribe();

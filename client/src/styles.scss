@@ -1,4 +1,5 @@
 @import 'assets/scss/_variables';
+@import 'assets/scss/_animations';
 
 * {
   margin: 0;
@@ -39,4 +40,11 @@ body {
 button[disabled] {
   background: $app-color-disabled !important;
   cursor: default !important;
+}
+
+.mdi-loading {
+  display: inline-block;
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
 }

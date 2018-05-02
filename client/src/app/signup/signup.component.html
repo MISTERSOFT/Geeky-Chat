@@ -9,7 +9,11 @@
     <input formControlName="username" type="text" id="username" autocomplete="off">
     <div class="row">
       <div class="col-xs-12">
-        <button type="submit" [style.opacity]="form.valid ? 1 : 0">Let's go !</button>
+          <!-- [style.opacity]="form.valid ? 1 : 0" -->
+        <button type="submit" [disabled]="disableButton">
+          <span *ngIf="!dataSent">Register</span>
+          <i *ngIf="dataSent" class="mdi mdi-loading"></i>
+        </button>
       </div>
     </div>
     <div class="links">
