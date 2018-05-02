@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, Input, DoCheck } from '@angular/core';
 import { MessageSent, Message } from '../../shared/models';
 import { AuthService } from '../../core/auth.service';
 import { ChatService } from './../chat.service';
@@ -9,18 +9,23 @@ import { ChatService } from './../chat.service';
   styleUrls: ['input.component.scss']
 })
 
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, DoCheck {
   @Input() roomId: string;
   @Output() onMessageSent: EventEmitter<Message> = new EventEmitter<Message>();
   text: string = ''; // Message to send
+  charsLimit = 5000;
+  charsCount = 5000;
 
   constructor(
     private auth: AuthService,
     private chat: ChatService) { }
 
   ngOnInit() { }
-
+  ngDoCheck() {
+    this.charsCount = this.charsLimit - this.text.length;
+  }
   onKeyPress(e) {
+    console.log('e', e);
     // If "Enter" has been pressed
     if (e.keyCode === 13 && !e.shiftKey) {
       setTimeout(() => {

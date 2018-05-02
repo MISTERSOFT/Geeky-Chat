@@ -13,9 +13,10 @@
 <div class="inputs-container">
   <div class="inputs">
     <div class="textarea">
-      <textarea placeholder="Message..." [(ngModel)]="text" (keypress)="onKeyPress($event)"></textarea>
+      <textarea placeholder="Message..." [(ngModel)]="text" (keypress)="onKeyPress($event)" [maxlength]="charsLimit"></textarea>
     </div>
     <div class="buttons-container">
+      <span class="chars-limit">{{ charsCount }}</span>
       <button appEmojiTriggerer>😄</button>
     </div>
   </div>

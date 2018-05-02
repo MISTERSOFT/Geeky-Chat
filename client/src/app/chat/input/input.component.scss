@@ -19,7 +19,7 @@
     & .textarea {
       position: absolute;
       left: 0;
-      right: 45px;
+      right: 80px;
       top: 0;
       bottom: 0;
       & textarea {
@@ -37,11 +37,16 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: 45px;
+      width: 80px;
       bottom: 0;
       line-height: 30px;
       box-sizing: border-box;
       padding: 0 5px;
+      & .chars-limit {
+        font-size: 12px;
+        margin-right: 5px;
+        color: $app-color-neutral;
+      }
       & button {
         background: none;
         border: none;
