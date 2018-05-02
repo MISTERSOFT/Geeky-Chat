@@ -1,20 +1,18 @@
-import { Database } from './database';
-import { JoinToken, JoinTokenDOC } from '../entities';
-class JoinTokenRepository extends Database {
-  constructor() {
-    super();
+import { database } from './database';
+// import { JoinRoomToken, JoinTokenDOC } from '../entities';
+class JoinTokenRepository {
+  constructor() { }
+  store(token: any) { //: Promise<JoinToken> {
+    // return this.DB.rel.save(this.KEYS.join_token, token)
+    // .then(docs => {
+    //   return docs.join_tokens[0]
+    // })
   }
-  store(token: JoinToken): Promise<JoinToken> {
-    return this.DB.rel.save(this.KEYS.join_token, token)
-    .then(docs => {
-      return docs.join_tokens[0]
-    })
-  }
-  findByToken(token: string): Promise<JoinToken> {
-    return this.DB.rel.find(this.KEYS.join_token)
-    .then((docs) => {
-      return docs.join_tokens.find((t: JoinToken) => t.token === token)
-    })
+  findByToken(token: string) { // : Promise<JoinToken> {
+    // return this.DB.rel.find(this.KEYS.join_token)
+    // .then((docs) => {
+    //   return docs.join_tokens.find((t: JoinToken) => t.token === token)
+    // })
   }
 }
 

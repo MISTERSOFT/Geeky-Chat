@@ -2,13 +2,14 @@ import { UserDTO } from "./user.dto";
 
 export class MessageDTO {
   id: string;
-  createdAt: Date;
+  created_at: Date;
   text: string;
   user: UserDTO;
+  room_id: string;
 }
 
 export class MessageLiteDTO {
-  createdAt: Date;
+  created_at: Date;
   text: string;
   userId: string;
   roomId: string;

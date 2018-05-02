@@ -2,7 +2,7 @@
   <div class="message" >
     <div class="from">
       {{ message.user.username }}
-      <span class="date">─ {{ message.createdAt | humanize }}</span>
+      <span class="date">─ {{ message.created_at | humanize }}</span>
     </div>
     <div class="text" [innerHtml]="formatWithBreakLine(message.text)"></div>
   </div>

@@ -58,7 +58,9 @@ export class RoomPopupComponent implements OnInit {
     this.close();
   }
   joinRoom() {
-    this.core.joinRoom(this.joinToken);
+    const sub = this.core.joinRoom({userId: this.auth.getUser().id, token: this.joinToken}).subscribe(() => {
+      sub.unsubscribe();
+    });
   }
   private slide(el, value) {
     this.renderer.setStyle(el, 'transform', 'translateX(' + value + 'px)');

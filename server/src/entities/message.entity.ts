@@ -1,14 +1,16 @@
 import { Room, User } from '.';
-export class Message {
-  id: string;
-  createdAt: Date;
+export class MessageDOC {
+  _id: string;
+  _rev: string;
+  doc_type = 'message';
+  created_at: Date;
   text: string;
-  user: User;
-  room: Room;
+  user_id: string;
+  room_id: string;
   constructor(data?) {
     if (data) {
       for (const key in data) {
-        if (this.hasOwnProperty(key)) {
+        if (data.hasOwnProperty(key)) {
           this[key] = data[key];
         }
       }
@@ -16,19 +18,20 @@ export class Message {
   }
 }
 
-export class MessageDOC {
-  id: string;
-  createdAt: Date;
+export interface Message {
+  _id: string;
+  _rev: string;
+  created_at: Date;
   text: string;
-  user: string;
-  room: string;
-  constructor(data?) {
-    if (data) {
-      for (const key in data) {
-        if (this.hasOwnProperty(key)) {
-          this[key] = data[key];
-        }
-      }
-    }
-  }
+  user: User;
+  room_id: string;
+  // constructor(data?) {
+  //   if (data) {
+  //     for (const key in data) {
+  //       if (this.hasOwnProperty(key)) {
+  //         this[key] = data[key];
+  //       }
+  //     }
+  //   }
+  // }
 }

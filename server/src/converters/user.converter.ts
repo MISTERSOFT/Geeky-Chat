@@ -16,7 +16,7 @@ export class UserConverter {
 
     const target = new UserDTO();
     target.email = source.email;
-    target.id = source.id;
+    target.id = source._id;
     target.username = source.username;
 
     return target;

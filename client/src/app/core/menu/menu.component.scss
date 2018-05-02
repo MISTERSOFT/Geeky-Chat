@@ -124,7 +124,12 @@ nav {
     }
 
     & .room-users {
-      height: 100%;
+      // height: 100%;
+      position: absolute;
+      top: 90px;
+      bottom: 50px;
+      left: 0;
+      right: 0;
 
       & .room-user {
         padding: 5px 15px;
@@ -141,6 +146,14 @@ nav {
           margin-right: 5px;
         }
       }
+    }
+
+    & .channel-info {
+      position: absolute;
+      height: 50px;
+      left: 0;
+      bottom: 0;
+      right: 0;
     }
   }
 }

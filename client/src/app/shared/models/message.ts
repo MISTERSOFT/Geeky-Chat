@@ -1,7 +1,7 @@
 import { User } from ".";
 
 export interface Message {
-  createdAt: Date;
+  created_at: Date;
   text: string;
   user: User;
   isMine: boolean;

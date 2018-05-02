@@ -54,4 +54,8 @@ export class MenuComponent implements OnInit {
     // this.core.onCurrentRoomChanged.next(room);
     this.core.changeRoom(room);
   }
+
+  debug() {
+    this.core.loadServerInfo();
+  }
 }

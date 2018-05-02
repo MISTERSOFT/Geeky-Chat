@@ -20,11 +20,12 @@ export class ChatService extends WebSocketService {
   }
 
   listenEmittedMessages(): Observable<Message> {
-    return this.fromEvent('BROADCAST_SEND_MESSAGE').pipe(
-      map((response: Response<Message>) => {
-        console.log('response broadcast', response);
-        return response.success ? response.data : null;
-      })
-    );
+    return this.waitResponse('BROADCAST_SEND_MESSAGE');
+    // .pipe(
+    //   map((response: Response<Message>) => {
+    //     console.log('response broadcast', response);
+    //     return response.success ? response.data : null;
+    //   })
+    // );
   }
 }

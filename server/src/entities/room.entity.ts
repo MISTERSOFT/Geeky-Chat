@@ -1,15 +1,17 @@
 import { User, Message } from '.';
 export class Room {
-  id: string;
+  _id: string;
+  _rev: string;
+  doc_type = 'room';
   name: string;
-  name_slug: string;
   owner: string; // User
-  users: User[] = []; // User
-  messages: Message[] = []; // Message
+  // users: User[] = []; // User
+  // messages: Message[] = []; // Message
+  join_tokens: JoinToken[] = [];
   constructor(data?) {
     if (data) {
       for (const key in data) {
-        if (this.hasOwnProperty(key)) {
+        if (data.hasOwnProperty(key)) {
           this[key] = data[key];
         }
       }
@@ -17,20 +19,26 @@ export class Room {
   }
 }
 
-export class RoomDOC {
-  id: string;
+export interface RoomDOC {
+  _id: string;
+  _rev: string;
   name: string;
-  name_slug: string;
   owner: string; // User
-  users: string[] = []; // User
-  messages: string[] = []; // Message
-  constructor(data?) {
-    if (data) {
-      for (const key in data) {
-        if (this.hasOwnProperty(key)) {
-          this[key] = data[key];
-        }
-      }
-    }
-  }
+  // users: string[]; // User
+  // messages: string[]; // Message
+  join_tokens: JoinToken[];
+  // constructor(data?) {
+  //   if (data) {
+  //     for (const key in data) {
+  //       if (this.hasOwnProperty(key)) {
+  //         this[key] = data[key];
+  //       }
+  //     }
+  //   }
+  // }
+}
+
+export interface JoinToken {
+  expireAt: Date;
+  token: string;
 }

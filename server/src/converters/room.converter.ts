@@ -9,9 +9,9 @@ export class RoomConverter {
     if (!source) return null;
 
     const target = new Room();
-    target.id = source.id;
+    target._id = source.id;
     target.name = source.name;
-    target.name_slug = source.name_slug;
+    // target.name_slug = source.name_slug;
     target.owner = source.owner;
 
     return target;
@@ -20,12 +20,12 @@ export class RoomConverter {
     if (!source) return null;
 
     const target = new RoomDTO();
-    target.id = source.id;
+    target.id = source._id;
     target.name = source.name;
     // target.name_slug = source.name_slug;
     target.owner = source.owner;
-    target.messages = this._messageConverter.toDTOs(<Message[]>source.messages);
-    target.users = this._userConverter.toDTOs(<User[]>source.users);
+    // target.messages = this._messageConverter.toDTOs(<Message[]>source.messages);
+    // target.users = this._userConverter.toDTOs(<User[]>source.users);
 
     return target;
   }

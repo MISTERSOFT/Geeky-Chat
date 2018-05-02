@@ -7,10 +7,10 @@ export class MessageConverter {
     if (!source) return null;
 
     const target = new MessageDOC();
-    target.createdAt = source.createdAt;
+    target.created_at = source.created_at;
     target.text = source.text;
-    target.user = source.userId;
-    target.room = source.roomId;
+    target.user_id = source.userId;
+    target.room_id = source.roomId;
 
     return target;
   }
@@ -18,9 +18,10 @@ export class MessageConverter {
     if (!source) return null;
 
     const target = new MessageDTO();
-    target.createdAt = source.createdAt;
+    target.created_at = source.created_at;
     target.text = source.text;
     target.user = this._userConverter.toDTO(source.user);
+    target.room_id = source.room_id
 
     return target;
   }

@@ -20,7 +20,7 @@ export class ChatComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.core.loadData().subscribe();
+    this.core.loadUserRooms().subscribe();
     this.core.onCurrentRoomChanged.subscribe(room => this.room = room);
     // Store message history and sort all message by date asc
     // this.messages = response.data.sort((a, b) => {
@@ -29,14 +29,17 @@ export class ChatComponent implements OnInit {
     //   return (msgA === msgB) ? 0 : (msgA < msgB) ? -1 : 1;
     // });
 
-    // this.chat.on('BROADCAST_SEND_MESSAGE', (message) => {
-    //   console.log('BROADCAST_SEND_MESSAGE', message);
-    //   this.room.messages.push(message);
+    // this.chat.on('BROADCAST_SEND_MESSAGE', (response) => {
+    //   console.log('BROADCAST_SEND_MESSAGE', response);
+    //   this.room.messages.push(response.data);
     // });
-    this.chat.listenEmittedMessages().subscribe((message) => {
+    this.core.listenBroadcastedMessages().subscribe((message) => {
       console.log('BROADCAST_SEND_MESSAGE', message);
-      this.room.messages.push(message);
+      if (message) {
+        this.room.messages.push(message);
+      }
     });
+    this.core.listenJoiningUser();
   }
 
   onMessageSent(message) {
