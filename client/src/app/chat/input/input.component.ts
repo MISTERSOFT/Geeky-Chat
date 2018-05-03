@@ -25,7 +25,6 @@ export class InputComponent implements OnInit, DoCheck {
     this.charsCount = this.charsLimit - this.text.length;
   }
   onKeyPress(e) {
-    console.log('e', e);
     // If "Enter" has been pressed
     if (e.keyCode === 13 && !e.shiftKey) {
       setTimeout(() => {
