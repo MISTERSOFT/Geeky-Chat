@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { SocketIoModule } from 'ng-socket-io';
 import { WebStorageModule } from 'ngx-store';
 
@@ -18,6 +19,7 @@ import { TranslateService } from './translate.service';
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     SocketIoModule,
     FormsModule,

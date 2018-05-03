@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: 'signin', loadChildren: 'app/signin/signin.module#SigninModule' },
   { path: 'signup', loadChildren: 'app/signup/signup.module#SignupModule' },
   { path: 'chat', loadChildren: 'app/chat/chat.module#ChatModule', canLoad: [AuthGuard] },
+  { path: 'options', loadChildren: 'app/options/options.module#OptionsModule', canLoad: [AuthGuard] },
   { path: '', redirectTo: 'signin', pathMatch: 'full' },
 ];
 

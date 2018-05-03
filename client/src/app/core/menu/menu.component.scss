@@ -136,6 +136,10 @@ nav {
         color: #fff;
         font-size: 14px;
         line-height: 14px;
+        &:hover {
+          background: $app-color-04;
+          cursor: pointer;
+        }
 
         & .status {
           display: inline-block;
