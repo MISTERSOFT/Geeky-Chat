@@ -14,10 +14,11 @@ export class CoreService extends WebSocketService {
   currentRoom: Room;
   onRoomsChanged = new Subject<Room[]>();
   onCurrentRoomChanged = new Subject<Room>();
+  showMenu = new Subject<boolean>();
   constructor(private auth: AuthService) {
     super();
-    this.onRoomsChanged.next(null);
-    this.onCurrentRoomChanged.next(null);
+    // this.onRoomsChanged.next(null);
+    // this.onCurrentRoomChanged.next(null);
   }
   createRoom(roomName: string, userId: string) {
     this.emit('CREATE_ROOM', { roomName, userId });
@@ -85,7 +86,7 @@ export class CoreService extends WebSocketService {
   }
   // Response<Room[]>
   loadUserRooms(): Observable<any> {
-    this.emit('FETCH_USER_ROOMS', this.auth.getUser().id);
+    this.emit('FETCH_USER_ROOMS', this.auth.user.id);
     return this.waitResponse('FETCH_USER_ROOMS_RESPONSE')
       .pipe(
         tap((response: Response<Room[]>) => {
@@ -132,7 +133,7 @@ export class CoreService extends WebSocketService {
               }
             })
         )
-      })
+      });
   }
   loadRoomUsers(roomId: string) {
     this.emit('FETCH_ROOM_USERS', roomId);
@@ -145,7 +146,8 @@ export class CoreService extends WebSocketService {
   private loadUsersAndMessages() {
     // TODO: For refactor flatMap method
   }
-  changeRoom(room: Room) {
+  changeRoom(roomId: string) {
+    const room = this.rooms.find(r => r.id === roomId);
     this.currentRoom = room;
     this.onCurrentRoomChanged.next(room);
   }

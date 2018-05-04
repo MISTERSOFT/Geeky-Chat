@@ -22,12 +22,12 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "core-js": "^2.4.1",
-    "flexboxgrid": "^6.3.1",
     "javascript-time-ago": "^1.0.30",
     "mdi": "^2.1.99",
     "ng-socket-io": "^0.2.4",
     "ngx-store": "^1.4.1",
     "rxjs": "^5.5.6",
+    "spectre.css": "^0.5.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

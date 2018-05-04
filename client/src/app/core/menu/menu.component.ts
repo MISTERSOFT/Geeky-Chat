@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import { User, Room } from '../../shared/models';
 import { AuthService } from '../auth.service';
 import { ShadowService } from '../shadow/shadow.service';
@@ -14,22 +16,28 @@ export class MenuComponent implements OnInit {
   rooms: Room[];
   currentRoom: Room;
   user: User;
+  showMenu = false;
   showMore = false;
   showRoomPopup = false;
   showInvitationPopup = false;
 
   constructor(
+    private router: Router,
     private core: CoreService,
     private auth: AuthService,
     private shadow: ShadowService) { }
 
   ngOnInit() {
+    this.core.showMenu.subscribe(show => this.showMenu = show);
     this.core.onRoomsChanged.subscribe(rooms => {
       this.rooms = rooms;
       console.log('menu rooms', rooms);
     });
-    this.core.onCurrentRoomChanged.subscribe(curr => this.currentRoom = curr);
-    this.user = this.auth.getUser();
+    this.core.onCurrentRoomChanged.subscribe(curr => {
+      console.log('Menu: current room changed', curr.id);
+      this.currentRoom = curr;
+    });
+    this.auth.userObs.subscribe(user => this.user = user);
   }
 
   toggleShowMore() {
@@ -50,9 +58,10 @@ export class MenuComponent implements OnInit {
     return room.id === this.currentRoom.id;
   }
 
-  onSelectRoom(room) {
+  onSelectRoom(roomId) {
     // this.core.onCurrentRoomChanged.next(room);
-    this.core.changeRoom(room);
+    // this.core.changeRoom(room);
+    this.router.navigate(['chat', roomId]);
   }
 
   debug() {

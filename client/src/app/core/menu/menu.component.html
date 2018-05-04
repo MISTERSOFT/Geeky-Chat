@@ -1,4 +1,4 @@
-<nav>
+<nav *ngIf="showMenu">
   <div class="rooms">
     <div class="room new button-new-room" (click)="openRoomPopup()">
       <div class="room-name">
@@ -8,7 +8,7 @@
     <div class="room"
       *ngFor="let room of rooms"
       [ngClass]="{ 'current-room': isCurrentRoom(room) }"
-      (click)="onSelectRoom(room)">
+      (click)="onSelectRoom(room.id)">
       <div class="room-name">{{ room.name | slice:0:1 }}</div>
     </div>
   </div>
@@ -18,7 +18,7 @@
         <i class="mdi mdi-settings mdi-18px"></i>
       </a>
       <span class="username">
-        {{ user.username }}
+        {{ user?.username }}
         <i class="mdi mdi-chevron-down" (click)="toggleShowMore()"></i>
         <ul class="user-profile-more" [ngClass]="{ 'hidden': !showMore }">
           <li>Item 1</li>

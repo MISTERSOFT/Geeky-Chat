@@ -54,11 +54,11 @@ export class RoomPopupComponent implements OnInit {
     this.currentSlide = goTo;
   }
   createRoom() {
-    this.core.createRoom(this.roomName, this.auth.getUser().id);
+    this.core.createRoom(this.roomName, this.auth.user.id);
     this.close();
   }
   joinRoom() {
-    const sub = this.core.joinRoom({userId: this.auth.getUser().id, token: this.joinToken}).subscribe(() => {
+    const sub = this.core.joinRoom({userId: this.auth.user.id, token: this.joinToken}).subscribe(() => {
       sub.unsubscribe();
     });
   }

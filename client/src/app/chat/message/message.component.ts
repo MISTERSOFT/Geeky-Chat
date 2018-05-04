@@ -13,7 +13,7 @@ export class MessageComponent implements OnChanges {
   constructor(private auth: AuthService) { }
 
   ngOnChanges(changes) {
-    this.message.isMine = this.auth.getUser().id === this.message.user.id;
+    this.message.isMine = this.auth.user.id === this.message.user.id;
   }
 
   formatWithBreakLine(value: string) {

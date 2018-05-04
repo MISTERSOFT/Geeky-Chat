@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/auth.service';
+import { CoreService } from './core/core.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,11 @@ import { AuthService } from './core/auth.service';
 })
 export class AppComponent implements OnInit {
   showMenu = false;
-  constructor(private auth: AuthService) { }
+  constructor(
+    private core: CoreService,
+    private auth: AuthService) { }
   ngOnInit() {
-    this.auth.isAuthentificated.subscribe(isAuth => this.showMenu = isAuth);
+    // this.core.showMenu.subscribe(show => this.showMenu = show);
+    this.auth.isAuthentificated.subscribe(isAuth => this.core.showMenu.next(isAuth));
   }
 }

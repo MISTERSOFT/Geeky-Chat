@@ -8,7 +8,8 @@ import { WebSocketService } from './websocket.service';
 
 @Injectable()
 export class AuthService extends WebSocketService {
-  private user: User;
+  private _user: User;
+  userObs = new Subject<User>();
   isAuthentificated: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
@@ -16,8 +17,8 @@ export class AuthService extends WebSocketService {
     this.isAuthentificated.next(false);
   }
 
-  getUser() {
-    return this.user;
+  get user() {
+    return this._user;
   }
 
   signup(user) {
@@ -30,7 +31,8 @@ export class AuthService extends WebSocketService {
     return this.waitResponse('SIGNIN_RESPONSE').pipe(
       tap((response: Response<User>) => {
         if (response.success) {
-          this.user = response.data;
+          this._user = response.data;
+          this.userObs.next(this._user);
           this.isAuthentificated.next(true);
         }
       })
@@ -38,7 +40,7 @@ export class AuthService extends WebSocketService {
   }
 
   isAuth() {
-    console.log('isAuth', this.user);
-    return (this.user === null || this.user === undefined) ? false : true;
+    console.log('isAuth', this._user);
+    return (this._user === null || this._user === undefined) ? false : true;
   }
 }

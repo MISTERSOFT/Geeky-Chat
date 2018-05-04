@@ -40,7 +40,7 @@ export class InputComponent implements OnInit, DoCheck {
       this.text = '';
       const message: MessageSent = {
         text: copy,
-        userId: this.auth.getUser().id,
+        userId: this.auth.user.id,
         roomId: this.roomId
       };
       console.log('Send message...', message);
