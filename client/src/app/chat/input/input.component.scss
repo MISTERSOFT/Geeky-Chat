@@ -5,7 +5,7 @@
   left: 250px;
   right: 0;
   bottom: 0;
-  height: 50px;
+  height: 60px;
   background: $app-color-03;
   & .inputs {
     position: absolute;
@@ -39,7 +39,7 @@
       right: 0;
       width: 80px;
       bottom: 0;
-      line-height: 30px;
+      line-height: 40px;
       box-sizing: border-box;
       padding: 0 5px;
       & .chars-limit {

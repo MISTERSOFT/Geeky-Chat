@@ -19,9 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "styles.scss",
         "../node_modules/spectre.css/src/spectre.scss",
-        "../node_modules/mdi/scss/materialdesignicons.scss",
-        "styles.scss"
+        "../node_modules/mdi/scss/materialdesignicons.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

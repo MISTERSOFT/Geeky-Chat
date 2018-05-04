@@ -2,7 +2,7 @@
 
 .emoji-container {
   position: absolute;
-  height: 250px;
+  height: 260px;
   width: 320px;
   padding: 10px;
   background: #fff;
@@ -27,15 +27,15 @@
   & .search-emoji {
     padding-bottom: 10px;
     border-bottom: 1px solid darkgrey;
-    & input {
-      height: 24px;
-      outline: none;
-      border-radius: 3px;
-      width: 100%;
-      border: 1px solid darkgrey;
-      box-sizing: border-box;
-      padding: 3px;
-    }
+    // & input {
+    //   height: 24px;
+    //   outline: none;
+    //   border-radius: 3px;
+    //   width: 100%;
+    //   border: 1px solid darkgrey;
+    //   box-sizing: border-box;
+    //   padding: 3px;
+    // }
   }
   & .emojis {
     height: 184px;
