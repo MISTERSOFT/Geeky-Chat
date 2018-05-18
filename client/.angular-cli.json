@@ -21,9 +21,12 @@
       "styles": [
         "styles.scss",
         "../node_modules/spectre.css/src/spectre.scss",
-        "../node_modules/mdi/scss/materialdesignicons.scss"
+        "../node_modules/mdi/scss/materialdesignicons.scss",
+        "../node_modules/cropperjs/dist/cropper.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/cropperjs/dist/cropper.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

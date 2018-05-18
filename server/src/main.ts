@@ -190,4 +190,27 @@ io.on('connection', (socket) => {
     // })
   })
 
+  socket.on('UPDATE_USER', (_user: UserDTO) => {
+    if (!_user || !_user.id) {
+      socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+      return;
+    }
+    userRepository.getById(_user.id).then(user => {
+      const entity = _userConverter.toEntity(_user)
+      user.email = _user.email;
+      user.avatar = _user.avatar;
+      user.username = _user.username;
+      // console.log('user', user);
+      // console.log('_user', _user);
+      userRepository.update(user).then((isOK) => {
+        if (isOK) {
+          socket.emit('UPDATE_USER_RESPONSE', Response.compose())
+        } else {
+          socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+        }
+      });
+    })
+
+  })
+
 })

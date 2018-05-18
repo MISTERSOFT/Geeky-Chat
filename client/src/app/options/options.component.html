@@ -1,6 +1,37 @@
 <main>
-  <p>
-    options works!
-    <button (click)="back()">Back</button>
-  </p>
+  <div class="container">
+    <div class="columns">
+      <div class="column col-3">
+        <button class="btn btn-link" (click)="back()">
+          <i class="mdi mdi-arrow-left mdi-36px"></i>
+        </button>
+        <ul class="nav">
+          <li class="nav-item active">
+            <a href="#">Profile</a>
+            <ul class="nav">
+              <li class="nav-item active">
+                <a href="#">Details</a>
+              </li>
+              <li class="nav-item">
+                <a href="#">Change password</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#">Lorem ipsum</a>
+          </li>
+          <li class="nav-item">
+            <a href="#">Lorem ipsum</a>
+          </li>
+          <li class="nav-item">
+            <a href="#">Lorem ipsum</a>
+          </li>
+        </ul>
+      </div>
+      <div class="column col-9">
+        <ng-template appToast></ng-template>
+        <app-profile [toastContainer]="toastContainer"></app-profile>
+      </div>
+    </div>
+  </div>
 </main>

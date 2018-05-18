@@ -8,6 +8,7 @@ export class UserConverter {
     target.email = source.email;
     target.password = source.password;
     target.username = source.username;
+    target.avatar = source.avatar;
 
     return target;
   }
@@ -18,6 +19,7 @@ export class UserConverter {
     target.email = source.email;
     target.id = source._id;
     target.username = source.username;
+    target.avatar = source.avatar;
 
     return target;
   }

@@ -64,6 +64,10 @@ export class UserRepository {
     // });
   }
 
+  update(user: User): Promise<boolean> {
+    return database.INSTANCE.update(Env.DATABASE_NAME, user).then(response => response.data.ok);
+  }
+
   // ! TODO: MAYBE REMOVE THIS BECAUSE NO NEED WITH COUCHDB
   getUsersByRoom(roomId: string) {
     return Promise.all([

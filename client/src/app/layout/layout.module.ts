@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { PopupComponent } from './popup/popup.component';
 
@@ -6,11 +6,10 @@ import { PopupComponent } from './popup/popup.component';
 @NgModule({
   imports: [],
   exports: [
-    PopupComponent
+    PopupComponent,
   ],
   declarations: [
     PopupComponent
-  ],
-  providers: [],
+  ]
 })
 export class LayoutModule { }

@@ -5,6 +5,7 @@ export class User {
   email: string;
   password: string;
   username: string;
+  avatar: string;
   constructor(data?) {
     if (data) {
       for (const key in data) {

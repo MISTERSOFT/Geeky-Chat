@@ -25,7 +25,6 @@ export class SignupComponent implements DoCheck {
     });
   }
   ngDoCheck() {
-    console.log('DoCheck');
     this.disableButton = !this.form.valid
   }
 

@@ -1,0 +1,42 @@
+.pseudo-element {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: 300ms;
+}
+
+.avatar-container {
+  position: relative;
+  margin-top: 10px;
+  height: 150px;
+  width: 150px;
+  user-select: none;
+  input[type=file] {
+    display: none;
+  }
+  &:before {
+    content: '';
+    @extend .pseudo-element;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  &:after {
+    font-family: 'Material Design Icons';
+    content: '\F552';
+    @extend .pseudo-element;
+    font-size: 125px;
+    color: #5451d8;
+    text-align: center;
+    cursor: pointer;
+    transform: translateY(-10%);
+  }
+  &:hover::before, &:hover::after {
+    opacity: 1;
+  }
+  & img {
+    height: 100%;
+    width: 100%;
+  }
+}
