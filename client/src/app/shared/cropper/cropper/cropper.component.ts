@@ -14,25 +14,25 @@ export class CropperComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   cropper: Cropper;
 
   constructor() { }
+
   ngOnInit() { }
+
   ngOnDestroy() {
     this.cropper.destroy();
     this.cropper = null;
   }
+
   ngOnChanges(changes) {
     if (changes.image && !changes.image.firstChange && changes.image.currentValue) {
-      console.log('ngOnChanges');
       const image = changes.image.currentValue;
-      this.cropper.destroy().replace(image).crop();
-      // this.cropper.replace(image);
-      // .reset();
-      // console.log('cropped canvas', this.cropper.getCroppedCanvas());
-      // this.onCropEnd();
+      this.cropper.replace(image);
     }
   }
+
   ngAfterViewInit() {
     this.initCropper();
   }
+
   private initCropper() {
     const opts: Cropper.Options = {
       aspectRatio: 1,
@@ -44,12 +44,24 @@ export class CropperComponent implements OnInit, OnChanges, AfterViewInit, OnDes
       minContainerWidth: 576,
       minCanvasHeight: 300,
       minCanvasWidth: 576,
+      ready: this.onReady.bind(this),
       cropend: this.onCropEnd.bind(this)
     };
     this.cropper = new Cropper(this.imageElement.nativeElement, opts);
   }
+
+  /**
+   * Triggered when Cropper is ready.
+   */
+  private onReady() {
+    this.convertImage();
+  }
+
   private onCropEnd() {
-    console.log('onCropEnd');
+    this.convertImage();
+  }
+
+  private convertImage() {
     this.cropper.getCroppedCanvas().toBlob(blob => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
