@@ -17,5 +17,6 @@ main {
   background: #fff;
   overflow-y: scroll;
   overflow-x: hidden;
+  padding: 0 10px;
   @include scroll-bar-stylizer();
 }

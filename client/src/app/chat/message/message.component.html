@@ -1,9 +1,24 @@
-<div class="message-container" [ngClass]="{ 'is-mine': message.isMine }">
-  <div class="message" >
+<!-- <div class="message-container" [ngClass]="{ 'is-mine': message.isMine }">
+  <figure class="avatar avatar-xl" [attr.data-initial]="'YZ'" style="background-color: #5755d9;">
+    <img *ngIf="message.user.avatar" [src]="message.user.avatar">
+  </figure>
+  <div class="message">
     <div class="from">
       {{ message.user.username }}
       <span class="date">─ {{ message.created_at | humanize }}</span>
     </div>
     <div class="text" [innerHtml]="formatWithBreakLine(message.text)"></div>
+  </div>
+</div> -->
+
+<div class="tile">
+  <div class="tile-icon">
+    <figure class="avatar avatar-lg" [attr.data-initial]="message.user.username | slice:0:1" style="background-color: #5755d9;">
+      <img *ngIf="message.user.avatar" [src]="message.user.avatar">
+    </figure>
+  </div>
+  <div class="tile-content">
+    <p class="tile-title text-gray">{{ message.user.username }} ─ {{ message.created_at | humanize }}</p>
+    <p class="tile-subtitle" [innerHtml]="formatWithBreakLine(message.text)"></p>
   </div>
 </div>
