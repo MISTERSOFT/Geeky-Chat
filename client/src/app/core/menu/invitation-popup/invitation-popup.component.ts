@@ -1,6 +1,6 @@
-import { ShadowService } from './../../shadow/shadow.service';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { CoreService } from '../../core.service';
+import { ShadowService } from '@core/shadow';
+import { CoreService } from '@core/index';
 
 @Component({
   selector: 'app-invitation-popup',

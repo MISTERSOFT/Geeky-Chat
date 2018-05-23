@@ -1,25 +1,22 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@core/guards';
+import { AuthService, CoreService, TranslateService, WebSocketService } from '@core/index';
+import { ShadowService } from '@core/shadow';
 import { SocketIoModule } from 'ng-socket-io';
 import { WebStorageModule } from 'ngx-store';
-
-import { WebSocketService } from './websocket.service';
-import { AuthService } from './auth.service';
-import { AuthGuard } from './guards';
+import { LayoutModule } from '../layout/layout.module';
+import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
 import { MenuComponent } from './menu/menu.component';
 import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
-import { ShadowService } from './shadow/shadow.service';
 import { ShadowComponent } from './shadow/shadow.component';
-import { CoreService } from './core.service';
-import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
-import { LayoutModule } from '../layout/layout.module';
-import { TranslateService } from './translate.service';
 import { ToastContainerComponent } from './toast/toast-container.component';
 import { ToastComponent } from './toast/toast.component';
 import { ToastDirective } from './toast/toast.directive';
 import { ToastService } from './toast/toast.service';
+
 
 @NgModule({
   imports: [

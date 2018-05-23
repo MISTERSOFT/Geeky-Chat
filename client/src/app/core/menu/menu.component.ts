@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Room, User } from '../../shared/models';
-import { AuthService } from '../auth.service';
-import { CoreService } from '../core.service';
-import { ShadowService } from '../shadow/shadow.service';
+import { AuthService, CoreService } from '@core/index';
+import { ShadowService } from '@core/shadow';
+import { Room, User } from '@shared/models';
 
 @Component({
   selector: 'app-menu',

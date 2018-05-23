@@ -1,7 +1,6 @@
-import { ShadowService } from './../../shadow/shadow.service';
+import { ShadowService } from '@core/shadow';
 import { Component, OnInit, Input, Output, EventEmitter, Renderer2, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { CoreService } from '../../core.service';
-import { AuthService } from '../../auth.service';
+import { CoreService, AuthService } from '@core/index';
 
 enum SLIDE {
   MENU,

@@ -1,5 +1,5 @@
-import { ToastService } from './toast.service';
 import { Component, OnInit, ViewChild, ComponentFactoryResolver, ElementRef } from '@angular/core';
+import { ToastService } from './toast.service';
 import { ToastDirective } from './toast.directive';
 import { ToastData } from './toast.model';
 import { ToastComponent } from './toast.component';
