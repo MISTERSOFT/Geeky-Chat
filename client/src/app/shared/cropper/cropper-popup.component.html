@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-link float-left" [class.loading]="importing" (click)="import()">Import</button>
+      <button class="btn btn-link float-left" (click)="import()">Import</button>
       <input #inputFile class="d-none" (change)="onFileImported($event)" type="file">
 
       <button class="btn" (click)="close()">Cancel</button>

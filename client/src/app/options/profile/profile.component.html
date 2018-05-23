@@ -12,12 +12,6 @@
       <label class="form-label" for="avatar">Avatar</label>
     </div>
     <div class="col-9">
-      <!-- <div class="input-group">
-        <input class="form-input input-sm file-input" formControlName="avatar" (change)="onFileChange($event)" type="file" id="avatar" autocomplete="off">
-        <button class="btn btn-lg input-group-btn" [class.loading]="avatarLoading">
-          <i class="mdi mdi-upload"></i>
-        </button>
-      </div> -->
       <div class="avatar-container" (click)="openCropperPopup()">
         <input (change)="onFileChange($event)" type="file" id="avatar" autocomplete="off">
         <img *ngIf="hasAvatar; else noAvatar" [src]="detailsForm.controls.avatar.value">

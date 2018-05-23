@@ -190,9 +190,10 @@ io.on('connection', (socket) => {
     // })
   })
 
-  socket.on('UPDATE_USER', (_user: UserDTO) => {
+  socket.on('UPDATE_USER', (_user: UserDTO, respond) => {
     if (!_user || !_user.id) {
-      socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+      // socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+      respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
       return;
     }
     userRepository.getById(_user.id).then(user => {
@@ -204,9 +205,10 @@ io.on('connection', (socket) => {
       // console.log('_user', _user);
       userRepository.update(user).then((isOK) => {
         if (isOK) {
-          socket.emit('UPDATE_USER_RESPONSE', Response.compose())
+          // socket.emit('UPDATE_USER_RESPONSE', Response.compose())
+          respond(Response.compose())
         } else {
-          socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+          respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
         }
       });
     })

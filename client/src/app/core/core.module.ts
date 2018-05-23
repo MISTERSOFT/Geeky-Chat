@@ -16,6 +16,10 @@ import { CoreService } from './core.service';
 import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
 import { LayoutModule } from '../layout/layout.module';
 import { TranslateService } from './translate.service';
+import { ToastContainerComponent } from './toast/toast-container.component';
+import { ToastComponent } from './toast/toast.component';
+import { ToastDirective } from './toast/toast.directive';
+import { ToastService } from './toast/toast.service';
 
 @NgModule({
   imports: [
@@ -28,13 +32,17 @@ import { TranslateService } from './translate.service';
   ],
   exports: [
     MenuComponent,
-    ShadowComponent
+    ShadowComponent,
+    ToastContainerComponent
   ],
   declarations: [
     MenuComponent,
     RoomPopupComponent,
     InvitationPopupComponent,
-    ShadowComponent
+    ShadowComponent,
+    ToastContainerComponent,
+    ToastComponent,
+    ToastDirective
   ],
   providers: [
     WebSocketService,
@@ -42,7 +50,11 @@ import { TranslateService } from './translate.service';
     AuthGuard,
     ShadowService,
     CoreService,
-    TranslateService
+    TranslateService,
+    ToastService
+  ],
+  entryComponents: [
+    ToastComponent
   ]
 })
 export class CoreModule {

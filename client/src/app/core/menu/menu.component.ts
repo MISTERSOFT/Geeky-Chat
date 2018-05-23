@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { User, Room } from '../../shared/models';
+import { Room, User } from '../../shared/models';
 import { AuthService } from '../auth.service';
-import { ShadowService } from '../shadow/shadow.service';
 import { CoreService } from '../core.service';
+import { ShadowService } from '../shadow/shadow.service';
 
 @Component({
   selector: 'app-menu',

@@ -66,7 +66,6 @@ export class CropperComponent implements OnInit, OnChanges, AfterViewInit, OnDes
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onload = () => {
-        console.log('Base64 image cropped', reader.result);
         this.cropEnd.next(reader.result);
       }
     });

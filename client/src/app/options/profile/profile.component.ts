@@ -1,10 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, ComponentFactoryResolver, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
-import { User, Response } from '../../shared/models';
+import { ToastService } from '../../core/toast/toast.service';
+import { Response } from '../../shared/models';
 import { OptionsService } from '../options.service';
-import { ToastService } from '../../shared/toast/toast.service';
-import { ToastDirective } from '../../shared/toast/toast.directive';
 
 @Component({
   selector: 'app-profile',
@@ -13,10 +12,8 @@ import { ToastDirective } from '../../shared/toast/toast.directive';
 })
 
 export class ProfileComponent implements OnInit {
-  @Input() toastContainer: ToastDirective;
   detailsForm: FormGroup;
   passwordForm: FormGroup;
-  avatarLoading = false;
   saving = false;
   showCropperPopup = false;
   // user: User;
@@ -26,12 +23,10 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    // private cfr: ComponentFactoryResolver,
     private options: OptionsService,
     private toast: ToastService,
     private auth: AuthService) { }
   ngOnInit() {
-    // this.user = Object.assign({}, this.auth.user);
     this.detailsForm = this.fb.group({
       id: [this.auth.user.id],
       avatar: [this.auth.user.avatar],
@@ -45,55 +40,34 @@ export class ProfileComponent implements OnInit {
     });
   }
   onSaveProfile(e) {
-    console.log('onSaveProfile', this.detailsForm.valid, this.detailsForm.value);
     this.saving = true;
-    this.options.updateProfile(this.detailsForm.value).subscribe((response: Response<any>) => {
+    this.options.updateProfile(this.detailsForm.value, (response: Response<any>) => {
       if (response.success) {
-        // TODO: Show popup success
         this.auth.user.username = this.detailsForm.value.username;
         this.auth.user.email = this.detailsForm.value.email;
         this.auth.user.avatar = this.detailsForm.value.avatar;
-        this.toast.createToast(this.toastContainer.viewContainerRef, {
-          type: 'success',
-          text: 'Profile details saved !',
-          duration: 3000
-        });
+        this.toast.push$.next({ type: 'success', text: 'Profile details saved !' });
       } else {
-        // TODO: Show popup error
-        this.toast.createToast(this.toastContainer.viewContainerRef, {
-          type: 'error',
-          text: 'An error occured ! Not enable to save your profile details !',
-          duration: 3000
-        });
+        this.toast.push$.next({ type: 'error', text: 'An error occured ! Not able to save your profile details !' });
       }
       this.saving = false;
-    })
+    });
   }
   onSavePassword(e) { }
   onFileChange(e) {
-    console.log('onFileChange', e);
+    // console.log('onFileChange', e);
     const reader = new FileReader();
     const files = e.target.files;
     if (files && files.length > 0) {
       reader.onabort = this.onFileReaderError.bind(this);
       reader.onerror = this.onFileReaderError.bind(this);
-      reader.onloadstart = this.onFileReaderStart.bind(this);
-      reader.onloadend = this.onFileReaderStop.bind(this);
       reader.onload = this.onFileReaderOnLoad.bind(this, reader);
       reader.readAsDataURL(files[0]);
     }
   }
-  private onFileReaderStart() {
-    console.log('onloadstart', this);
-    this.avatarLoading = true;
-  }
-  private onFileReaderStop() {
-    console.log('onloadend');
-    this.avatarLoading = false;
-  }
+
   private onFileReaderError() {
     console.log('error file');
-    this.avatarLoading = false;
     // TODO: Display error
   }
   private onFileReaderOnLoad(reader: FileReader) {

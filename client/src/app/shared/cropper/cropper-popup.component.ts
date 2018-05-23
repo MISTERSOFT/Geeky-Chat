@@ -13,7 +13,6 @@ export class CropperPopupComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputFile') $inputFile: ElementRef;
   private croppedImage: string;
-  importing = false;
   constructor() { }
   ngOnInit() { }
   ngOnDestroy() {
@@ -44,23 +43,13 @@ export class CropperPopupComponent implements OnInit, OnDestroy {
     if (files && files.length > 0) {
       reader.onabort = this.onFileReaderError.bind(this);
       reader.onerror = this.onFileReaderError.bind(this);
-      reader.onloadstart = this.onFileReaderStart.bind(this);
-      reader.onloadend = this.onFileReaderStop.bind(this);
       reader.onload = this.onFileReaderOnLoad.bind(this, reader);
       reader.readAsDataURL(files[0]);
     }
   }
-  private onFileReaderStart() {
-    console.log('onloadstart');
-    this.importing = true;
-  }
-  private onFileReaderStop() {
-    console.log('onloadend');
-    this.importing = false;
-  }
+
   private onFileReaderError() {
     console.log('error file');
-    this.importing = false;
     // TODO: Display error
   }
   private onFileReaderOnLoad(reader: FileReader) {

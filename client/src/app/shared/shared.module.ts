@@ -1,12 +1,9 @@
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HumanizePipe } from './pipes/humanize.pipe';
-import { ToastComponent } from './toast/toast.component';
-import { ToastDirective } from './toast/toast.directive';
-import { ToastService } from './toast/toast.service';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CropperPopupComponent } from './cropper/cropper-popup.component';
 import { CropperComponent } from './cropper/cropper/cropper.component';
+import { HumanizePipe } from './pipes/humanize.pipe';
 
 @NgModule({
   imports: [
@@ -17,21 +14,16 @@ import { CropperComponent } from './cropper/cropper/cropper.component';
     ReactiveFormsModule,
     CommonModule,
     HumanizePipe,
-    ToastDirective,
     CropperPopupComponent
   ],
   declarations: [
     HumanizePipe,
-    ToastComponent,
-    ToastDirective,
     CropperPopupComponent,
     CropperComponent
   ],
   providers: [
-    ToastService
   ],
   entryComponents: [
-    ToastComponent
   ]
 })
 export class SharedModule { }

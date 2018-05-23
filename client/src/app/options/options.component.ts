@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreService } from '../core/core.service';
-import { ToastDirective } from '../shared/toast/toast.directive';
 
 @Component({
   selector: 'app-options',
@@ -9,7 +8,6 @@ import { ToastDirective } from '../shared/toast/toast.directive';
   styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnInit, OnDestroy {
-  @ViewChild(ToastDirective) toastContainer: ToastDirective;
   constructor(
     private location: Location,
     private core: CoreService) { }
