@@ -28,4 +28,13 @@ export class UserConverter {
     if (!source) return null;
     return source.map(user => this.toDTO(user));
   }
+
+  toPlainObject(user: User) {
+    return {
+      email: user.email,
+      id: user._id,
+      username: user.username,
+      avatar: user.avatar
+    }
+  }
 }

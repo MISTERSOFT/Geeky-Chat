@@ -1,6 +1,10 @@
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
 import { createServer } from 'http';
+import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import * as socketIO from 'socket.io';
+import * as socketIoJwt from 'socketio-jwt';
 import * as UIDGenerator from 'uid-generator';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
 import { Env, Response } from './core';
@@ -8,7 +12,8 @@ import { messageRepository, roomRepository, userRepository } from './database';
 import { MessageLiteDTO, UserDTO } from './dtos';
 import { JoinToken, Room } from './entities';
 
-const server = createServer()
+const app = express()
+const server = createServer(app)
 const io = socketIO(server)
 const uidgen = new UIDGenerator()
 const _userConverter = new UserConverter()
@@ -17,7 +22,59 @@ const _roomConverter = new RoomConverter()
 
 server.listen(Env.PORT, () => {
   console.log(`# Server is running: http://localhost:${Env.PORT}`);
+})
+
+//#region Express Middlewares
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Pass to next layer of middleware
+  next();
 });
+
+//#endregion
+
+//#region Express server routes
+
+app.post('/signin', (req, res) => {
+  const body = req.body
+  console.log('body', body)
+  const model = _userConverter.toEntity(body);
+  userRepository.isUserExist(model).then(user => {
+    if (user) {
+      const data = _userConverter.toPlainObject(user)
+      var token = jwt.sign(data, Env.SECRET_KEY, { expiresIn: Env.TOKEN_EXPIRATION });
+      res.status(200).type('json').end(JSON.stringify(token))
+    } else {
+      // No user found
+      const data = Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS'])
+      res.status(200).type('json').end(JSON.stringify(data))
+    }
+  })
+})
+
+app.post('/signup', (req, res) => {
+  // TODO: Create express route for Signup
+  res.sendStatus(200)
+})
+
+//#endregion
+
+//#region Socket IO Middleware
+
+io.use(socketIoJwt.authorize({
+  secret: Env.SECRET_KEY,
+  handshake: true
+}))
+
+//#endregion
 
 io.on('connection', (socket) => {
   socket.on('DEBUG', () => {

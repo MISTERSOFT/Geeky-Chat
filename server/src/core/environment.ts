@@ -1,6 +1,11 @@
 export class Env {
   //#region Server
   static PORT = 3000;
+  static SECRET_KEY = 'secret_key';
+  /**
+   * Token expiration in seconds
+   */
+  static TOKEN_EXPIRATION = 60;
   //#endregion
 
   //#region Database

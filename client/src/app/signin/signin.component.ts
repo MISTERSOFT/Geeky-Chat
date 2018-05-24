@@ -34,11 +34,21 @@ export class SigninComponent implements OnInit, DoCheck {
       this.dataSent = true;
       const user = this.form.value;
       // const subscribe =
-      this.auth.signin(user, () => {
+      // this.auth.signin(user, () => {
+      //   if (this.auth.isAuth()) {
+      //     this.router.navigate(['chat']);
+      //   }
+      // });
+
+      this.auth.signin(user).subscribe(() => {
         if (this.auth.isAuth()) {
           this.router.navigate(['chat']);
+        } else {
+          this.disableButton = false;
+          this.dataSent = false;
         }
       });
+
       // .subscribe(data => {
       //   subscribe.unsubscribe();
       //   if (this.auth.isAuth()) {

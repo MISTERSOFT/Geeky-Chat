@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -22,6 +23,7 @@ import { ToastService } from './toast/toast.service';
   imports: [
     RouterModule,
     CommonModule,
+    HttpClientModule,
     SocketIoModule,
     FormsModule,
     LayoutModule,

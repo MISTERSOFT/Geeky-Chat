@@ -9,5 +9,8 @@ export const environment = {
     url: 'http://localhost:3000',
     // url: 'http://5a490d78.ngrok.io',
     options: {}
+  },
+  localStorageKey: {
+    token: 'geekychat_token'
   }
 };

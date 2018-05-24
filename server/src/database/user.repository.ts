@@ -1,6 +1,6 @@
 import { Env } from '../core/environment';
+import { User } from '../entities';
 import { database } from './database';
-import { User, RoomDOC } from '../entities';
 
 export class UserRepository {
   // * METHOD WORKS
@@ -21,7 +21,7 @@ export class UserRepository {
       }
     }
     return database.INSTANCE.mango(Env.DATABASE_NAME, mangoQuery, {}).then(response => {
-      console.log('User inserted - data', response.data.docs)
+      // console.log('User exist - data', response.data.docs)
       const docs = response.data.docs
       return (docs.length === 1) ? docs[0] : null
     }, err => {
