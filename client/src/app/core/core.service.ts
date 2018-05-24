@@ -104,6 +104,7 @@ export class CoreService extends WebSocketService {
   // Response<Room[]>
   loadUserRooms() { // Observable<any>
     this.emit('FETCH_USER_ROOMS', this.auth.user.id, (response: Response<Room[]>) => {
+      console.log('loading users rooms...');
       if (!response.success) {
         // TODO: Display error
         return;
@@ -207,27 +208,27 @@ export class CoreService extends WebSocketService {
     this.currentRoom = room;
     this.onCurrentRoomChanged.next(room);
   }
-  listenBroadcastedMessages(): Observable<Message> {
-    return this.waitResponse('BROADCAST_SEND_MESSAGE')
-      .pipe(
-        map((response: Response<Message>) => {
-          return response.success ? response.data : null;
-        })
-      );
+  listenBroadcastedMessages() { // : Observable<Message> {
+    // return this.waitResponse('BROADCAST_SEND_MESSAGE')
+    //   .pipe(
+    //     map((response: Response<Message>) => {
+    //       return response.success ? response.data : null;
+    //     })
+    //   );
   }
   listenJoiningUser() {
-    return this.waitResponse('USER_JOINING').subscribe((response: Response<{ roomId: string, user: User }>) => {
-      if (response.success) {
-        console.log('joining user res', response);
-        const data = response.data;
-        // TODO: Make animation to notify user about the joining user
-        this.rooms.find(r => r.id === data.roomId).users.push(data.user);
-      }
-    })
+    // return this.waitResponse('USER_JOINING').subscribe((response: Response<{ roomId: string, user: User }>) => {
+    //   if (response.success) {
+    //     console.log('joining user res', response);
+    //     const data = response.data;
+    //     // TODO: Make animation to notify user about the joining user
+    //     this.rooms.find(r => r.id === data.roomId).users.push(data.user);
+    //   }
+    // })
   }
 
   loadServerInfo() {
     this.emit('DEBUG');
-    this.waitResponse('DEBUG_RESPONSE').subscribe(console.log)
+    // this.waitResponse('DEBUG_RESPONSE').subscribe(console.log)
   }
 }

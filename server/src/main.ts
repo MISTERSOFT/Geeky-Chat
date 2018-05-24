@@ -4,10 +4,10 @@ import { createServer } from 'http';
 import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import * as socketIO from 'socket.io';
-import * as socketIoJwt from 'socketio-jwt';
+import * as jwtAuth from 'socketio-jwt-auth'; // TODO: Uninstall maybe...
 import * as UIDGenerator from 'uid-generator';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
-import { Env, Response } from './core';
+import { Env, Response, Tools } from './core';
 import { messageRepository, roomRepository, userRepository } from './database';
 import { MessageLiteDTO, UserDTO } from './dtos';
 import { JoinToken, Room } from './entities';
@@ -45,11 +45,10 @@ app.use((req, res, next) => {
 
 app.post('/signin', (req, res) => {
   const body = req.body
-  console.log('body', body)
-  const model = _userConverter.toEntity(body);
+  const model = _userConverter.toEntity(body)
   userRepository.isUserExist(model).then(user => {
     if (user) {
-      const data = _userConverter.toPlainObject(user)
+      const data = Tools.toPlainObjectToken(user)
       var token = jwt.sign(data, Env.SECRET_KEY, { expiresIn: Env.TOKEN_EXPIRATION });
       res.status(200).type('json').end(JSON.stringify(token))
     } else {
@@ -69,14 +68,22 @@ app.post('/signup', (req, res) => {
 
 //#region Socket IO Middleware
 
-io.use(socketIoJwt.authorize({
-  secret: Env.SECRET_KEY,
-  handshake: true
-}))
+io.use(
+  // socketIoJwt.authorize({
+  //   secret: Env.SECRET_KEY,
+  //   handshake: true
+  // })
+  jwtAuth.authenticate({
+    secret: Env.SECRET_KEY
+  }, (payload, done) => {
+    return done(null, payload)
+  })
+)
 
 //#endregion
 
 io.on('connection', (socket) => {
+  console.log('Authentification worked !')
   socket.on('DEBUG', () => {
     io.to('3038c03c9ba32116a19b9374560156d0').clients((err, clients) => {
       socket.emit('DEBUG_RESPONSE', {

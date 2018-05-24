@@ -1,14 +1,16 @@
+import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators'
 import { WebSocketService } from './../core/websocket.service';
 import { Injectable } from '@angular/core';
 import { Message, MessageSent, Response, Room } from '../shared/models';
 import { AuthService } from '../core/auth.service';
+import { Socket } from 'ng-socket-io';
 
 @Injectable()
-export class ChatService extends WebSocketService {
+export class ChatService extends Socket {
   constructor(private auth: AuthService) {
-    super()
+    super(environment.socketConfig);
   }
   // loadData(): Observable<Response<Room[]>> {
   //   this.emit('FETCH_ALL_USER_DATA', this.auth.getUser().id);
@@ -20,7 +22,7 @@ export class ChatService extends WebSocketService {
   }
 
   listenEmittedMessages(): Observable<Response<Message>> {
-    return this.waitResponse('BROADCAST_SEND_MESSAGE');
+    return this.fromEvent('BROADCAST_SEND_MESSAGE');
     // .pipe(
     //   map((response: Response<Message>) => {
     //     console.log('response broadcast', response);

@@ -1,5 +1,5 @@
-import { User } from '../entities';
 import { UserDTO } from '../dtos';
+import { User } from '../entities';
 export class UserConverter {
   toEntity(source: UserDTO): User {
     if (!source) return null;
@@ -29,12 +29,4 @@ export class UserConverter {
     return source.map(user => this.toDTO(user));
   }
 
-  toPlainObject(user: User) {
-    return {
-      email: user.email,
-      id: user._id,
-      username: user.username,
-      avatar: user.avatar
-    }
-  }
 }

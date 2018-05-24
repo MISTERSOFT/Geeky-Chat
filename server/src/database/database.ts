@@ -1,10 +1,9 @@
-import * as PouchDB from 'pouchdb';
-import * as PouchDBFind from 'pouchdb-find';
-import * as RelationalPouch from 'relational-pouch';
-PouchDB.plugin(RelationalPouch);
-PouchDB.plugin(PouchDBFind);
+// import * as PouchDB from 'pouchdb';
+// import * as PouchDBFind from 'pouchdb-find';
+// import * as RelationalPouch from 'relational-pouch';
+// PouchDB.plugin(RelationalPouch);
+// PouchDB.plugin(PouchDBFind);
 import * as NodeCouchDB from 'node-couchdb';
-import { Message, User } from '../entities';
 import { Env } from '../core';
 
 class Database {

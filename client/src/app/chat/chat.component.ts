@@ -43,13 +43,17 @@ export class ChatComponent implements OnInit, OnDestroy {
         });
         this.core.changeRoom(params['id']);
       });
-      this.core.listenBroadcastedMessages().subscribe((message) => {
-        if (message) {
-          this.room.messages.push(message);
-        }
-      });
+      // this.core.listenBroadcastedMessages().subscribe((message) => {
+      //   if (message) {
+      //     this.room.messages.push(message);
+      //   }
+      // });
       this.core.listenJoiningUser();
     }
+
+    this.chat.on('error', (err) => {
+      console.log('unauthorized', err);
+    });
   }
 
   ngOnDestroy() {

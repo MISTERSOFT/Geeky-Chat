@@ -9,13 +9,13 @@ import { environment } from './../../environments/environment';
 import { WebSocketService } from './websocket.service';
 
 @Injectable()
-export class AuthService extends WebSocketService {
+export class AuthService { // extends WebSocketService {
   private _user: User;
   userObs = new Subject<User>();
   isAuthentificated: Subject<boolean> = new Subject<boolean>();
 
   constructor(private http: HttpClient, private storage: LocalStorageService) {
-    super();
+    // super();
     this.isAuthentificated.next(false);
   }
 
@@ -24,7 +24,7 @@ export class AuthService extends WebSocketService {
   }
 
   signup(user, callback: Function) {
-    this.emit('SIGNUP', user, callback);
+    // this.emit('SIGNUP', user, callback);
     // return this.waitResponse('SIGNUP_RESPONSE');
   }
 

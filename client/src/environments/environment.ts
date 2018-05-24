@@ -8,7 +8,12 @@ export const environment = {
   socketConfig: {
     url: 'http://localhost:3000',
     // url: 'http://5a490d78.ngrok.io',
-    options: {}
+    options: {
+      query: {
+        // token: null
+        auth_token: null
+      }
+    }
   },
   localStorageKey: {
     token: 'geekychat_token'
