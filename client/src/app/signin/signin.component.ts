@@ -1,7 +1,7 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { AuthService } from './../core/auth.service';
+import { Component, DoCheck, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from './../core/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -33,12 +33,18 @@ export class SigninComponent implements OnInit, DoCheck {
       this.disableButton = true;
       this.dataSent = true;
       const user = this.form.value;
-      const subscribe = this.auth.signin(user).subscribe(data => {
-        subscribe.unsubscribe();
+      // const subscribe =
+      this.auth.signin(user, () => {
         if (this.auth.isAuth()) {
           this.router.navigate(['chat']);
         }
       });
+      // .subscribe(data => {
+      //   subscribe.unsubscribe();
+      //   if (this.auth.isAuth()) {
+      //     this.router.navigate(['chat']);
+      //   }
+      // });
     }
   }
 

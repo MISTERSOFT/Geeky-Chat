@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, Input, DoCheck } from '@angular/core';
-import { MessageSent, Message } from '../../shared/models';
+import { Component, DoCheck, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
+import { Message, MessageSent } from '../../shared/models';
 import { ChatService } from './../chat.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { ChatService } from './../chat.service';
 
 export class InputComponent implements OnInit, DoCheck {
   @Input() roomId: string;
+  // TODO: Remove later
   @Output() onMessageSent: EventEmitter<Message> = new EventEmitter<Message>();
   text: string = ''; // Message to send
   charsLimit = 5000;
@@ -44,10 +45,12 @@ export class InputComponent implements OnInit, DoCheck {
         roomId: this.roomId
       };
       console.log('Send message...', message);
-      const subscribe = this.chat.sendMessage(message).subscribe(response => {
-        this.onMessageSent.next(response.data);
-        subscribe.unsubscribe();
-      });
+      // const subscribe =
+      this.chat.sendMessage(message);
+      // .subscribe(response => {
+      //   this.onMessageSent.next(response.data);
+      //   // subscribe.unsubscribe();
+      // });
     }
   }
 

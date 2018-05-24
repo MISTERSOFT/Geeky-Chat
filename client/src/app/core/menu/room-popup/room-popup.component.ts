@@ -1,6 +1,6 @@
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { AuthService, CoreService } from '@core/index';
 import { ShadowService } from '@core/shadow';
-import { Component, OnInit, Input, Output, EventEmitter, Renderer2, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { CoreService, AuthService } from '@core/index';
 
 enum SLIDE {
   MENU,
@@ -57,9 +57,11 @@ export class RoomPopupComponent implements OnInit {
     this.close();
   }
   joinRoom() {
-    const sub = this.core.joinRoom({userId: this.auth.user.id, token: this.joinToken}).subscribe(() => {
-      sub.unsubscribe();
-    });
+    // const sub =
+    this.core.joinRoom({userId: this.auth.user.id, token: this.joinToken});
+    // .subscribe(() => {
+    //   sub.unsubscribe();
+    // });
   }
   private slide(el, value) {
     this.renderer.setStyle(el, 'transform', 'translateX(' + value + 'px)');

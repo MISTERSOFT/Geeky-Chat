@@ -1,12 +1,12 @@
-import { createServer } from 'http'
-import * as socketIO from 'socket.io'
-import * as UIDGenerator from 'uid-generator'
-import * as moment from 'moment'
-import { Env, Response } from './core'
-import { messageRepository, userRepository, roomRepository } from './database'
-import { UserConverter, MessageConverter, RoomConverter } from './converters'
-import { UserDTO, MessageDTO, MessageLiteDTO } from './dtos'
-import { Room, Message, MessageDOC, User, RoomDOC, JoinToken } from './entities'
+import { createServer } from 'http';
+import * as moment from 'moment';
+import * as socketIO from 'socket.io';
+import * as UIDGenerator from 'uid-generator';
+import { MessageConverter, RoomConverter, UserConverter } from './converters';
+import { Env, Response } from './core';
+import { messageRepository, roomRepository, userRepository } from './database';
+import { MessageLiteDTO, UserDTO } from './dtos';
+import { JoinToken, Room } from './entities';
 
 const server = createServer()
 const io = socketIO(server)
@@ -29,29 +29,33 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('SIGNUP', (userInfo: UserDTO) => {
+  socket.on('SIGNUP', (userInfo: UserDTO, respond: Function) => {
     // const model = ModelBuilder.user.toEntity(userInfo)
     const model = _userConverter.toEntity(userInfo);
     // Create the user
     userRepository.storeUser(model).then(isOK => {
       if (isOK) {
-        socket.emit('SIGNUP_RESPONSE', Response.compose())
+        // socket.emit('SIGNUP_RESPONSE', Response.compose())
+        respond(Response.compose())
       } else {
-        socket.emit('SIGNUP_RESPONSE', Response.compose({}, false, ['E_SIGNIN_ERROR']))
+        // socket.emit('SIGNUP_RESPONSE', Response.compose({}, false, ['E_SIGNIN_ERROR']))
+        respond(Response.compose({}, false, ['E_SIGNIN_ERROR']))
       }
     })
   })
 
-  socket.on('SIGNIN', (user) => {
+  socket.on('SIGNIN', (user, respond: Function) => {
     console.log('LOGIN...', user)
     const model = _userConverter.toEntity(user);
     // TODO: Improve login system with cookies or whatever
     userRepository.isUserExist(model)
       .then(user => {
         if (user) {
-          socket.emit('SIGNIN_RESPONSE', Response.compose(_userConverter.toDTO(user)))
+          // socket.emit('SIGNIN_RESPONSE', Response.compose(_userConverter.toDTO(user)))
+          respond(Response.compose(_userConverter.toDTO(user)))
         } else {
-          socket.emit('SIGNIN_RESPONSE', Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
+          // socket.emit('SIGNIN_RESPONSE', Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
+          respond(Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
         }
       });
   })
@@ -78,7 +82,7 @@ io.on('connection', (socket) => {
   /**
    * We user signin, load all rooms where the user connected
    */
-  socket.on('FETCH_USER_ROOMS', (userId) => {
+  socket.on('FETCH_USER_ROOMS', (userId, respond: Function) => {
     console.log('FETCH_USER_ROOMS...');
     roomRepository.getRoomsByUser(userId)
       .then((rooms: Room[]) => {
@@ -88,29 +92,32 @@ io.on('connection', (socket) => {
         });
         const data = _roomConverter.toDTOs(rooms);
         console.log('ROOMS', data);
-        socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
+        // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
+        respond(Response.compose(data))
       });
   })
 
-  socket.on('FETCH_ROOM_USERS', (roomId) => {
+  socket.on('FETCH_ROOM_USERS', (roomId, respond: Function) => {
     console.log('FETCH_ROOM_USERS...')
     roomRepository.getUsersByRoom(roomId).then(users => {
       const data = _userConverter.toDTOs(users)
       console.log('data', data)
-      socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
+      // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
+      respond(Response.compose(data))
     })
   })
 
-  socket.on('FETCH_ROOM_MESSAGES', (roomId) => {
+  socket.on('FETCH_ROOM_MESSAGES', (roomId, respond: Function) => {
     console.log('FETCH_ROOM_MESSAGES...');
     roomRepository.getRoomMessages(roomId).then(messages => {
       const data = _messageConverter.toDTOs(messages)
       // console.log('data', data)
-      socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
+      // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
+      respond(Response.compose(data))
     })
   })
 
-  socket.on('CREATE_ROOM', (obj) => {
+  socket.on('CREATE_ROOM', (obj, respond: Function) => {
     console.log('create room: ', obj.roomName);
     const room = new Room();
     room.name = obj.roomName;
@@ -122,12 +129,13 @@ io.on('connection', (socket) => {
         const data = _roomConverter.toDTO(result)
         data.users = [_userConverter.toDTO(user)]
         console.log('Room DTO', data)
-        socket.emit('CREATE_ROOM_RESPONSE', Response.compose(data))
+        // socket.emit('CREATE_ROOM_RESPONSE', Response.compose(data))
+        respond(Response.compose(data))
       })
     })
   });
 
-  socket.on('GENERATE_JOIN_CODE', (roomId: string) => {
+  socket.on('GENERATE_JOIN_CODE', (roomId: string, respond: Function) => {
     const genToken = uidgen.generateSync()
     // TODO: Check time zone for ExpireAt
     const token: JoinToken = {
@@ -140,26 +148,29 @@ io.on('connection', (socket) => {
       roomRepository.update(room).then((isOk) => {
         let data = {}
         if (isOk) data = {token: token.token}
-        socket.emit('GENERATE_JOIN_CODE_RESPONSE', Response.compose(data, isOk))
+        // socket.emit('GENERATE_JOIN_CODE_RESPONSE', Response.compose(data, isOk))
+        respond(Response.compose(data, isOk))
       })
     })
     console.log('Generated token = ', genToken);
   })
 
-  socket.on('JOIN_ROOM', (data: {userId: string, token: string}) => {
+  socket.on('JOIN_ROOM', (data: {userId: string, token: string}, respond: Function) => {
     roomRepository.getByToken(data.token).then((room: Room) => {
       console.log('Join room, response todo', room)
       const tryToken = room.join_tokens.find(t => t.token === data.token)
       const isTokenExpired = new Date(tryToken.expireAt) < new Date()
       console.log('is token expired', isTokenExpired);
       if (isTokenExpired) {
-        socket.emit('JOIN_ROOM_RESPONSE', Response.compose({}, false, ['E_JOIN_TOKEN_EXPIRED']))
+        // socket.emit('JOIN_ROOM_RESPONSE', Response.compose({}, false, ['E_JOIN_TOKEN_EXPIRED']))
+        respond(Response.compose({}, false, ['E_JOIN_TOKEN_EXPIRED']))
       } else {
         roomRepository.storeRelationUserRoom(data.userId, room._id).then(() => {
           socket.join(room._id)
           const res = _roomConverter.toDTO(room)
           // Send room info to user
-          socket.emit('JOIN_ROOM_RESPONSE', Response.compose(res))
+          // socket.emit('JOIN_ROOM_RESPONSE', Response.compose(res))
+          respond(Response.compose(res))
           userRepository.getById(data.userId).then(user => {
             const joiningUser = _userConverter.toDTO(user)
             // Send user data to users connected to the room

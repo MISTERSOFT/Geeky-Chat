@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, ElementRef } from '@angular/core';
-import { ToastService } from './toast.service';
+import { Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
+import { ToastComponent } from './toast.component';
 import { ToastDirective } from './toast.directive';
 import { ToastData } from './toast.model';
-import { ToastComponent } from './toast.component';
+import { ToastService } from './toast.service';
 
 @Component({
   selector: 'app-toast-container',
@@ -16,7 +16,7 @@ import { ToastComponent } from './toast.component';
 
 export class ToastContainerComponent implements OnInit {
   @ViewChild(ToastDirective) toastContainer: ToastDirective;
-  private readonly TOAST_DURATION = 15000;
+  private readonly TOAST_DURATION = 5000;
 
   constructor(
     private cfr: ComponentFactoryResolver,

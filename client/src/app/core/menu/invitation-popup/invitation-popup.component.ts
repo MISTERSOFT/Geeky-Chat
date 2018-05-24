@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { ShadowService } from '@core/shadow';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CoreService } from '@core/index';
+import { ShadowService } from '@core/shadow';
 
 @Component({
   selector: 'app-invitation-popup',
@@ -21,10 +21,12 @@ export class InvitationPopupComponent implements OnInit {
   }
   onGenerateCode() {
     const currentRoomId = this.core.currentRoom.id;
-    const sub = this.core.generateJoinToken(currentRoomId).subscribe(response => {
-      this.token = response.data.token;
-      sub.unsubscribe();
-    });
+    // const sub =
+    this.core.generateJoinToken(currentRoomId, (response) => this.token = response.data.token);
+    // .subscribe(response => {
+    //   this.token = response.data.token;
+    //   sub.unsubscribe();
+    // });
   }
   private close() {
     this.token = '';

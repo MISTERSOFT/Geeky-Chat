@@ -14,12 +14,12 @@ export class ChatService extends WebSocketService {
   //   this.emit('FETCH_ALL_USER_DATA', this.auth.getUser().id);
   //   return this.waitResponse('FETCH_ALL_USER_DATA_RESPONSE');
   // }
-  sendMessage(message: MessageSent): Observable<Response<Message>> {
+  sendMessage(message: MessageSent): void {
     this.emit('SEND_MESSAGE', message);
-    return this.waitResponse('SEND_MESSAGE_RESPONSE');
+    // return this.waitResponse('SEND_MESSAGE_RESPONSE');
   }
 
-  listenEmittedMessages(): Observable<Message> {
+  listenEmittedMessages(): Observable<Response<Message>> {
     return this.waitResponse('BROADCAST_SEND_MESSAGE');
     // .pipe(
     //   map((response: Response<Message>) => {

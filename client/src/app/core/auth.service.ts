@@ -21,22 +21,29 @@ export class AuthService extends WebSocketService {
     return this._user;
   }
 
-  signup(user) {
-    this.emit('SIGNUP', user);
-    return this.waitResponse('SIGNUP_RESPONSE');
+  signup(user, callback: Function) {
+    this.emit('SIGNUP', user, callback);
+    // return this.waitResponse('SIGNUP_RESPONSE');
   }
 
-  signin(user): Observable<Response<User>> {
-    this.emit('SIGNIN', user);
-    return this.waitResponse('SIGNIN_RESPONSE').pipe(
-      tap((response: Response<User>) => {
-        if (response.success) {
-          this._user = response.data;
-          this.userObs.next(this._user);
-          this.isAuthentificated.next(true);
-        }
-      })
-    );
+  signin(user, callback: Function) { // : Observable<Response<User>> {
+    this.emit('SIGNIN', user, (response: Response<User>) => {
+      if (response.success) {
+        this._user = response.data;
+        this.userObs.next(this._user);
+        this.isAuthentificated.next(true);
+        callback();
+      }
+    });
+    // return this.waitResponse('SIGNIN_RESPONSE').pipe(
+    //   tap((response: Response<User>) => {
+    //     if (response.success) {
+    //       this._user = response.data;
+    //       this.userObs.next(this._user);
+    //       this.isAuthentificated.next(true);
+    //     }
+    //   })
+    // );
   }
 
   isAuth() {

@@ -16,7 +16,7 @@ export class SignupComponent implements DoCheck {
 
   constructor(
     private fb: FormBuilder,
-    private webSocket: AuthService,
+    private auth: AuthService,
     private router: Router) {
     this.form = this.fb.group({
       email: ['admin@gmail.com', Validators.compose([Validators.required, Validators.email])],
@@ -34,7 +34,7 @@ export class SignupComponent implements DoCheck {
       this.disableButton = true;
       this.dataSent = true;
       const newUser = this.form.value;
-      this.webSocket.signup(newUser).subscribe((response: Response<any>) => {
+      this.auth.signup(newUser, (response: Response<any>) => {
         console.log('response for signup', response);
         // If success navigate to signin
         if (response.success) {
@@ -45,6 +45,17 @@ export class SignupComponent implements DoCheck {
           // TODO: else display error
         }
       });
+      // .subscribe((response: Response<any>) => {
+      //   console.log('response for signup', response);
+      //   // If success navigate to signin
+      //   if (response.success) {
+      //     this.disableButton = false;
+      //     this.dataSent = false;
+      //     this.router.navigate(['signin']);
+      //   } else {
+      //     // TODO: else display error
+      //   }
+      // });
     }
   }
 }

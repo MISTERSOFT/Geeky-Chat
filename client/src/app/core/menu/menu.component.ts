@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
       console.log('menu rooms', rooms);
     });
     this.core.onCurrentRoomChanged.subscribe(curr => {
-      console.log('Menu: current room changed', curr.id);
+      // console.log('Menu: current room changed', curr.id);
       this.currentRoom = curr;
     });
     this.auth.userObs.subscribe(user => this.user = user);
