@@ -4,14 +4,12 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@core/guards';
-import { AuthService, CoreService, TranslateService, WebSocketService } from '@core/index';
+import { AuthService, TranslateService } from '@core/index';
 import { ShadowService } from '@core/shadow';
 import { SocketIoModule } from 'ng-socket-io';
 import { WebStorageModule } from 'ngx-store';
 import { LayoutModule } from '../layout/layout.module';
-import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
 import { MenuComponent } from './menu/menu.component';
-import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
 import { ShadowComponent } from './shadow/shadow.component';
 import { ToastContainerComponent } from './toast/toast-container.component';
 import { ToastComponent } from './toast/toast.component';
@@ -36,19 +34,19 @@ import { ToastService } from './toast/toast.service';
   ],
   declarations: [
     MenuComponent,
-    RoomPopupComponent,
-    InvitationPopupComponent,
+    // RoomPopupComponent,
+    // InvitationPopupComponent,
     ShadowComponent,
     ToastContainerComponent,
     ToastComponent,
     ToastDirective
   ],
   providers: [
-    WebSocketService,
+    // WebSocketService,
     AuthService,
     AuthGuard,
     ShadowService,
-    CoreService,
+    // CoreService,
     TranslateService,
     ToastService
   ],
@@ -60,7 +58,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [AuthService, WebSocketService]
+      providers: [] // AuthService, WebSocketService
     }
   }
 }

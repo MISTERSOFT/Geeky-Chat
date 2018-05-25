@@ -12,6 +12,7 @@ import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
 import { InputAutoResizeDirective } from './input/input-autoresize.directive';
 import { EmojiService } from './emoji-picker/emoji.service';
 import { EmojiTriggererDirective } from './emoji-picker/emoji-triggerer.directive';
+import { CoreService, WebSocketService } from '../core';
 
 @NgModule({
   imports: [
@@ -28,7 +29,9 @@ import { EmojiTriggererDirective } from './emoji-picker/emoji-triggerer.directiv
   ],
   providers: [
     ChatService,
-    EmojiService
+    EmojiService,
+    CoreService,
+    WebSocketService
   ]
 })
 export class ChatModule { }

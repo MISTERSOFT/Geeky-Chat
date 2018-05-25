@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "GeekyChat server",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon --inspect",
     "build": "node_modules/.bin/tsc"
   },
   "author": "",

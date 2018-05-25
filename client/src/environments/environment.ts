@@ -11,7 +11,7 @@ export const environment = {
     options: {
       query: {
         // token: null
-        auth_token: null
+        token: null
       }
     }
   },

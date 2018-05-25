@@ -1,9 +1,7 @@
-import { groupBy } from 'lodash'
-import { database } from './database';
-import { messageRepository } from './message.repository';
-import { Room, RoomDOC, User, MessageDOC, Message, UserRoomRelation } from '../entities';
-import { userRepository } from '.';
+import { groupBy } from 'lodash';
 import { Env } from '../core';
+import { Message, MessageDOC, Room, RoomDOC, User, UserRoomRelation } from '../entities';
+import { database } from './database';
 
 export class RoomRepository {
   constructor() { }
@@ -49,7 +47,7 @@ export class RoomRepository {
     }
     return database.INSTANCE.get(Env.DATABASE_NAME, url, viewUrlParams)
       .then(response => {
-        console.log('getRoomMessages', response.data.rows)
+        // console.log('getRoomMessages', response.data.rows)
         const grouped = groupBy(response.data.rows, 'id')
         const messages = []
         for (const id in grouped) {

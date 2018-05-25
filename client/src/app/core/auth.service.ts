@@ -39,6 +39,12 @@ export class AuthService { // extends WebSocketService {
           // localStorage.setItem(`${environment.localStorageKey.token}`, token);
           this.storage.set('token', token);
           const userData = jwtDecode(token);
+          const opts = Object.assign({}, environment.socketConfig);
+          if (token) {
+            environment.socketConfig.options.query.token = token;
+          } else {
+            environment.socketConfig.options.query.token = null;
+          }
           this._user = userData;
           this.userObs.next(this._user);
           this.isAuthentificated.next(true);

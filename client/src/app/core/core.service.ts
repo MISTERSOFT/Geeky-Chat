@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { map } from 'rxjs/operators';
 import { Message, Response, Room, User } from '../shared/models';
 import { AuthService } from './auth.service';
 import { WebSocketService } from './websocket.service';
@@ -228,7 +226,9 @@ export class CoreService extends WebSocketService {
   }
 
   loadServerInfo() {
-    this.emit('DEBUG');
+    this.emit('DEBUG', null, (data) => {
+      console.log('DEBUG:', data);
+    });
     // this.waitResponse('DEBUG_RESPONSE').subscribe(console.log)
   }
 }

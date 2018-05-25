@@ -4,7 +4,7 @@ import { createServer } from 'http';
 import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import * as socketIO from 'socket.io';
-import * as jwtAuth from 'socketio-jwt-auth'; // TODO: Uninstall maybe...
+// import * as jwtAuth from 'socketio-jwt-auth'; // TODO: Uninstall maybe...
 import * as UIDGenerator from 'uid-generator';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
 import { Env, Response, Tools } from './core';
@@ -68,28 +68,46 @@ app.post('/signup', (req, res) => {
 
 //#region Socket IO Middleware
 
-io.use(
-  // socketIoJwt.authorize({
-  //   secret: Env.SECRET_KEY,
-  //   handshake: true
-  // })
-  jwtAuth.authenticate({
-    secret: Env.SECRET_KEY
-  }, (payload, done) => {
-    return done(null, payload)
-  })
-)
+// io.use(
+//   // socketIoJwt.authorize({
+//   //   secret: Env.SECRET_KEY,
+//   //   handshake: true
+//   // })
+//   jwtAuth.authenticate({
+//     secret: Env.SECRET_KEY
+//   }, (payload, done) => {
+//     return done(null, payload)
+//   })
+// )
+io.use((socket, next) => {
+  const token = socket.handshake.query.token
+  if (token) {
+    try {
+      jwt.verify(token, Env.SECRET_KEY)
+      return next();
+    } catch (e) {
+      next(new Error('E_AUTHENTIFICATION'))
+    }
+  }
+  next(new Error('E_AUTHENTIFICATION'))
+})
 
 //#endregion
 
 io.on('connection', (socket) => {
-  console.log('Authentification worked !')
-  socket.on('DEBUG', () => {
+  console.log('Authentification working !')
+
+  // console.log('TOKEN FOR EVENT', socket.handshake.query.token) // ! Keep this code
+
+  socket.on('DEBUG', (data, callback) => {
+    console.log('DEBUG MAYBE PLZ')
     io.to('3038c03c9ba32116a19b9374560156d0').clients((err, clients) => {
-      socket.emit('DEBUG_RESPONSE', {
-        rooms: socket.rooms,
-        clients: clients
-      })
+      // socket.emit('DEBUG_RESPONSE', {
+      //   rooms: socket.rooms,
+      //   clients: clients
+      // })
+      console.log('WORKS PLZ')
+      callback('IT WORKS')
     })
   })
 
@@ -132,7 +150,7 @@ io.on('connection', (socket) => {
     messageRepository.storeMessage(model).then(result => {
       if (result) {
         const data = _messageConverter.toDTO(result)
-        console.log('Message to EMIT after save', data)
+        console.log('Message to EMIT after save')
         // Emit the message with user data to the emitter
         // socket.emit('SEND_MESSAGE_RESPONSE', Response.compose(data))
         // Broadcast the message sent by the user to the room.
@@ -155,7 +173,7 @@ io.on('connection', (socket) => {
           socket.join(room._id);
         });
         const data = _roomConverter.toDTOs(rooms);
-        console.log('ROOMS', data);
+        // console.log('ROOMS', data);
         // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
         respond(Response.compose(data))
       });

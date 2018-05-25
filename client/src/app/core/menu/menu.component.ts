@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, CoreService } from '@core/index';
+import { AuthService } from '@core/index';
 import { ShadowService } from '@core/shadow';
 import { Room, User } from '@shared/models';
 
@@ -21,20 +21,20 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private core: CoreService,
+    // private core: CoreService,
     private auth: AuthService,
     private shadow: ShadowService) { }
 
   ngOnInit() {
-    this.core.showMenu.subscribe(show => this.showMenu = show);
-    this.core.onRoomsChanged.subscribe(rooms => {
-      this.rooms = rooms;
-      console.log('menu rooms', rooms);
-    });
-    this.core.onCurrentRoomChanged.subscribe(curr => {
-      // console.log('Menu: current room changed', curr.id);
-      this.currentRoom = curr;
-    });
+    // this.core.showMenu.subscribe(show => this.showMenu = show);
+    // this.core.onRoomsChanged.subscribe(rooms => {
+    //   this.rooms = rooms;
+    //   console.log('menu rooms', rooms);
+    // });
+    // this.core.onCurrentRoomChanged.subscribe(curr => {
+    //   // console.log('Menu: current room changed', curr.id);
+    //   this.currentRoom = curr;
+    // });
     this.auth.userObs.subscribe(user => this.user = user);
   }
 
@@ -63,6 +63,6 @@ export class MenuComponent implements OnInit {
   }
 
   debug() {
-    this.core.loadServerInfo();
+    // this.core.loadServerInfo();
   }
 }
