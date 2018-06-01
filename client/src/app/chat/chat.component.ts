@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreService } from '../core/core.service';
 import { Room } from '../shared/models';
 import { AuthService } from './../core/auth.service';
 import { ChatService } from './chat.service';
@@ -21,35 +20,46 @@ export class ChatComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private chat: ChatService,
-    private core: CoreService,
     private auth: AuthService) { }
 
   ngOnInit() {
     // Data not loaded already
-    // We are in: /chat
-    if (this.route.snapshot.url.length === 0) {
-      this.core.loadUserRooms(); // .subscribe();
-      this.core.onCurrentRoomChanged.subscribe(room => {
-        if (room) {
-          this.router.navigate(['chat', room.id]);
-        }
-      });
-    } else {
-      // Data loaded
-      // We are in: /chat/:id
-      this.route.params.subscribe(params => {
-        this.core.onCurrentRoomChanged.subscribe(room => {
-          this.room = room;
-        });
-        this.core.changeRoom(params['id']);
-      });
-      // this.core.listenBroadcastedMessages().subscribe((message) => {
-      //   if (message) {
-      //     this.room.messages.push(message);
-      //   }
-      // });
-      this.core.listenJoiningUser();
-    }
+    // We are in: /r
+    // if (this.route.snapshot.url.length === 0) {
+    //   // this.chat.loadUserRooms(); // .subscribe();
+    //   this.chat.load();
+    //   this.chat.onCurrentRoomChanged.subscribe(room => {
+    //     if (room) {
+    //       this.router.navigate(['chat', room.id]);
+    //     }
+    //   });
+    // } else {
+    //   // Data loaded
+    //   // We are in: /r/:id
+    //   this.route.params.subscribe(params => {
+    //     this.chat.onCurrentRoomChanged.subscribe(room => {
+    //       this.room = room;
+    //     });
+    //     this.chat.changeRoom(params['id']);
+    //   });
+    //   this.chat.listenBroadcastedMessages().subscribe((message) => {
+    //     if (message) {
+    //       this.room.messages.push(message);
+    //     }
+    //   });
+    //   this.chat.listenJoiningUser();
+    // }
+
+    this.chat.load();
+    this.chat.onCurrentRoomChanged.subscribe(room => {
+      this.room = room;
+    });
+    this.chat.listenBroadcastedMessages().subscribe((message) => {
+      if (message) {
+        this.room.messages.push(message);
+      }
+    });
+    this.chat.listenJoiningUser();
 
     this.chat.on('error', (err) => {
       console.log('unauthorized', err);
@@ -64,4 +74,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.room.messages.push(message);
   }
 
+  test() {
+  }
 }

@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
-
-import { ChatRoutingModule } from './chat-routing.module';
 import { SharedModule } from './../shared/shared.module';
-
-import { ChatService } from './chat.service';
-
+import { ChatRoutingModule } from './chat-routing.module';
 import { ChatComponent } from './chat.component';
-import { MessageComponent } from './message/message.component';
-import { InputComponent } from './input/input.component';
+import { ChatService } from './chat.service';
 import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
-import { InputAutoResizeDirective } from './input/input-autoresize.directive';
-import { EmojiService } from './emoji-picker/emoji.service';
 import { EmojiTriggererDirective } from './emoji-picker/emoji-triggerer.directive';
-import { CoreService, WebSocketService } from '../core';
+import { EmojiService } from './emoji-picker/emoji.service';
+import { InputAutoResizeDirective } from './input/input-autoresize.directive';
+import { InputComponent } from './input/input.component';
+import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
+import { MenuComponent } from './menu/menu.component';
+import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
+import { MessageComponent } from './message/message.component';
+
+
+
 
 @NgModule({
   imports: [
     ChatRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   declarations: [
     ChatComponent,
@@ -25,13 +27,14 @@ import { CoreService, WebSocketService } from '../core';
     InputComponent,
     EmojiPickerComponent,
     InputAutoResizeDirective,
-    EmojiTriggererDirective
+    EmojiTriggererDirective,
+    MenuComponent,
+    RoomPopupComponent,
+    InvitationPopupComponent,
   ],
   providers: [
     ChatService,
-    EmojiService,
-    CoreService,
-    WebSocketService
+    EmojiService
   ]
 })
 export class ChatModule { }

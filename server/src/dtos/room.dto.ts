@@ -5,6 +5,6 @@ export class RoomDTO {
   name: string;
   // name_slug: string;
   owner: string;
-  // messages: MessageDTO[] = [];
+  messages: MessageDTO[] = [];
   users: UserDTO[] = [];
 }

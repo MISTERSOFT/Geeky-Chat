@@ -1,21 +1,21 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpService } from '@core/http.service';
 import { User } from '@shared/models';
 import * as jwtDecode from 'jwt-decode';
 import { LocalStorageService } from 'ngx-store';
 import { Subject } from 'rxjs/Subject';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators/tap';
 import { environment } from './../../environments/environment';
-import { WebSocketService } from './websocket.service';
 
 @Injectable()
-export class AuthService { // extends WebSocketService {
+export class AuthService extends HttpService { // extends WebSocketService {
   private _user: User;
   userObs = new Subject<User>();
   isAuthentificated: Subject<boolean> = new Subject<boolean>();
 
   constructor(private http: HttpClient, private storage: LocalStorageService) {
-    // super();
+    super();
     this.isAuthentificated.next(false);
   }
 
@@ -30,10 +30,7 @@ export class AuthService { // extends WebSocketService {
 
   signin(user) {
     const body = JSON.stringify(user);
-    const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-    return this.http.post(`${environment.socketConfig.url}/signin`, body, headers)
+    return this.http.post(`${this.api}/signin`, body, this.options)
       .pipe(
         tap((token: string) => {
           // localStorage.setItem(`${environment.localStorageKey.token}`, token);

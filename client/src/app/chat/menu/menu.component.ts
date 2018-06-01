@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/index';
 import { ShadowService } from '@core/shadow';
 import { Room, User } from '@shared/models';
+import { ChatService } from 'app/chat/chat.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-menu',
@@ -11,10 +13,9 @@ import { Room, User } from '@shared/models';
 })
 
 export class MenuComponent implements OnInit {
-  rooms: Room[];
+  rooms$: Observable<Room[]>;
   currentRoom: Room;
   user: User;
-  showMenu = false;
   showMore = false;
   showRoomPopup = false;
   showInvitationPopup = false;
@@ -22,20 +23,21 @@ export class MenuComponent implements OnInit {
   constructor(
     private router: Router,
     // private core: CoreService,
+    private chat: ChatService,
     private auth: AuthService,
     private shadow: ShadowService) { }
 
   ngOnInit() {
     // this.core.showMenu.subscribe(show => this.showMenu = show);
-    // this.core.onRoomsChanged.subscribe(rooms => {
+    this.rooms$ = this.chat.onRoomsChanged; //.subscribe(rooms => {
     //   this.rooms = rooms;
     //   console.log('menu rooms', rooms);
     // });
-    // this.core.onCurrentRoomChanged.subscribe(curr => {
-    //   // console.log('Menu: current room changed', curr.id);
-    //   this.currentRoom = curr;
-    // });
-    this.auth.userObs.subscribe(user => this.user = user);
+    this.chat.onCurrentRoomChanged.subscribe(curr => {
+      // console.log('Menu: current room changed', curr.id);
+      this.currentRoom = curr;
+    });
+    this.user = this.auth.user;
   }
 
   toggleShowMore() {
@@ -58,11 +60,12 @@ export class MenuComponent implements OnInit {
 
   onSelectRoom(roomId) {
     // this.core.onCurrentRoomChanged.next(room);
-    // this.core.changeRoom(room);
-    this.router.navigate(['chat', roomId]);
+    this.chat.changeRoom(roomId);
+    // this.router.navigate(['chat', roomId]);
   }
 
-  debug() {
+  debug(v) {
+    console.log('debug', v);
     // this.core.loadServerInfo();
   }
 }

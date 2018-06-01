@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CoreService } from '@core/index';
 import { ShadowService } from '@core/shadow';
+import { ChatService } from 'app/chat/chat.service';
 
 @Component({
   selector: 'app-invitation-popup',
@@ -14,15 +15,16 @@ export class InvitationPopupComponent implements OnInit {
   token: string;
   constructor(
     private core: CoreService,
+    private chat: ChatService,
     private shadow: ShadowService) { }
   ngOnInit() { }
   onClickOutside() {
     this.close();
   }
   onGenerateCode() {
-    const currentRoomId = this.core.currentRoom.id;
+    const currentRoomId = this.chat.currentRoom.id;
     // const sub =
-    this.core.generateJoinToken(currentRoomId, (response) => this.token = response.data.token);
+    this.chat.generateJoinToken(currentRoomId, (response) => this.token = response.data.token);
     // .subscribe(response => {
     //   this.token = response.data.token;
     //   sub.unsubscribe();

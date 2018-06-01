@@ -74,7 +74,7 @@ export class RoomRepository {
     }
     return database.INSTANCE.get(Env.DATABASE_NAME, url, viewUrlParams)
       .then(response => {
-        console.log('getUsersByRoom', response.data.rows)
+        // console.log('getUsersByRoom', response.data.rows)
         const users = []
         response.data.rows.forEach(item => users.push(new User(item.doc)))
         return users

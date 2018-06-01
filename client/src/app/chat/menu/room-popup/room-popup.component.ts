@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { AuthService, CoreService } from '@core/index';
 import { ShadowService } from '@core/shadow';
+import { ChatService } from 'app/chat/chat.service';
 
 enum SLIDE {
   MENU,
@@ -29,6 +30,7 @@ export class RoomPopupComponent implements OnInit {
     private renderer: Renderer2,
     private core: CoreService,
     private auth: AuthService,
+    private chat: ChatService,
     private shadow: ShadowService) { }
   ngOnInit() { }
   onClickOutside() {
@@ -53,12 +55,12 @@ export class RoomPopupComponent implements OnInit {
     this.currentSlide = goTo;
   }
   createRoom() {
-    this.core.createRoom(this.roomName, this.auth.user.id);
+    this.chat.createRoom(this.roomName, this.auth.user.id);
     this.close();
   }
   joinRoom() {
     // const sub =
-    this.core.joinRoom({userId: this.auth.user.id, token: this.joinToken});
+    this.chat.joinRoom({userId: this.auth.user.id, token: this.joinToken});
     // .subscribe(() => {
     //   sub.unsubscribe();
     // });

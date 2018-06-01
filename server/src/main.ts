@@ -64,6 +64,38 @@ app.post('/signup', (req, res) => {
   res.sendStatus(200)
 })
 
+// app.get('/user/:id', (req, res) => {
+//   const userId = req.params.id
+//   // Fetch user room
+//   roomRepository.getRoomsByUser(userId)
+//     .then((rooms: Room[]) => {
+//       rooms.forEach(room => {
+//         // Join each rooms
+//         socket.join(room._id);
+//       });
+//       const data = _roomConverter.toDTOs(rooms);
+//       // console.log('ROOMS', data);
+//       // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
+//       respond(Response.compose(data))
+//     });
+
+//   // Fetch users room
+//   roomRepository.getUsersByRoom(roomId).then(users => {
+//     const data = _userConverter.toDTOs(users)
+//     console.log('data', data)
+//     // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
+//     respond(Response.compose(data))
+//   })
+
+//   // Fetch room messages
+//   roomRepository.getRoomMessages(roomId).then(messages => {
+//     const data = _messageConverter.toDTOs(messages)
+//     // console.log('data', data)
+//     // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
+//     respond(Response.compose(data))
+//   })
+// })
+
 //#endregion
 
 //#region Socket IO Middleware
@@ -161,43 +193,106 @@ io.on('connection', (socket) => {
     })
   })
 
-  /**
-   * We user signin, load all rooms where the user connected
-   */
-  socket.on('FETCH_USER_ROOMS', (userId, respond: Function) => {
-    console.log('FETCH_USER_ROOMS...');
+  socket.on('FETCH_USER_ROOMS_V2', (userId, respond: Function) => {
+      // Fetch user room
     roomRepository.getRoomsByUser(userId)
       .then((rooms: Room[]) => {
         rooms.forEach(room => {
           // Join each rooms
           socket.join(room._id);
-        });
-        const data = _roomConverter.toDTOs(rooms);
+        })
+
+        const promisesByRoom = []
+        rooms.forEach(room => {
+          promisesByRoom.push(
+            Promise.all([
+              roomRepository.getUsersByRoom(room._id),
+              roomRepository.getRoomMessages(room._id)
+            ])
+          )
+        })
+        Promise.all(promisesByRoom)
+          .then(responsePromisesByRoom => {
+            const roomsDto = _roomConverter.toDTOs(rooms)
+            // console.log('responsePromisesByRoom', responsePromisesByRoom)
+            responsePromisesByRoom.forEach((v, index) => {
+              // console.log('# Q');
+              // console.log('  # Users ', _userConverter.toDTOs(responsePromisesByRoom[index][0]))
+              // console.log('  # Messages ', _messageConverter.toDTOs(responsePromisesByRoom[index][1]))
+              roomsDto[index].users = _userConverter.toDTOs(responsePromisesByRoom[index][0])
+              roomsDto[index].messages = _messageConverter.toDTOs(responsePromisesByRoom[index][1])
+              // Messages order by time
+              roomsDto[index].messages.sort((a, b) => {
+                const msgA = new Date(a.created_at).getTime();
+                const msgB = new Date(b.created_at).getTime();
+                return (msgA === msgB) ? 0 : (msgA < msgB) ? -1 : 1;
+              })
+            })
+            return roomsDto
+          })
+          .then(roomsDtos => respond(Response.compose(roomsDtos)))
+
+
+        // const data = _roomConverter.toDTOs(rooms);
         // console.log('ROOMS', data);
         // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
-        respond(Response.compose(data))
-      });
+        // respond(Response.compose(data))
+      })
+
+    // Fetch users room
+    // roomRepository.getUsersByRoom(roomId).then(users => {
+    //   const data = _userConverter.toDTOs(users)
+    //   console.log('data', data)
+    //   // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
+    //   respond(Response.compose(data))
+    // })
+
+    // // Fetch room messages
+    // roomRepository.getRoomMessages(roomId).then(messages => {
+    //   const data = _messageConverter.toDTOs(messages)
+    //   // console.log('data', data)
+    //   // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
+    //   respond(Response.compose(data))
+    // })
   })
 
-  socket.on('FETCH_ROOM_USERS', (roomId, respond: Function) => {
-    console.log('FETCH_ROOM_USERS...')
-    roomRepository.getUsersByRoom(roomId).then(users => {
-      const data = _userConverter.toDTOs(users)
-      console.log('data', data)
-      // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
-      respond(Response.compose(data))
-    })
-  })
+  /**
+   * When user signin, load all rooms where the user connected
+   */
+  // socket.on('FETCH_USER_ROOMS', (userId, respond: Function) => {
+  //   console.log('FETCH_USER_ROOMS...');
+  //   roomRepository.getRoomsByUser(userId)
+  //     .then((rooms: Room[]) => {
+  //       rooms.forEach(room => {
+  //         // Join each rooms
+  //         socket.join(room._id);
+  //       });
+  //       const data = _roomConverter.toDTOs(rooms);
+  //       // console.log('ROOMS', data);
+  //       // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
+  //       respond(Response.compose(data))
+  //     });
+  // })
 
-  socket.on('FETCH_ROOM_MESSAGES', (roomId, respond: Function) => {
-    console.log('FETCH_ROOM_MESSAGES...');
-    roomRepository.getRoomMessages(roomId).then(messages => {
-      const data = _messageConverter.toDTOs(messages)
-      // console.log('data', data)
-      // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
-      respond(Response.compose(data))
-    })
-  })
+  // socket.on('FETCH_ROOM_USERS', (roomId, respond: Function) => {
+  //   console.log('FETCH_ROOM_USERS...')
+  //   roomRepository.getUsersByRoom(roomId).then(users => {
+  //     const data = _userConverter.toDTOs(users)
+  //     console.log('data', data)
+  //     // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
+  //     respond(Response.compose(data))
+  //   })
+  // })
+
+  // socket.on('FETCH_ROOM_MESSAGES', (roomId, respond: Function) => {
+  //   console.log('FETCH_ROOM_MESSAGES...');
+  //   roomRepository.getRoomMessages(roomId).then(messages => {
+  //     const data = _messageConverter.toDTOs(messages)
+  //     // console.log('data', data)
+  //     // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
+  //     respond(Response.compose(data))
+  //   })
+  // })
 
   socket.on('CREATE_ROOM', (obj, respond: Function) => {
     console.log('create room: ', obj.roomName);

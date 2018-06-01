@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PopupComponent } from '@shared/popup/popup.component';
 import { CropperPopupComponent } from './cropper/cropper-popup.component';
 import { CropperComponent } from './cropper/cropper/cropper.component';
 import { HumanizePipe } from './pipes/humanize.pipe';
@@ -14,12 +15,14 @@ import { HumanizePipe } from './pipes/humanize.pipe';
     ReactiveFormsModule,
     CommonModule,
     HumanizePipe,
-    CropperPopupComponent
+    CropperPopupComponent,
+    PopupComponent
   ],
   declarations: [
     HumanizePipe,
     CropperPopupComponent,
-    CropperComponent
+    CropperComponent,
+    PopupComponent
   ],
   providers: [
   ],
