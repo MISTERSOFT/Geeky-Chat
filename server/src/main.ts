@@ -64,37 +64,17 @@ app.post('/signup', (req, res) => {
   res.sendStatus(200)
 })
 
-// app.get('/user/:id', (req, res) => {
-//   const userId = req.params.id
-//   // Fetch user room
-//   roomRepository.getRoomsByUser(userId)
-//     .then((rooms: Room[]) => {
-//       rooms.forEach(room => {
-//         // Join each rooms
-//         socket.join(room._id);
-//       });
-//       const data = _roomConverter.toDTOs(rooms);
-//       // console.log('ROOMS', data);
-//       // socket.emit('FETCH_USER_ROOMS_RESPONSE', Response.compose(data))
-//       respond(Response.compose(data))
-//     });
-
-//   // Fetch users room
-//   roomRepository.getUsersByRoom(roomId).then(users => {
-//     const data = _userConverter.toDTOs(users)
-//     console.log('data', data)
-//     // socket.emit('FETCH_ROOM_USERS_RESPONSE', Response.compose(data))
-//     respond(Response.compose(data))
-//   })
-
-//   // Fetch room messages
-//   roomRepository.getRoomMessages(roomId).then(messages => {
-//     const data = _messageConverter.toDTOs(messages)
-//     // console.log('data', data)
-//     // socket.emit('FETCH_ROOM_MESSAGES_RESPONSE', Response.compose(data))
-//     respond(Response.compose(data))
-//   })
-// })
+app.get('/user/:id', (req, res) => {
+  const userId = req.params.id
+  userRepository.getById(userId).then(user => {
+    const dto = _userConverter.toDTO(user)
+    const data = Response.compose(dto)
+    res.status(200).type('json').end(JSON.stringify(data))
+  }).catch(e => {
+    const data = Response.compose({}, false, ['E_SERVER_ERROR'])
+    res.status(500).type('json').end(JSON.stringify(data))
+  })
+})
 
 //#endregion
 

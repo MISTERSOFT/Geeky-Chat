@@ -42,7 +42,7 @@ export class SigninComponent implements OnInit, DoCheck {
 
       this.auth.signin(user).subscribe(() => {
         if (this.auth.isAuth()) {
-          this.router.navigate(['chat']);
+          this.router.navigate(['r']);
         } else {
           this.disableButton = false;
           this.dataSent = false;

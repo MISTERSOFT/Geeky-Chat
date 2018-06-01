@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@core/guards';
+import { AuthGuard, NoNeedToLoginGuard } from '@core/guards';
 import { AuthService, TranslateService } from '@core/index';
 import { ShadowService } from '@core/shadow';
 import { SocketIoModule } from 'ng-socket-io';
@@ -35,8 +35,11 @@ import { ToastService } from './toast/toast.service';
   ],
   providers: [
     // WebSocketService,
-    AuthService,
+    // Guards
     AuthGuard,
+    NoNeedToLoginGuard,
+    // Services
+    AuthService,
     ShadowService,
     // CoreService,
     TranslateService,

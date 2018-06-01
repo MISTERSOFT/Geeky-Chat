@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class HttpService {
@@ -12,5 +13,9 @@ export class HttpService {
     this.options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
+  }
+
+  protected handleError(error) {
+    return Observable.throw(error);
   }
 }
