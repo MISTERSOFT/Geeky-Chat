@@ -13,6 +13,11 @@
         <!-- <img src="img/avatar-1.png" alt="..."> -->
       </figure>
     </div>
+    <!-- <div class="disconnect">
+      <button class="btn btn-link" (click)="disconnect()">
+        <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i>
+      </button>
+    </div> -->
   </div>
   <div class="current-room-info">
     <div class="user-profile">
@@ -40,7 +45,11 @@
       </div>
     </div>
     <div class="channel-info">
-      <button (click)="debug()">Debug</button>
+      <!-- <button (click)="debug()">Debug</button> -->
+      <button class="btn btn-primary" (click)="disconnect()">
+        <!-- <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i> -->
+        Disconnect
+      </button>
     </div>
   </div>
 </nav>

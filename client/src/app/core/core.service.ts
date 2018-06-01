@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Message, Response, Room, User } from '../shared/models';
 import { AuthService } from './auth.service';
-import { WebSocketService } from './websocket.service';
+// import { WebSocketService } from './websocket.service';
 
 @Injectable()
 export class CoreService { // extends WebSocketService {

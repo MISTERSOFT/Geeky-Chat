@@ -6,14 +6,14 @@ import * as jwtDecode from 'jwt-decode';
 import { LocalStorageService } from 'ngx-store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { switchMap, catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { map } from 'rxjs/operators/map';
 import { environment } from './../../environments/environment';
 
 @Injectable()
 export class AuthService extends HttpService { // extends WebSocketService {
   private _user: User;
-  userObs = new Subject<User>();
+  // userObs = new Subject<User>();
   // isAuthentificated: Subject<boolean> = new Subject<boolean>();
 
   constructor(private http: HttpClient, private storage: LocalStorageService) {
@@ -71,7 +71,7 @@ export class AuthService extends HttpService { // extends WebSocketService {
           map((response: Response<User>) => {
             if (response.success && response.data) {
               this._user = response.data;
-              this.userObs.next(this._user);
+              // this.userObs.next(this._user);
               // this.isAuthentificated.next(true);
               return true;
             }
@@ -102,7 +102,7 @@ export class AuthService extends HttpService { // extends WebSocketService {
   //   // );
   // }
 
-  isAuth() {
+  isAuth(): boolean {
     return this.getTokenFromLocalStorage() ? true : false;
   }
 
@@ -122,6 +122,11 @@ export class AuthService extends HttpService { // extends WebSocketService {
     } catch(e) {
       return false;
     }
+  }
+
+  clearBeforeDisconnect() {
+    this._user = undefined;
+    // this.userObs.next(this._user);
   }
 
 }

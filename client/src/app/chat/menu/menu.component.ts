@@ -68,4 +68,8 @@ export class MenuComponent implements OnInit {
     console.log('debug', v);
     // this.core.loadServerInfo();
   }
+
+  disconnect() {
+    this.chat.disconnect();
+  }
 }

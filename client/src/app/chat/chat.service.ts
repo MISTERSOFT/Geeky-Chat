@@ -1,6 +1,8 @@
 // import { WebSocketService } from './../core/websocket.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Socket } from 'ng-socket-io';
+import { LocalStorageService } from 'ngx-store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { map } from 'rxjs/operators';
@@ -16,7 +18,7 @@ export class ChatService extends Socket {
   onCurrentRoomChanged = new Subject<Room>();
   showMenu = new Subject<boolean>();
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private storage: LocalStorageService, private router: Router) {
     super(environment.socketConfig);
   }
   // loadData(): Observable<Response<Room[]>> {
@@ -267,5 +269,14 @@ export class ChatService extends Socket {
         this.onCurrentRoomChanged.next(this.rooms[0]);
       }
     });
+  }
+
+  disconnect() {
+    console.log('DISCONNECT ME MOTHERFUCKER');
+    // this.storage.remove(environment.localStorageKey.token);
+    localStorage.removeItem('token');
+    this.auth.clearBeforeDisconnect();
+    super.disconnect();
+    this.router.navigate(['signin']);
   }
 }
