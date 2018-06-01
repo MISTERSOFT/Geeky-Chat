@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { AuthService, CoreService } from '@core/index';
-import { ShadowService } from '@core/shadow';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { AuthService } from '@core/index';
 import { ChatService } from 'app/chat/chat.service';
 
 enum SLIDE {
@@ -17,43 +16,44 @@ enum SLIDE {
 export class RoomPopupComponent implements OnInit {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @ViewChild('slideMenu') $slideMenu: ElementRef;
-  @ViewChild('slideCreate') $slideCreate: ElementRef;
-  @ViewChild('slideJoin') $slideJoin: ElementRef;
+  // @ViewChild('slideMenu') $slideMenu: ElementRef;
+  // @ViewChild('slideCreate') $slideCreate: ElementRef;
+  // @ViewChild('slideJoin') $slideJoin: ElementRef;
   roomName: string;
   joinToken: string;
-  _SLIDE = SLIDE;
-  private slideBy = 450;
-  private slideDefaultLeftPosition = 0;
-  private currentSlide: SLIDE = SLIDE.MENU;
+  // _SLIDE = SLIDE;
+  // private slideBy = 450;
+  // private slideDefaultLeftPosition = 0;
+  // private currentSlide: SLIDE = SLIDE.MENU;
   constructor(
     private renderer: Renderer2,
-    private core: CoreService,
+    // private core: CoreService,
     private auth: AuthService,
     private chat: ChatService,
-    private shadow: ShadowService) { }
+    // private shadow: ShadowService
+    ) { }
   ngOnInit() { }
-  onClickOutside() {
+  onClosed() {
     this.close();
   }
-  slideTo(goTo: SLIDE) {
-    if (goTo === SLIDE.CREATE) {
-      this.slide(this.$slideMenu.nativeElement, -this.slideBy);
-      this.slide(this.$slideCreate.nativeElement, -this.slideBy);
-    } else if (goTo === SLIDE.JOIN) {
-      this.slide(this.$slideMenu.nativeElement, -this.slideBy);
-      this.slide(this.$slideJoin.nativeElement, -this.slideBy);
-    } else {
-      if (this.currentSlide === SLIDE.CREATE) {
-        this.slide(this.$slideCreate.nativeElement, this.slideBy);
-      }
-      if (this.currentSlide === SLIDE.JOIN) {
-        this.slide(this.$slideJoin.nativeElement, this.slideBy);
-      }
-      this.slide(this.$slideMenu.nativeElement, this.slideDefaultLeftPosition);
-    }
-    this.currentSlide = goTo;
-  }
+  // slideTo(goTo: SLIDE) {
+  //   if (goTo === SLIDE.CREATE) {
+  //     this.slide(this.$slideMenu.nativeElement, -this.slideBy);
+  //     this.slide(this.$slideCreate.nativeElement, -this.slideBy);
+  //   } else if (goTo === SLIDE.JOIN) {
+  //     this.slide(this.$slideMenu.nativeElement, -this.slideBy);
+  //     this.slide(this.$slideJoin.nativeElement, -this.slideBy);
+  //   } else {
+  //     if (this.currentSlide === SLIDE.CREATE) {
+  //       this.slide(this.$slideCreate.nativeElement, this.slideBy);
+  //     }
+  //     if (this.currentSlide === SLIDE.JOIN) {
+  //       this.slide(this.$slideJoin.nativeElement, this.slideBy);
+  //     }
+  //     this.slide(this.$slideMenu.nativeElement, this.slideDefaultLeftPosition);
+  //   }
+  //   this.currentSlide = goTo;
+  // }
   createRoom() {
     this.chat.createRoom(this.roomName, this.auth.user.id);
     this.close();
@@ -65,19 +65,19 @@ export class RoomPopupComponent implements OnInit {
     //   sub.unsubscribe();
     // });
   }
-  private slide(el, value) {
-    this.renderer.setStyle(el, 'transform', 'translateX(' + value + 'px)');
-  }
+  // private slide(el, value) {
+  //   this.renderer.setStyle(el, 'transform', 'translateX(' + value + 'px)');
+  // }
 
   private reset() {
     this.roomName = '';
     this.joinToken = '';
-    this.slideTo(SLIDE.MENU);
+    // this.slideTo(SLIDE.MENU);
   }
 
   private close() {
     this.reset();
     this.visibleChange.next(false);
-    this.shadow.onShadowVisibilityChanged.next(false);
+    // this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

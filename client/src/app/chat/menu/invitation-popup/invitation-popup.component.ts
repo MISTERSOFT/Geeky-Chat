@@ -14,11 +14,12 @@ export class InvitationPopupComponent implements OnInit {
   @Output() visibleChange = new EventEmitter<boolean>();
   token: string;
   constructor(
-    private core: CoreService,
+    // private core: CoreService,
     private chat: ChatService,
-    private shadow: ShadowService) { }
+    // private shadow: ShadowService
+    ) { }
   ngOnInit() { }
-  onClickOutside() {
+  onClosed() {
     this.close();
   }
   onGenerateCode() {
@@ -33,6 +34,6 @@ export class InvitationPopupComponent implements OnInit {
   private close() {
     this.token = '';
     this.visibleChange.next(false);
-    this.shadow.onShadowVisibilityChanged.next(false);
+    // this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

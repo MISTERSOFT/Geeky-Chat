@@ -1,5 +1,23 @@
-<div class="outside-popup" (click)="onClickOutside()">
+<!-- <div class="outside-popup" (click)="onClickOutside()">
   <div class="popup" (click)="onPopupContainerClick($event)">
     <ng-content></ng-content>
+  </div>
+</div> -->
+
+<div class="modal" [class.active]="visible">
+  <div (click)="onClickOverlay()" class="modal-overlay" aria-label="Close"></div>
+  <div class="modal-container">
+    <div *ngIf="showHeader" class="modal-header">
+      <button class="btn btn-clear float-right" aria-label="Close" (click)="close()"></button>
+      <div class="modal-title h5">{{ title }}</div>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+        <ng-content select="[popup-content]"></ng-content>
+      </div>
+    </div>
+    <div *ngIf="showFooter" class="modal-footer">
+      <ng-content select="[popup-footer]"></ng-content>
+    </div>
   </div>
 </div>

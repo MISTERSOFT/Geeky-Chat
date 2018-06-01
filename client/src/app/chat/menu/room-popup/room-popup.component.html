@@ -1,58 +1,85 @@
-<app-popup *ngIf="visible" (clickOutside)="onClickOutside()">
+<app-popup [(visible)]="visible" (onClosed)="onClosed()" [showHeader]="false" [showFooter]="false">
   <!-- <div class="popup" (click)="onHostClicked($event)"> -->
-    <div #slideMenu class="slide slide-menu">
-      <h3 class="slide-title">What are we doing now ?</h3>
-      <div class="slide-content">
-        <div class="card card-join" (click)="slideTo(_SLIDE.JOIN)">
-          <h3>Join</h3>
-          <div class="icon icon-join">
-            <i class="mdi mdi-account"></i>
-            <i class="mdi mdi-arrow-right"></i>
-            <i class="mdi mdi-account-group"></i>
+    <ng-container popup-content>
+      <div class="columns">
+        <div class="column">
+          <h2>Create</h2>
+          <!-- <p>Give a name to your room :)</p>
+          <input class="input-create" [(ngModel)]="roomName" type="text" placeholder="Room name..."> -->
+          <div class="form-group">
+            <label class="form-label" for="create-room">Give a name to your room :)</label>
+            <input class="form-input" [(ngModel)]="roomName" type="text" id="create-room" placeholder="Room name...">
           </div>
-          <div class="card-footer">Join a room</div>
+          <button [disabled]="!roomName" class="btn float-right" (click)="createRoom()">Create</button>
+          <!-- btn-create -->
         </div>
-        <div class="card card-create" (click)="slideTo(_SLIDE.CREATE)">
-          <h3>Create</h3>
-          <div class="icon icon-create">
-            <i class="mdi mdi-comment-text-outline"></i>
+        <div class="divider-vert" data-content="OR"></div>
+        <div class="column">
+          <h2>Join</h2>
+          <!-- <p>Paste the invitation code given by your friend :)</p>
+          <input class="input-join" [(ngModel)]="joinToken" type="text" placeholder="Invitation code"> -->
+          <div class="form-group">
+            <label class="form-label" for="join-room">Paste the invitation code given by your friend :)</label>
+            <input class="form-input" [(ngModel)]="joinToken" type="text" id="join-room" placeholder="Invitation code">
           </div>
-          <div class="card-footer">Create a room</div>
+          <button [disabled]="!joinToken" class="btn float-right" (click)="joinRoom()">Join</button>
+          <!-- btn-join -->
         </div>
-        <div class="clear-float"></div>
       </div>
-    </div>
+      <!-- <div #slideMenu class="slide slide-menu">
+        <h3 class="slide-title">What are we doing now ?</h3>
+        <div class="slide-content">
+          <div class="card card-join" (click)="slideTo(_SLIDE.JOIN)">
+            <h3>Join</h3>
+            <div class="icon icon-join">
+              <i class="mdi mdi-account"></i>
+              <i class="mdi mdi-arrow-right"></i>
+              <i class="mdi mdi-account-group"></i>
+            </div>
+            <div class="card-footer">Join a room</div>
+          </div>
+          <div class="card card-create" (click)="slideTo(_SLIDE.CREATE)">
+            <h3>Create</h3>
+            <div class="icon icon-create">
+              <i class="mdi mdi-comment-text-outline"></i>
+            </div>
+            <div class="card-footer">Create a room</div>
+          </div>
+          <div class="clear-float"></div>
+        </div>
+      </div> -->
 
-    <!-- Slide Create -->
-    <div #slideCreate class="slide slide-out">
-      <h3 class="slide-title">Let's create a new room so !</h3>
-      <div class="slide-content">
-        <p>Give a name to your room :)</p>
-        <input class="input-create" [(ngModel)]="roomName" type="text" placeholder="Room name...">
-      </div>
-      <div class="slide-footer">
-        <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
-          <i class="mdi mdi-chevron-left"></i>
-          Back
-        </button>
-        <button [disabled]="!roomName" class="btn btn-create" (click)="createRoom()">Create</button>
-      </div>
-    </div>
+      <!-- Slide Create -->
+      <!-- <div #slideCreate class="slide slide-out">
+        <h3 class="slide-title">Let's create a new room so !</h3>
+        <div class="slide-content">
+          <p>Give a name to your room :)</p>
+          <input class="input-create" [(ngModel)]="roomName" type="text" placeholder="Room name...">
+        </div>
+        <div class="slide-footer">
+          <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
+            <i class="mdi mdi-chevron-left"></i>
+            Back
+          </button>
+          <button [disabled]="!roomName" class="btn btn-create" (click)="createRoom()">Create</button>
+        </div>
+      </div> -->
 
-    <!-- Slide Join -->
-    <div #slideJoin class="slide slide-out">
-      <h3 class="slide-title">Let's join an existing room !</h3>
-      <div class="slide-content">
-        <p>Paste the invitation code given by your friend :)</p>
-        <input class="input-join" [(ngModel)]="joinToken" type="text" placeholder="Invitation code">
-      </div>
-      <div class="slide-footer">
-        <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
-          <i class="mdi mdi-chevron-left"></i>
-          Back
-        </button>
-        <button [disabled]="!joinToken" class="btn btn-join" (click)="joinRoom()">Join</button>
-      </div>
-    </div>
+      <!-- Slide Join -->
+      <!-- <div #slideJoin class="slide slide-out">
+        <h3 class="slide-title">Let's join an existing room !</h3>
+        <div class="slide-content">
+          <p>Paste the invitation code given by your friend :)</p>
+          <input class="input-join" [(ngModel)]="joinToken" type="text" placeholder="Invitation code">
+        </div>
+        <div class="slide-footer">
+          <button class="btn btn-back" (click)="slideTo(_SLIDE.MENU)">
+            <i class="mdi mdi-chevron-left"></i>
+            Back
+          </button>
+          <button [disabled]="!joinToken" class="btn btn-join" (click)="joinRoom()">Join</button>
+        </div>
+      </div> -->
+    </ng-container>
   <!-- </div> -->
 </app-popup>

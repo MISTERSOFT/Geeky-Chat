@@ -1,5 +1,14 @@
-<app-popup *ngIf="visible" (clickOutside)="onClickOutside()">
-  <h3 class="popup-title">Invite friends</h3>
+<app-popup [(visible)]="visible" (onClosed)="onClosed()" [title]="'Invite friends'">
+  <ng-container popup-content>
+    <p>Share the given code to your friends to allow them to join your channel ! :)</p>
+    <div class="generated-code">
+      {{ token }}
+    </div>
+  </ng-container>
+  <ng-container popup-footer>
+    <button class="btn" [disabled]="token" (click)="onGenerateCode()">Create invitation code</button>
+  </ng-container>
+  <!-- <h3 class="popup-title">Invite friends</h3>
   <div class="popup-content">
     <p>Share the given code to your friends to allow them to join your channel ! :)</p>
     <div class="generated-code">
@@ -8,5 +17,5 @@
   </div>
   <div class="popup-footer">
     <button [disabled]="token" (click)="onGenerateCode()">Create invitation code</button>
-  </div>
+  </div> -->
 </app-popup>

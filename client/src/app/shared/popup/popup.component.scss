@@ -1,26 +1,26 @@
-@import '../../../assets/scss/_extends';
+// @import '../../../assets/scss/_extends';
 
-.outside-popup {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1001;
-}
+// .outside-popup {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   z-index: 1001;
+// }
 
-.popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  padding: 15px;
-  background: #fff;
-  z-index: 1002;
-  height: 202px;
-  width: 450px;
-  border-radius: 5px;
-  overflow: hidden;
-  @extend %shadow;
-}
+// .popup {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   text-align: center;
+//   padding: 15px;
+//   background: #fff;
+//   z-index: 1002;
+//   height: 202px;
+//   width: 450px;
+//   border-radius: 5px;
+//   overflow: hidden;
+//   @extend %shadow;
+// }

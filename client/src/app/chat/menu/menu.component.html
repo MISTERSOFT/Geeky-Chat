@@ -8,7 +8,10 @@
     <div *ngFor="let room of rooms$ | async" class="room"
       [ngClass]="{ 'current-room' : isCurrentRoom(room) }"
       (click)="onSelectRoom(room.id)">
-      <div class="room-name">{{ room.name | slice:0:1 }}</div>
+      <!-- <div class="room-name">{{ room.name | slice:0:1 }}</div> -->
+      <figure class="avatar avatar-lg" [attr.data-initial]="room.name | slice:0:1" style="background-color: rgb(44, 44, 44);">
+        <!-- <img src="img/avatar-1.png" alt="..."> -->
+      </figure>
     </div>
   </div>
   <div class="current-room-info">
@@ -42,5 +45,5 @@
   </div>
 </nav>
 
-<!-- <app-room-popup [(visible)]="showRoomPopup"></app-room-popup>
-<app-invitation-popup [(visible)]="showInvitationPopup"></app-invitation-popup> -->
+<app-room-popup [(visible)]="showRoomPopup"></app-room-popup>
+<app-invitation-popup [(visible)]="showInvitationPopup"></app-invitation-popup>

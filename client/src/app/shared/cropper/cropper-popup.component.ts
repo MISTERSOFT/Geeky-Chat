@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-cropper-popup',
@@ -17,6 +17,9 @@ export class CropperPopupComponent implements OnInit, OnDestroy {
   ngOnInit() { }
   ngOnDestroy() {
     this.croppedImage = null;
+  }
+  onClosed() {
+    this.close();
   }
   close() {
     this.visible = false;
