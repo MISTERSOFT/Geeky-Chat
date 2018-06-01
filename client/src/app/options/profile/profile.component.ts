@@ -81,6 +81,7 @@ export class ProfileComponent implements OnInit {
       avatar: value
     });
     this.cd.markForCheck();
+    this.auth.user.avatar = value;
   }
   openCropperPopup() {
     this.showCropperPopup = true;
