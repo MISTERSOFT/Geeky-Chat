@@ -61,7 +61,18 @@ app.post('/signin', (req, res) => {
 
 app.post('/signup', (req, res) => {
   // TODO: Create express route for Signup
-  res.sendStatus(200)
+  const userInfo = req.body
+  const model = _userConverter.toEntity(userInfo);
+  // Create the user
+  userRepository.storeUser(model).then(isOK => {
+    if (isOK) {
+      const data = Response.compose()
+      res.status(200).type('json').end(JSON.stringify(data))
+    } else {
+      const data = Response.compose({}, false, ['E_SIGNIN_ERROR'])
+      res.status(200).type('json').end(JSON.stringify(data))
+    }
+  })
 })
 
 app.get('/user/:id', (req, res) => {
