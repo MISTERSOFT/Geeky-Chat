@@ -1,26 +1,19 @@
-<nav>
+<nav *ngIf="currentRoom">
   <div class="rooms">
     <div class="room new button-new-room" (click)="openRoomPopup()">
       <div class="room-name">
         <i class="mdi mdi-plus button-new-room"></i>
       </div>
     </div>
-    <div *ngFor="let room of rooms$ | async" class="room"
-      [ngClass]="{ 'current-room' : isCurrentRoom(room) }"
-      (click)="onSelectRoom(room.id)">
+    <div *ngFor="let room of rooms" class="room" [ngClass]="{ 'current-room' : isCurrentRoom(room) }" (click)="onSelectRoom(room.id)">
       <!-- <div class="room-name">{{ room.name | slice:0:1 }}</div> -->
       <figure class="avatar avatar-lg" [attr.data-initial]="room.name | slice:0:1" style="background-color: rgb(44, 44, 44);">
         <!-- <img src="img/avatar-1.png" alt="..."> -->
       </figure>
     </div>
-    <!-- <div class="disconnect">
-      <button class="btn btn-link" (click)="disconnect()">
-        <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i>
-      </button>
-    </div> -->
   </div>
   <div class="current-room-info">
-    <div class="user-profile">
+    <!-- <div class="user-profile">
       <a class="settings" routerLink="/options">
         <i class="mdi mdi-settings mdi-18px"></i>
       </a>
@@ -28,9 +21,7 @@
         {{ user.username }}
         <i class="mdi mdi-chevron-down" (click)="toggleShowMore()"></i>
         <ul class="user-profile-more" [ngClass]="{ 'hidden': !showMore }">
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
+          <li (click)="disconnect()">Disconnect</li>
         </ul>
       </span>
     </div>
@@ -43,13 +34,70 @@
         <span class="status"></span>
         {{ user.username }}
       </div>
-    </div>
+    </div> -->
+
+    <!-- TEST -->
+    <ul class="menu menu-container">
+      <div class="menu-item dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle">
+          <div class="tile tile-centered">
+            <div class="tile-icon">
+              <figure class="avatar" [attr.data-initial]="user.username | slice:0:1" style="background-color: rgb(44, 44, 44);">
+                <img [src]="user.avatar">
+              </figure>
+            </div>
+            <div class="tile-content">
+              {{ user.username }}
+            </div>
+          </div>
+          <i class="mdi mdi-menu-down mdi-18px fix-caret"></i>
+        </a>
+        <!-- Dropdown content - on click username -->
+        <ul class="menu">
+          <li class="menu-item">
+            <a href="javascript:void(0);" (click)="disconnect()">
+              <i class="icon icon-link"></i>
+              Disconnect
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Option menu item -->
+      <li class="menu-item">
+        <a routerLink="/options">
+          <i class="icon icon-link"></i>
+          <i class="mdi mdi-settings mdi-18px"></i>
+          Options
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li class="menu-item">
+        <a href="javascript:void(0);" (click)="openInvitationPopup()">
+          <i class="icon icon-link"></i>
+          <i class="mdi mdi-plus mdi-18px"></i>
+          Invite friends
+        </a>
+      </li>
+      <!-- Users list -->
+      <li class="divider" data-content="USERS"></li>
+      <div class="menu-item users-list scrollable">
+        <li class="menu-item" *ngFor="let user of currentRoom.users">
+          <a href="javascript:void(0);">
+            <i class="icon icon-link"></i>
+            <span class="status"></span>
+            {{ user.username }}
+          </a>
+        </li>
+      </div>
+    </ul>
+    <!-- END TEST -->
+
     <div class="channel-info">
       <!-- <button (click)="debug()">Debug</button> -->
-      <button class="btn btn-primary" (click)="disconnect()">
-        <!-- <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i> -->
+      <!-- <button class="btn btn-primary" (click)="disconnect()">
+        <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i>
         Disconnect
-      </button>
+      </button> -->
     </div>
   </div>
 </nav>

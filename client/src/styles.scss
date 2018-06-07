@@ -52,3 +52,23 @@ button[disabled] {
 .file-input {
   padding-top: 6px !important;
 }
+
+.scrollable {
+  overflow-y: auto;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $app-color-neutral;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: darken($app-color-neutral, 10%);
+  }
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($app-color-neutral, 20%);
+  }
+}

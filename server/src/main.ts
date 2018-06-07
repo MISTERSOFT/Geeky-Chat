@@ -4,7 +4,6 @@ import { createServer } from 'http';
 import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import * as socketIO from 'socket.io';
-// import * as jwtAuth from 'socketio-jwt-auth'; // TODO: Uninstall maybe...
 import * as UIDGenerator from 'uid-generator';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
 import { Env, Response, Tools } from './core';
@@ -44,6 +43,7 @@ app.use((req, res, next) => {
 //#region Express server routes
 
 app.post('/signin', (req, res) => {
+  console.log('Signin...')
   const body = req.body
   const model = _userConverter.toEntity(body)
   userRepository.isUserExist(model).then(user => {
@@ -91,17 +91,6 @@ app.get('/user/:id', (req, res) => {
 
 //#region Socket IO Middleware
 
-// io.use(
-//   // socketIoJwt.authorize({
-//   //   secret: Env.SECRET_KEY,
-//   //   handshake: true
-//   // })
-//   jwtAuth.authenticate({
-//     secret: Env.SECRET_KEY
-//   }, (payload, done) => {
-//     return done(null, payload)
-//   })
-// )
 io.use((socket, next) => {
   const token = socket.handshake.query.token
   if (token) {
@@ -118,8 +107,11 @@ io.use((socket, next) => {
 //#endregion
 
 io.on('connection', (socket) => {
-  console.log('Authentification working !')
+  console.log('Socket connected')
 
+  socket.on('disconnect', () => {
+    console.log('User disconnected')
+  })
   // console.log('TOKEN FOR EVENT', socket.handshake.query.token) // ! Keep this code
 
   socket.on('DEBUG', (data, callback) => {
@@ -152,7 +144,6 @@ io.on('connection', (socket) => {
   socket.on('SIGNIN', (user, respond: Function) => {
     console.log('LOGIN...', user)
     const model = _userConverter.toEntity(user);
-    // TODO: Improve login system with cookies or whatever
     userRepository.isUserExist(model)
       .then(user => {
         if (user) {
@@ -185,6 +176,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('FETCH_USER_ROOMS_V2', (userId, respond: Function) => {
+    console.log('Fetch user rooms data...')
       // Fetch user room
     roomRepository.getRoomsByUser(userId)
       .then((rooms: Room[]) => {

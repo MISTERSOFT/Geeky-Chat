@@ -13,10 +13,11 @@ export const environment = {
       query: {
         // token: null
         token: null
-      }
+      },
+      autoConnect: false
     }
   },
   localStorageKey: {
-    token: 'geekychat_token'
+    token: 'token'
   }
 };

@@ -13,7 +13,6 @@ import { ToastComponent } from './toast/toast.component';
 import { ToastDirective } from './toast/toast.directive';
 import { ToastService } from './toast/toast.service';
 
-
 @NgModule({
   imports: [
     RouterModule,
@@ -43,7 +42,7 @@ import { ToastService } from './toast/toast.service';
     ShadowService,
     // CoreService,
     TranslateService,
-    ToastService
+    ToastService,
   ],
   entryComponents: [
     ToastComponent

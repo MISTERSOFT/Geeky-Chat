@@ -88,10 +88,10 @@ export class RoomRepository {
     }
     return database.INSTANCE.get(Env.DATABASE_NAME, url, viewUrlParams)
       .then(response => {
-        console.log('getRoomsByUser', response.data.rows)
+        // console.log('getRoomsByUser', response.data.rows)
         const rooms: Room[] = []
         response.data.rows.forEach(item => rooms.push(new Room(item.doc)))
-        console.log('BEFORE RETURN FETCH', rooms)
+        // console.log('BEFORE RETURN FETCH', rooms)
         return rooms
       })
   }

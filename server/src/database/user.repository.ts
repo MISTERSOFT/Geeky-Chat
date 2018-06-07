@@ -55,7 +55,7 @@ export class UserRepository {
   getById(userId: string): Promise<User> {
     return database.INSTANCE.get(Env.DATABASE_NAME, userId)
       .then(response => {
-        console.log('getUserById', response.data)
+        // console.log('getUserById', response.data)
         return response.data;
       });
     // return this.DB.rel.find(this.KEYS.user, userId)

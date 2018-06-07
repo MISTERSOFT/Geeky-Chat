@@ -6,15 +6,12 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthGuard implements CanLoad, Resolve<User> {
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(
+    private auth: AuthService,
+    private router: Router) { }
 
   canLoad(route: Route): boolean {
     if (this.auth.isAuth()) {
-      // // Prevent user to go to signin/signup pages when the user is logged
-      // if (route.path === 'signin' || route.path === 'signup') {
-      //   this.router.navigate(['r']);
-      //   return false;
-      // }
       return true;
     }
     this.router.navigate(['signin']);

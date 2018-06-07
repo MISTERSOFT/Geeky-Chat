@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import "rxjs/add/operator/takeWhile";
 import { Room } from '../shared/models';
 import { AuthService } from './../core/auth.service';
 import { ChatService } from './chat.service';
@@ -13,8 +14,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   // messages: Message[];
   room: Room;
   text: string; // Message to send
-
-  // private _subscriptions: Subscription[] = [];
+  /**
+   * Is component will be destroyed
+   */
+  private _destroy = false;
 
   constructor(
     private router: Router,
@@ -50,11 +53,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     //   this.chat.listenJoiningUser();
     // }
 
+    // Connect socket if necessary
+    if (this.chat.ioSocket.disconnected) {
+      this.chat.connect();
+    }
     this.chat.load();
-    this.chat.onCurrentRoomChanged.subscribe(room => {
+    this.chat.onCurrentRoomChanged.takeWhile(() => !this._destroy).subscribe(room => {
       this.room = room;
     });
-    this.chat.listenBroadcastedMessages().subscribe((message) => {
+    this.chat.listenBroadcastedMessages().takeWhile(() => !this._destroy).subscribe((message) => {
       if (message) {
         this.room.messages.push(message);
       }
@@ -67,7 +74,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this._subscriptions.forEach(sub => sub.unsubscribe());
+    this._destroy = true;
   }
 
   onMessageSent(message) {

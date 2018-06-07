@@ -4,7 +4,6 @@ import { AuthService } from '@core/index';
 import { ShadowService } from '@core/shadow';
 import { Room, User } from '@shared/models';
 import { ChatService } from 'app/chat/chat.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-menu',
@@ -13,31 +12,39 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class MenuComponent implements OnInit {
-  rooms$: Observable<Room[]>;
+  rooms: Room[];
   currentRoom: Room;
   user: User;
   showMore = false;
   showRoomPopup = false;
   showInvitationPopup = false;
-
+  private _destroy = false;
   constructor(
     private router: Router,
-    // private core: CoreService,
     private chat: ChatService,
     private auth: AuthService,
     private shadow: ShadowService) { }
 
   ngOnInit() {
-    // this.core.showMenu.subscribe(show => this.showMenu = show);
-    this.rooms$ = this.chat.onRoomsChanged; //.subscribe(rooms => {
-    //   this.rooms = rooms;
-    //   console.log('menu rooms', rooms);
-    // });
-    this.chat.onCurrentRoomChanged.subscribe(curr => {
+    this.chat.onRoomsChanged.takeWhile(() => !this._destroy).subscribe(rooms => {
+      this.rooms = rooms;
+      console.log('menu rooms', rooms);
+    });
+    this.chat.onCurrentRoomChanged.takeWhile(() => !this._destroy).subscribe(curr => {
       // console.log('Menu: current room changed', curr.id);
       this.currentRoom = curr;
     });
     this.user = this.auth.user;
+
+    this.chat.on('disconnect', () => {
+      console.log('User disconnected...');
+      this.auth.clear();
+      this.router.navigate(['signin']);
+    });
+  }
+
+  ngOnDestroy() {
+    this._destroy = true;
   }
 
   toggleShowMore() {

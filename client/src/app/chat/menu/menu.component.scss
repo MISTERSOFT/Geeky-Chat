@@ -9,157 +9,230 @@ nav {
   width: $nav-total-width;
   font-family: Arial, Helvetica, sans-serif;
 
-  & .rooms {
+  // & .rooms {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   bottom: 0;
+  //   width: 65px;
+  //   background: $app-color-01;
+
+  //   & .room {
+  //     height: 50px;
+  //     width: 50px;
+  //     margin: 5px 5px 5px 10px;
+  //     // background: rgb(44, 44, 44);
+  //     border-radius: 50%;
+  //     cursor: pointer;
+  //     user-select: none;
+
+  //     &.new {
+  //       color: #fff;
+  //       border: 1px dashed #fff;
+  //       text-align: center;
+  //     }
+
+  //     &.current-room {
+  //       &:before {
+  //         content: '';
+  //         display: block;
+  //         position: absolute;
+  //         left: 0;
+  //         height: 50px;
+  //         width: 5px;
+  //         background: #fff;
+  //         border-top-right-radius: 5px;
+  //         border-bottom-right-radius: 5px;
+  //       }
+  //     }
+
+  //     & .room-name {
+  //       position: relative;
+  //       left: 50%;
+  //       top: 50%;
+  //       transform: translate(-50%, -50%);
+  //       text-align: center;
+  //       color: white;
+  //       font-size: 22px;
+  //     }
+  //   }
+  // }
+  // & .current-room-info {
+  //   position: absolute;
+  //   top: 0;
+  //   left: $nav-rooms-width;
+  //   bottom: 0;
+  //   width: $nav-curr-room-width;
+  //   background: $app-color-02;
+
+  //   & .user-profile {
+  //     padding: 15px;
+  //     color: #fff;
+  //     margin-bottom: 20px;
+
+  //     & .settings {
+  //       float: left;
+  //       background: none;
+  //       border: none;
+  //       color: #fff;
+  //       outline: none;
+  //       cursor: pointer;
+  //     }
+
+  //     & .username {
+  //       position: relative;
+  //       float: right;
+
+  //       & i {
+  //         cursor: pointer;
+  //       }
+  //       & .user-profile-more {
+  //         position: absolute;
+  //         right: -8px;
+  //         top: 24px;
+  //         border-radius: 3px;
+  //         list-style-type: none;
+  //         background: #fff;
+  //         color: #000;
+  //         font-size: 14px;
+  //         @extend %shadow;
+
+  //         &:before {
+  //           content: '';
+  //           position: absolute;
+  //           right: 10px;
+  //           top: -6px;
+  //           width: 0;
+  //           height: 0;
+  //           border-left: 6px solid transparent;
+  //           border-right: 6px solid transparent;
+  //           border-bottom: 6px solid #fff;
+  //         }
+  //         & li {
+  //           padding: 5px 15px;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   & .invitation {
+  //     padding: 5px 15px;
+  //     margin-bottom: 10px;
+  //     color: #fff;
+  //     font-size: 14px;
+  //     cursor: pointer;
+  //   }
+
+  //   & .room-users {
+  //     // height: 100%;
+  //     position: absolute;
+  //     top: 90px;
+  //     bottom: 50px;
+  //     left: 0;
+  //     right: 0;
+
+  //     & .room-user {
+  //       padding: 5px 15px;
+  //       color: #fff;
+  //       font-size: 14px;
+  //       line-height: 14px;
+  //       &:hover {
+  //         background: $app-color-04;
+  //         cursor: pointer;
+  //       }
+
+  //       & .status {
+  //         display: inline-block;
+  //         height: 8px;
+  //         width: 8px;
+  //         border-radius: 50%;
+  //         background: red;
+  //         margin-right: 5px;
+  //       }
+  //     }
+  //   }
+
+  //   & .channel-info {
+  //     position: absolute;
+  //     height: 50px;
+  //     left: 0;
+  //     bottom: 0;
+  //     right: 0;
+  //   }
+  // }
+}
+
+.rooms {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     width: 65px;
     background: $app-color-01;
+}
 
-    & .room {
-      height: 50px;
-      width: 50px;
-      margin: 5px 5px 5px 10px;
-      // background: rgb(44, 44, 44);
-      border-radius: 50%;
-      cursor: pointer;
-      user-select: none;
+.room {
+  height: 50px;
+  width: 50px;
+  margin: 5px 5px 5px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+}
 
-      &.new {
-        color: #fff;
-        border: 1px dashed #fff;
-        text-align: center;
-      }
+.new {
+  color: #fff;
+  border: 1px dashed #fff;
+  text-align: center;
+}
 
-      &.current-room {
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          left: 0;
-          height: 50px;
-          width: 5px;
-          background: #fff;
-          border-top-right-radius: 5px;
-          border-bottom-right-radius: 5px;
-        }
-      }
-
-      & .room-name {
-        position: relative;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        color: white;
-        font-size: 22px;
-      }
-    }
-  }
-  & .current-room-info {
+.current-room {
+  &:before {
+    content: '';
+    display: block;
     position: absolute;
-    top: 0;
-    left: $nav-rooms-width;
-    bottom: 0;
-    width: $nav-curr-room-width;
-    background: $app-color-02;
-
-    & .user-profile {
-      padding: 15px;
-      color: #fff;
-      margin-bottom: 20px;
-
-      & .settings {
-        float: left;
-        background: none;
-        border: none;
-        color: #fff;
-        outline: none;
-        cursor: pointer;
-      }
-
-      & .username {
-        position: relative;
-        float: right;
-
-        & i {
-          cursor: pointer;
-        }
-        & .user-profile-more {
-          position: absolute;
-          right: -8px;
-          top: 24px;
-          border-radius: 3px;
-          list-style-type: none;
-          background: #fff;
-          color: #000;
-          font-size: 14px;
-          @extend %shadow;
-
-          &:before {
-            content: '';
-            position: absolute;
-            right: 10px;
-            top: -6px;
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid #fff;
-          }
-          & li {
-            padding: 5px 15px;
-          }
-        }
-      }
-    }
-
-    & .invitation {
-      padding: 5px 15px;
-      margin-bottom: 10px;
-      color: #fff;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    & .room-users {
-      // height: 100%;
-      position: absolute;
-      top: 90px;
-      bottom: 50px;
-      left: 0;
-      right: 0;
-
-      & .room-user {
-        padding: 5px 15px;
-        color: #fff;
-        font-size: 14px;
-        line-height: 14px;
-        &:hover {
-          background: $app-color-04;
-          cursor: pointer;
-        }
-
-        & .status {
-          display: inline-block;
-          height: 8px;
-          width: 8px;
-          border-radius: 50%;
-          background: red;
-          margin-right: 5px;
-        }
-      }
-    }
-
-    & .channel-info {
-      position: absolute;
-      height: 50px;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
+    left: 0;
+    height: 50px;
+    width: 5px;
+    background: #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
+}
+
+.room-name {
+position: relative;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+color: white;
+font-size: 22px;
+}
+
+.current-room-info {
+  position: absolute;
+  top: 0;
+  left: $nav-rooms-width;
+  bottom: 0;
+  width: $nav-curr-room-width;
+}
+
+.menu-container {
+  border-radius: 0;
+  transform: none;
+  box-shadow: none;
+  height: 100%;
+  border-right: 1px solid $app-color-neutral;
+}
+
+.users-list {
+  position: absolute;
+  top: 170px;
+  left: 12px;
+  right: 10px;
+  bottom: 50px;
+  padding: 0;
 }
 
 .disconnect {
@@ -168,4 +241,23 @@ nav {
   left: 5px;
   cursor: pointer;
   user-select: none;
+}
+
+.status {
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: red;
+  margin-right: 5px;
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.fix-caret {
+  position: absolute;
+  right: 0;
+  top: 5px;
 }

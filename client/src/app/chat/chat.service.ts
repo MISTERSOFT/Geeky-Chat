@@ -1,8 +1,7 @@
 // import { WebSocketService } from './../core/websocket.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ng-socket-io';
-import { LocalStorageService } from 'ngx-store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { map } from 'rxjs/operators';
@@ -11,20 +10,25 @@ import { Message, MessageSent, Response, Room, User } from '../shared/models';
 import { environment } from './../../environments/environment';
 
 @Injectable()
-export class ChatService extends Socket {
+export class ChatService extends Socket implements OnDestroy {
   private rooms: Room[] = [];
   currentRoom: Room;
   onRoomsChanged = new Subject<Room[]>();
   onCurrentRoomChanged = new Subject<Room>();
   showMenu = new Subject<boolean>();
 
-  constructor(private auth: AuthService, private storage: LocalStorageService, private router: Router) {
+  constructor(private auth: AuthService, private router: Router) {
     super(environment.socketConfig);
   }
   // loadData(): Observable<Response<Room[]>> {
   //   this.emit('FETCH_ALL_USER_DATA', this.auth.getUser().id);
   //   return this.waitResponse('FETCH_ALL_USER_DATA_RESPONSE');
   // }
+
+  ngOnDestroy() {
+    console.log('ChatService destroyed');
+  }
+
   sendMessage(message: MessageSent): void {
     this.emit('SEND_MESSAGE', message);
     // return this.waitResponse('SEND_MESSAGE_RESPONSE');
@@ -239,7 +243,7 @@ export class ChatService extends Socket {
       );
   }
   listenJoiningUser() {
-    return this.fromEvent('USER_JOINING').subscribe((response: Response<{ roomId: string, user: User }>) => {
+    this.fromEvent('USER_JOINING').subscribe((response: Response<{ roomId: string, user: User }>) => {
       if (response.success) {
         console.log('joining user res', response);
         const data = response.data;
@@ -272,11 +276,6 @@ export class ChatService extends Socket {
   }
 
   disconnect() {
-    console.log('DISCONNECT ME MOTHERFUCKER');
-    // this.storage.remove(environment.localStorageKey.token);
-    localStorage.removeItem('token');
-    this.auth.clearBeforeDisconnect();
     super.disconnect();
-    this.router.navigate(['signin']);
   }
 }

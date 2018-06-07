@@ -5,7 +5,6 @@ import { Response, User } from '@shared/models';
 import * as jwtDecode from 'jwt-decode';
 import { LocalStorageService } from 'ngx-store';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { catchError, switchMap } from 'rxjs/operators';
 import { map } from 'rxjs/operators/map';
 import { environment } from './../../environments/environment';
@@ -49,7 +48,7 @@ export class AuthService extends HttpService { // extends WebSocketService {
           // this.isAuthentificated.next(true);
           return userData.id;
         }),
-        switchMap(this.getUserData)
+        switchMap(this.getUserData.bind(this))
         // switchMap((userId) => {
         //   return this.http.get(`${this.api}/user/${userId}`, this.options)
         //     .pipe(
@@ -107,7 +106,7 @@ export class AuthService extends HttpService { // extends WebSocketService {
   }
 
   getTokenFromLocalStorage(): boolean|User {
-    const token = this.storage.get('token');
+    const token = this.storage.get(environment.localStorageKey.token);
     if (!token) {
       return false;
     }
@@ -124,9 +123,9 @@ export class AuthService extends HttpService { // extends WebSocketService {
     }
   }
 
-  clearBeforeDisconnect() {
+  clear() {
     this._user = undefined;
-    // this.userObs.next(this._user);
+    this.storage.remove(environment.localStorageKey.token);
   }
 
 }
