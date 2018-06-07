@@ -10,6 +10,9 @@ import { InputAutoResizeDirective } from './input/input-autoresize.directive';
 import { InputComponent } from './input/input.component';
 import { InvitationPopupComponent } from './menu/invitation-popup/invitation-popup.component';
 import { MenuComponent } from './menu/menu.component';
+import { OptionsPopupComponent } from './menu/options-popup/options-popup.component';
+import { OptionsService } from './menu/options-popup/options.service';
+import { ProfileComponent } from './menu/options-popup/profile/profile.component';
 import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
 import { MessageComponent } from './message/message.component';
 
@@ -31,10 +34,13 @@ import { MessageComponent } from './message/message.component';
     MenuComponent,
     RoomPopupComponent,
     InvitationPopupComponent,
+    OptionsPopupComponent,
+    ProfileComponent
   ],
   providers: [
     ChatService,
-    EmojiService
+    EmojiService,
+    OptionsService
   ]
 })
 export class ChatModule { }

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AuthService } from '@core/index';
+import { PopupBaseComponent } from '@shared/popup/popup-base.component';
 import { ChatService } from 'app/chat/chat.service';
 
 enum SLIDE {
@@ -13,10 +14,10 @@ enum SLIDE {
   templateUrl: 'room-popup.component.html',
   styleUrls: ['room-popup.component.scss']
 })
-export class RoomPopupComponent implements OnInit {
-  @Input() visible = false;
-  @Output() visibleChange = new EventEmitter<boolean>();
-  @Input() fullscreen = false;
+export class RoomPopupComponent extends PopupBaseComponent implements OnInit {
+  // @Input() visible = false;
+  // @Output() visibleChange = new EventEmitter<boolean>();
+  // @Input() fullscreen = false;
   // @ViewChild('slideMenu') $slideMenu: ElementRef;
   // @ViewChild('slideCreate') $slideCreate: ElementRef;
   // @ViewChild('slideJoin') $slideJoin: ElementRef;
@@ -32,7 +33,9 @@ export class RoomPopupComponent implements OnInit {
     private auth: AuthService,
     private chat: ChatService,
     // private shadow: ShadowService
-    ) { }
+    ) {
+      super();
+    }
   ngOnInit() { }
   onClosed() {
     this.close();
@@ -76,9 +79,10 @@ export class RoomPopupComponent implements OnInit {
     // this.slideTo(SLIDE.MENU);
   }
 
-  private close() {
+  close() {
     this.reset();
-    this.visibleChange.next(false);
+    super.close();
+    // this.visibleChange.next(false);
     // this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

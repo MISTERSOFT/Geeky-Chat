@@ -1,0 +1,35 @@
+<app-popup *ngIf="visible" (onClosed)="onClosed()" [showHeader]="false" [showFooter]="false" [fullscreen]="fullscreen">
+  <ng-container popup-content>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-3">
+          <ul class="nav">
+            <li class="nav-item active">
+              <a href="#">Profile</a>
+              <ul class="nav">
+                <li class="nav-item active">
+                  <a href="#">Details</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Change password</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#">Lorem ipsum</a>
+            </li>
+            <li class="nav-item">
+              <a href="#">Lorem ipsum</a>
+            </li>
+            <li class="nav-item">
+              <a href="#">Lorem ipsum</a>
+            </li>
+          </ul>
+        </div>
+        <div class="column col-9">
+          <app-profile></app-profile>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-popup>

@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit {
   showMore = false;
   showRoomPopup = false;
   showInvitationPopup = false;
+  showOptionsPopup = false;
   private _destroy = false;
   constructor(
     private router: Router,
@@ -59,6 +60,10 @@ export class MenuComponent implements OnInit {
   openInvitationPopup() {
     // this.shadow.onShadowVisibilityChanged.next(true);
     this.showInvitationPopup = true;
+  }
+
+  openOptionsPopup() {
+    this.showOptionsPopup = true;
   }
 
   isCurrentRoom(room: Room) {

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CoreService } from '@core/index';
-import { ShadowService } from '@core/shadow';
+import { Component, OnInit } from '@angular/core';
+import { PopupBaseComponent } from '@shared/popup/popup-base.component';
 import { ChatService } from 'app/chat/chat.service';
 
 @Component({
@@ -9,15 +8,17 @@ import { ChatService } from 'app/chat/chat.service';
   styleUrls: ['invitation-popup.component.scss']
 })
 
-export class InvitationPopupComponent implements OnInit {
-  @Input() visible;
-  @Output() visibleChange = new EventEmitter<boolean>();
+export class InvitationPopupComponent extends PopupBaseComponent implements OnInit {
+  // @Input() visible;
+  // @Output() visibleChange = new EventEmitter<boolean>();
   token: string;
   constructor(
     // private core: CoreService,
     private chat: ChatService,
     // private shadow: ShadowService
-    ) { }
+    ) {
+      super();
+    }
   ngOnInit() { }
   onClosed() {
     this.close();
@@ -31,9 +32,10 @@ export class InvitationPopupComponent implements OnInit {
     //   sub.unsubscribe();
     // });
   }
-  private close() {
+  close() {
     this.token = '';
-    this.visibleChange.next(false);
+    super.close();
+    // this.visibleChange.next(false);
     // this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

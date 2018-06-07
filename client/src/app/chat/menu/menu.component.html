@@ -64,7 +64,8 @@
       </div>
       <!-- Option menu item -->
       <li class="menu-item">
-        <a routerLink="/options">
+          <!-- routerLink="/options" -->
+        <a (click)="openOptionsPopup()">
           <i class="icon icon-link"></i>
           <i class="mdi mdi-settings mdi-18px"></i>
           Options
@@ -104,3 +105,4 @@
 
 <app-room-popup [(visible)]="showRoomPopup" [fullscreen]="true"></app-room-popup>
 <app-invitation-popup [(visible)]="showInvitationPopup"></app-invitation-popup>
+<app-options-popup [(visible)]="showOptionsPopup" [fullscreen]="true"></app-options-popup>
