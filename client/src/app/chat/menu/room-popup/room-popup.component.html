@@ -1,4 +1,4 @@
-<app-popup [(visible)]="visible" (onClosed)="onClosed()" [showHeader]="false" [showFooter]="false">
+<app-popup *ngIf="visible" (onClosed)="onClosed()" [showHeader]="false" [showFooter]="false" [fullscreen]="fullscreen">
   <!-- <div class="popup" (click)="onHostClicked($event)"> -->
     <ng-container popup-content>
       <div class="columns">

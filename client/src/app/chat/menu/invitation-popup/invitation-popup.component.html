@@ -1,4 +1,4 @@
-<app-popup [(visible)]="visible" (onClosed)="onClosed()" [title]="'Invite friends'">
+<app-popup *ngIf="visible" (onClosed)="onClosed()" [title]="'Invite friends'">
   <ng-container popup-content>
     <p>Share the given code to your friends to allow them to join your channel ! :)</p>
     <div class="generated-code">

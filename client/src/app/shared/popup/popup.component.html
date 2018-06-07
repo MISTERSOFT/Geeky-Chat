@@ -1,10 +1,9 @@
-<!-- <div class="outside-popup" (click)="onClickOutside()">
-  <div class="popup" (click)="onPopupContainerClick($event)">
-    <ng-content></ng-content>
+<!-- [class.active]="visible"> -->
+<div class="modal active" [ngClass]="{ 'modal-lg': fullscreen }">
+  <div *ngIf="fullscreen" (click)="close()" class="close-btn-large">
+    <i class="mdi mdi-close mdi-36px"></i>
+    <p>ESC</p>
   </div>
-</div> -->
-
-<div class="modal" [class.active]="visible">
   <div (click)="onClickOverlay()" class="modal-overlay" aria-label="Close"></div>
   <div class="modal-container">
     <div *ngIf="showHeader" class="modal-header">

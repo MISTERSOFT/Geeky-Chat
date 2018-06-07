@@ -19,7 +19,7 @@
     </div>
   </div>
 </div> -->
-<app-popup [visible]="visible" (onClosed)="onClosed()" [title]="'Import image'">
+<app-popup *ngIf="visible" (onClosed)="onClosed()" [title]="'Import image'">
   <ng-container popup-content>
     <app-cropper [image]="image" (cropEnd)="onCropEnd($event)"></app-cropper>
   </ng-container>

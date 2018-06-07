@@ -16,6 +16,7 @@ enum SLIDE {
 export class RoomPopupComponent implements OnInit {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() fullscreen = false;
   // @ViewChild('slideMenu') $slideMenu: ElementRef;
   // @ViewChild('slideCreate') $slideCreate: ElementRef;
   // @ViewChild('slideJoin') $slideJoin: ElementRef;
