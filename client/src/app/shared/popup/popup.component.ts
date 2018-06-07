@@ -6,6 +6,9 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
   styleUrls: ['popup.component.scss']
 })
 
+/**
+ * Provide a modal. Only the content need to be filled.
+ */
 export class PopupComponent implements OnInit {
   // @Input() visible = false;
   // @Output() visibleChange = new EventEmitter<boolean>();
