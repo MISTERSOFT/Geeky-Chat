@@ -25,7 +25,8 @@ server.listen(Env.PORT, () => {
 
 //#region Express Middlewares
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   // Website you wish to allow to connect
@@ -84,6 +85,35 @@ app.get('/user/:id', (req, res) => {
   }).catch(e => {
     const data = Response.compose({}, false, ['E_SERVER_ERROR'])
     res.status(500).type('json').end(JSON.stringify(data))
+  })
+})
+
+app.put('/user', (req, res) => {
+  console.log('update user with PUT...')
+  let error;
+  const _user = req.body
+  if (!_user || !_user.id) {
+    // socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+    error = Response.compose({}, false, ['E_UPDATE_USER_ERROR'])
+    res.status(404).type('json').end(JSON.stringify(error))
+    return
+  }
+  userRepository.getById(_user.id).then(user => {
+    const entity = _userConverter.toEntity(_user)
+    user.email = _user.email
+    user.avatar = _user.avatar
+    user.username = _user.username
+    // console.log('user', user);
+    // console.log('_user', _user);
+    userRepository.update(user).then((isOK) => {
+      if (isOK) {
+        // socket.emit('UPDATE_USER_RESPONSE', Response.compose())
+        res.status(200).type('json').end(JSON.stringify(Response.compose()))
+      } else {
+        error = Response.compose({}, false, ['E_UPDATE_USER_ERROR'])
+        res.status(404).type('json').end(JSON.stringify(error))
+      }
+    })
   })
 })
 
@@ -177,7 +207,7 @@ io.on('connection', (socket) => {
 
   socket.on('FETCH_USER_ROOMS_V2', (userId, respond: Function) => {
     console.log('Fetch user rooms data...')
-      // Fetch user room
+    // Fetch user room
     roomRepository.getRoomsByUser(userId)
       .then((rooms: Room[]) => {
         rooms.forEach(room => {
@@ -307,7 +337,7 @@ io.on('connection', (socket) => {
       room.join_tokens.push(token)
       roomRepository.update(room).then((isOk) => {
         let data = {}
-        if (isOk) data = {token: token.token}
+        if (isOk) data = { token: token.token }
         // socket.emit('GENERATE_JOIN_CODE_RESPONSE', Response.compose(data, isOk))
         respond(Response.compose(data, isOk))
       })
@@ -315,7 +345,7 @@ io.on('connection', (socket) => {
     console.log('Generated token = ', genToken);
   })
 
-  socket.on('JOIN_ROOM', (data: {userId: string, token: string}, respond: Function) => {
+  socket.on('JOIN_ROOM', (data: { userId: string, token: string }, respond: Function) => {
     roomRepository.getByToken(data.token).then((room: Room) => {
       console.log('Join room, response todo', room)
       const tryToken = room.join_tokens.find(t => t.token === data.token)
@@ -334,7 +364,7 @@ io.on('connection', (socket) => {
           userRepository.getById(data.userId).then(user => {
             const joiningUser = _userConverter.toDTO(user)
             // Send user data to users connected to the room
-            socket.broadcast.to(room._id).emit('USER_JOINING', Response.compose({roomId: room._id, user: joiningUser}))
+            socket.broadcast.to(room._id).emit('USER_JOINING', Response.compose({ roomId: room._id, user: joiningUser }))
           })
         })
       }
@@ -361,29 +391,30 @@ io.on('connection', (socket) => {
     // })
   })
 
-  socket.on('UPDATE_USER', (_user: UserDTO, respond) => {
-    if (!_user || !_user.id) {
-      // socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
-      respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
-      return;
-    }
-    userRepository.getById(_user.id).then(user => {
-      const entity = _userConverter.toEntity(_user)
-      user.email = _user.email;
-      user.avatar = _user.avatar;
-      user.username = _user.username;
-      // console.log('user', user);
-      // console.log('_user', _user);
-      userRepository.update(user).then((isOK) => {
-        if (isOK) {
-          // socket.emit('UPDATE_USER_RESPONSE', Response.compose())
-          respond(Response.compose())
-        } else {
-          respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
-        }
-      });
-    })
+  // ! TODO: Remove because a route is available with Express
+  // socket.on('UPDATE_USER', (_user: UserDTO, respond) => {
+  //   if (!_user || !_user.id) {
+  //     // socket.emit('UPDATE_USER_RESPONSE', Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+  //     respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+  //     return;
+  //   }
+  //   userRepository.getById(_user.id).then(user => {
+  //     const entity = _userConverter.toEntity(_user)
+  //     user.email = _user.email;
+  //     user.avatar = _user.avatar;
+  //     user.username = _user.username;
+  //     // console.log('user', user);
+  //     // console.log('_user', _user);
+  //     userRepository.update(user).then((isOK) => {
+  //       if (isOK) {
+  //         // socket.emit('UPDATE_USER_RESPONSE', Response.compose())
+  //         respond(Response.compose())
+  //       } else {
+  //         respond(Response.compose({}, false, ['E_UPDATE_USER_ERROR']))
+  //       }
+  //     });
+  //   })
 
-  })
+  // })
 
 })
