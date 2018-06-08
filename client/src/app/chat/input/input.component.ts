@@ -1,6 +1,6 @@
-import { Component, DoCheck, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
-import { Message, MessageSent } from '../../shared/models';
+import { Component, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AuthService } from '@core/index';
+import { Message, MessageSent, Response } from '@shared/models';
 import { ChatService } from './../chat.service';
 
 @Component({
@@ -9,21 +9,31 @@ import { ChatService } from './../chat.service';
   styleUrls: ['input.component.scss']
 })
 
-export class InputComponent implements OnInit, DoCheck {
+export class InputComponent implements OnInit, DoCheck, OnDestroy {
   @Input() roomId: string;
   // TODO: Remove later
   @Output() onMessageSent: EventEmitter<Message> = new EventEmitter<Message>();
   text: string = ''; // Message to send
   charsLimit = 5000;
   charsCount = 5000;
+  private _destroy = false;
 
   constructor(
     private auth: AuthService,
     private chat: ChatService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.chat.fromEvent('SEND_MESSAGE_RESPONSE').takeWhile(() => !this._destroy).subscribe((response: Response<Message>) => {
+      if (response.success) {
+        this.chat.pushMessageInCurrentRoom(response.data);
+      }
+    });
+  }
   ngDoCheck() {
     this.charsCount = this.charsLimit - this.text.length;
+  }
+  ngOnDestroy() {
+    this._destroy = true;
   }
   onKeyPress(e) {
     // If "Enter" has been pressed

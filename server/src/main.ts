@@ -196,7 +196,7 @@ io.on('connection', (socket) => {
         const data = _messageConverter.toDTO(result)
         console.log('Message to EMIT after save')
         // Emit the message with user data to the emitter
-        // socket.emit('SEND_MESSAGE_RESPONSE', Response.compose(data))
+        socket.emit('SEND_MESSAGE_RESPONSE', Response.compose(data))
         // Broadcast the message sent by the user to the room.
         // The message broadcasted contains the text message
         // and data about the emitter

@@ -3,8 +3,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ng-socket-io';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../core/auth.service';
 import { Message, MessageSent, Response, Room, User } from '../shared/models';
 import { environment } from './../../environments/environment';
@@ -31,7 +31,11 @@ export class ChatService extends Socket implements OnDestroy {
 
   sendMessage(message: MessageSent): void {
     this.emit('SEND_MESSAGE', message);
-    // return this.waitResponse('SEND_MESSAGE_RESPONSE');
+    // return this.fromEvent('SEND_MESSAGE_RESPONSE');
+  }
+
+  pushMessageInCurrentRoom(message: Message) {
+    this.currentRoom.messages.push(message);
   }
 
   listenEmittedMessages(): Observable<Response<Message>> {
