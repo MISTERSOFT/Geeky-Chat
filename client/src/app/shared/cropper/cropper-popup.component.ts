@@ -1,40 +1,36 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { PopupBaseComponent } from '@shared/popup/popup-base.component';
 
 @Component({
   selector: 'app-cropper-popup',
   templateUrl: 'cropper-popup.component.html'
 })
 
-export class CropperPopupComponent implements OnInit, OnDestroy {
-  @Input() visible = false;
-  @Output() visibleChange = new EventEmitter<boolean>();
+export class CropperPopupComponent extends PopupBaseComponent implements OnDestroy {
   @Input() image: any;
   @Output() validate = new EventEmitter<string>();
 
   @ViewChild('inputFile') $inputFile: ElementRef;
   private croppedImage: string;
-  constructor() { }
-  ngOnInit() { }
+  constructor() {
+    super();
+  }
   ngOnDestroy() {
     this.croppedImage = null;
   }
   onClosed() {
-    this.close();
-  }
-  close() {
-    this.visible = false;
-    this.visibleChange.next(this.visible);
+    super.close();
   }
   /**
    * Handle the end of the crop
-   * @param image Base64 Image
+   * @param image {string} Base64 image
    */
   onCropEnd(image: string) {
     this.croppedImage = image;
   }
   onValidate() {
     this.validate.next(this.croppedImage);
-    this.close();
+    super.close();
   }
   import() {
     this.$inputFile.nativeElement.click();
@@ -43,6 +39,7 @@ export class CropperPopupComponent implements OnInit, OnDestroy {
     // console.log('onFileChange', e);
     const reader = new FileReader();
     const files = e.target.files;
+    // TODO: Check file extension
     if (files && files.length > 0) {
       reader.onabort = this.onFileReaderError.bind(this);
       reader.onerror = this.onFileReaderError.bind(this);
