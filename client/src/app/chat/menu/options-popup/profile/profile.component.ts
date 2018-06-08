@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
   }
   onSaveProfile(e) {
     this.saving = true;
-    this.options.updateProfile(this.detailsForm.value, (response: Response<any>) => {
+    this.options.updateProfile(this.detailsForm.value).subscribe((response: Response<any>) => {
       if (response.success) {
         this.auth.user.username = this.detailsForm.value.username;
         this.auth.user.email = this.detailsForm.value.email;
