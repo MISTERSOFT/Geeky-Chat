@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
+import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
