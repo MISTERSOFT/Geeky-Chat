@@ -6,8 +6,8 @@ $app-color-05: #27C6FF;
 
 $app-color-success: #1bb770;
 $app-color-danger: #ff2743;
-$app-color-neutral: #e7e9ed;
-$app-color-neutral-darken-1: darken(#e7e9ed, 10%);
+$app-color-neutral: #d3d5da;
+$app-color-neutral-darken-1: darken($app-color-neutral, 10%);
 $app-color-disabled: #c3c3c3;
 
 $nav-total-width: 250px;

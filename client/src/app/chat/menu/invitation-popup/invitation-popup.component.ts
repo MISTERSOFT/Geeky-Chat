@@ -9,14 +9,8 @@ import { ChatService } from 'app/chat/chat.service';
 })
 
 export class InvitationPopupComponent extends PopupBaseComponent implements OnInit {
-  // @Input() visible;
-  // @Output() visibleChange = new EventEmitter<boolean>();
   token: string;
-  constructor(
-    // private core: CoreService,
-    private chat: ChatService,
-    // private shadow: ShadowService
-    ) {
+  constructor(private chat: ChatService) {
       super();
     }
   ngOnInit() { }
@@ -35,7 +29,5 @@ export class InvitationPopupComponent extends PopupBaseComponent implements OnIn
   close() {
     this.token = '';
     super.close();
-    // this.visibleChange.next(false);
-    // this.shadow.onShadowVisibilityChanged.next(false);
   }
 }

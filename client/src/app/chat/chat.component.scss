@@ -1,5 +1,3 @@
-@import '../../assets/scss/_mixins.scss';
-
 main {
   position: absolute;
   top: 0;
@@ -15,8 +13,7 @@ main {
   top: 0;
   bottom: 60px;
   background: #fff;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   padding: 0 10px;
-  @include scroll-bar-stylizer();
 }

@@ -1,5 +1,3 @@
-@import '../../../assets/scss/_mixins.scss';
-
 .emoji-container {
   position: absolute;
   height: 260px;
@@ -41,7 +39,6 @@
     height: 184px;
     margin-top: 10px;
     overflow-y: scroll;
-    @include scroll-bar-stylizer();
     & .emoji {
       display: inline-block;
       height: 26px;

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/index';
-import { ShadowService } from '@core/shadow';
 import { Room, User } from '@shared/models';
 import { ChatService } from 'app/chat/chat.service';
 
@@ -23,8 +22,7 @@ export class MenuComponent implements OnInit {
   constructor(
     private router: Router,
     private chat: ChatService,
-    private auth: AuthService,
-    private shadow: ShadowService) { }
+    private auth: AuthService) { }
 
   ngOnInit() {
     this.chat.onRoomsChanged.takeWhile(() => !this._destroy).subscribe(rooms => {
@@ -53,12 +51,10 @@ export class MenuComponent implements OnInit {
   }
 
   openRoomPopup() {
-    // this.shadow.onShadowVisibilityChanged.next(true);
     this.showRoomPopup = true;
   }
 
   openInvitationPopup() {
-    // this.shadow.onShadowVisibilityChanged.next(true);
     this.showInvitationPopup = true;
   }
 

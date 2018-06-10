@@ -1,6 +1,6 @@
 <app-menu></app-menu>
 <main *ngIf="room">
-  <div class="messages-container" #messagesContainer [scrollTop]="messagesContainer.scrollHeight" [style.bottom]="fromBottom">
+  <div class="messages-container scrollable" #messagesContainer [scrollTop]="messagesContainer.scrollHeight" [style.bottom]="fromBottom">
     <app-chat-message *ngFor="let message of room.messages" [message]="message"></app-chat-message>
   </div>
   <app-input [roomId]="room.id" (onMessageSent)="onMessageSent($event)" (onInputHeightChange)="onInputHeightChange($event)"></app-input>
