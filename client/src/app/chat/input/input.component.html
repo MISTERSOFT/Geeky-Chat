@@ -10,10 +10,15 @@
     <img src="assets/send.svg">
   </button>
 </div> -->
-<div class="inputs-container">
+<div class="inputs-container" #container>
   <div class="inputs">
     <div class="textarea">
-      <textarea placeholder="Message..." [(ngModel)]="text" (keypress)="onKeyPress($event)" [maxlength]="charsLimit"></textarea>
+        <!-- (keyup)="onKeyUp($event)" -->
+        <!-- (keydown)="typing.next($event)" -->
+      <textarea
+        #textarea
+        [ngClass]="{ 'scrollable': rowsInTextarea >= maxRowsToDisplay }"
+        placeholder="Message..." [(ngModel)]="text" (keydown)="onKeyDown($event)" [maxlength]="charsLimit"></textarea>
     </div>
     <div class="buttons-container">
       <span class="chars-limit">{{ charsCount }}</span>

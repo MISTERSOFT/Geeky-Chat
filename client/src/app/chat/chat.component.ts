@@ -12,8 +12,10 @@ import { ChatService } from './chat.service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   // messages: Message[];
+  // @ViewChild('messagesContainer') $messagesContainer: ElementRef;
   room: Room;
   text: string; // Message to send
+  fromBottom: string;
   /**
    * Is component will be destroyed
    */
@@ -81,6 +83,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.room.messages.push(message);
   }
 
-  test() {
+  onInputHeightChange(height) {
+    this.fromBottom = height;
   }
 }
