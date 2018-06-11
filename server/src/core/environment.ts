@@ -5,7 +5,7 @@ export class Env {
   /**
    * Token expiration in seconds
    */
-  static TOKEN_EXPIRATION = 365 * 30 * 60 * 1000;
+  static TOKEN_EXPIRATION = 657000000; // 365 * 30 * 60 * 1000
   //#endregion
 
   //#region Database
