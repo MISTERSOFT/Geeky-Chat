@@ -106,8 +106,12 @@ nav {
   height: 8px;
   width: 8px;
   border-radius: 50%;
-  background: red;
+  background-color: red;
   margin-right: 5px;
+  &.offline { background-color: #999; }
+  &.afk { background-color: #ec3d3d; }
+  &.busy { background-color: #e4941d; }
+  &.online { background-color: #48e421; }
 }
 
 .dropdown {

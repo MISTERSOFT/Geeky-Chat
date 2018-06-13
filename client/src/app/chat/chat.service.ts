@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../core/auth.service';
-import { Message, MessageSent, Response, Room, User } from '../shared/models';
+import { Message, MessageSent, Response, Room, RoomState, User } from '../shared/models';
 import { environment } from './../../environments/environment';
 
 @Injectable()
@@ -32,6 +32,24 @@ export class ChatService extends Socket implements OnDestroy {
   sendMessage(message: MessageSent): void {
     this.emit('SEND_MESSAGE', message);
     // return this.fromEvent('SEND_MESSAGE_RESPONSE');
+  }
+
+  listenChatState() {
+    this.on('CHAT_STATE', (response: Response<RoomState[]>) => {
+      console.log('Chat state', response);
+      if (response.success) {
+        response.data.forEach(roomState => {
+          this.rooms.find(r => r.id === roomState.roomId).users.forEach(roomUser => {
+            const userState = roomState.users.find(u => u.userId === roomUser.id);
+            roomUser.status = userState.status;
+          })
+        })
+      }
+    })
+  }
+
+  debug() {
+    this.emit('DEBUG', ['3038c03c9ba32116a19b9374560156d0']);
   }
 
   pushMessageInCurrentRoom(message: Message) {

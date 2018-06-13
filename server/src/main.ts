@@ -5,7 +5,7 @@ import * as socketIO from 'socket.io';
 import * as UIDGenerator from 'uid-generator';
 import { API } from './api';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
-import { Env, Response } from './core';
+import { Env, Response, RuntimeChatState, RuntimeUserState } from './core';
 import { messageRepository, roomRepository, userRepository } from './database';
 import { MessageLiteDTO, UserDTO } from './dtos';
 import { JoinToken, Room } from './entities';
@@ -26,11 +26,23 @@ const _roomConverter = new RoomConverter()
  * - Users typing event
  * - Maybe many things...
  */
-const ROOMS = [];
+const CHAT_RUNTIME = new RuntimeChatState();
 
 server.listen(Env.PORT, () => {
   console.log(`# Server is running: http://localhost:${Env.PORT}`);
-  // TODO: Load all rooms with all users per room in a complex object (for performance)
+  roomRepository.getAllRoomsForRuntime().then((rooms) => {
+    CHAT_RUNTIME.rooms = rooms;
+    const promises = []
+    rooms.forEach(room =>
+      promises.push(userRepository.getUsersByRoomForRuntime(room.roomId))
+    )
+    Promise.all(promises).then((result: Array<{roomId: string, values: RuntimeUserState[]}>) => {
+      // For each rooms, get its own users
+      CHAT_RUNTIME.rooms.forEach(room => {
+        room.users = result.find(r => r.roomId === room.roomId).values;
+      })
+    })
+  })
 })
 
 //#region Express Middlewares
@@ -155,16 +167,11 @@ io.on('connection', (socket) => {
   // console.log('TOKEN FOR EVENT', socket.handshake.query.token) // ! Keep this code
 
   // TODO: Remove
-  socket.on('DEBUG', (data, callback) => {
-    console.log('DEBUG MAYBE PLZ')
-    io.to('3038c03c9ba32116a19b9374560156d0').clients((err, clients) => {
-      // socket.emit('DEBUG_RESPONSE', {
-      //   rooms: socket.rooms,
-      //   clients: clients
-      // })
-      console.log('WORKS PLZ')
-      callback('IT WORKS')
-    })
+  socket.on('DEBUG', (data) => {
+    console.log('debug', data)
+    const states = CHAT_RUNTIME.getRoomsStates(data)
+    console.log('debug state', states)
+    socket.emit('CHAT_STATE', Response.compose(states))
   })
 
   socket.on('SIGNUP', (userInfo: UserDTO, respond: Function) => {
@@ -254,7 +261,14 @@ io.on('connection', (socket) => {
             })
             return roomsDto
           })
-          .then(roomsDtos => respond(Response.compose(roomsDtos)))
+          .then(roomsDtos => {
+            // Send data to client
+            respond(Response.compose(roomsDtos))
+            // Send user's rooms states
+            const roomIds = roomsDtos.map(r => r.id);
+            const states = CHAT_RUNTIME.getRoomsStates(roomIds)
+            socket.emit('CHAT_STATE', Response.compose(states))
+          })
 
 
         // const data = _roomConverter.toDTOs(rooms);

@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash';
-import { Env } from '../core';
+import { Env, RuntimeRoomState } from '../core';
 import { Message, MessageDOC, Room, RoomDOC, User, UserRoomRelation } from '../entities';
 import { database } from './database';
 
@@ -39,6 +39,18 @@ export class RoomRepository {
         return response.data
       })
   }
+
+  getAllRoomsForRuntime(): Promise<RuntimeRoomState[]> {
+    const url = Env.ROOMS_VIEW_URL + 'all_rooms_for_runtime'
+    const viewUrlParams = {
+      include_docs: false
+    }
+    return database.INSTANCE.get(Env.DATABASE_NAME, url, viewUrlParams)
+      .then(response => {
+        return response.data.rows.map(doc => new RuntimeRoomState(doc.id));
+      })
+  }
+
   getRoomMessages(roomId: string) {
     const url = Env.MESSAGES_VIEW_URL + 'by_room'
     const viewUrlParams = {

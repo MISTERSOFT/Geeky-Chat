@@ -1,3 +1,4 @@
+import { RuntimeUserState } from '../core';
 import { Env } from '../core/environment';
 import { User } from '../entities';
 import { database } from './database';
@@ -62,6 +63,22 @@ export class UserRepository {
     // .then(docs => {
     //   return (docs.users.length === 1) ? docs.users[0] : null;
     // });
+  }
+
+  getUsersByRoomForRuntime(roomId: string): Promise<{roomId: string, values: RuntimeUserState[]}> {
+    const url = Env.USERS_VIEW_URL + 'by_room_for_runtime'
+    const viewUrlParams = {
+      include_docs: false,
+      key: roomId
+    }
+    return database.INSTANCE.get(Env.DATABASE_NAME, url, viewUrlParams)
+      .then(response => {
+        // console.log('getUsersByRoomForRuntime', response.data.rows)
+        return {
+          roomId: roomId,
+          values: response.data.rows.map(doc => new RuntimeUserState(doc.value))
+        }
+      })
   }
 
   update(user: User): Promise<boolean> {

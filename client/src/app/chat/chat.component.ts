@@ -59,6 +59,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.chat.ioSocket.disconnected) {
       this.chat.connect();
     }
+    this.chat.listenChatState();
     this.chat.load();
     this.chat.onCurrentRoomChanged.takeWhile(() => !this._destroy).subscribe(room => {
       this.room = room;
@@ -77,6 +78,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._destroy = true;
+    this.chat.removeListener('error');
+    this.chat.removeListener('CHAT_STATE');
   }
 
   onMessageSent(message) {

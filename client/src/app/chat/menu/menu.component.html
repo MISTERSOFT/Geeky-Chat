@@ -84,7 +84,7 @@
         <li class="menu-item" *ngFor="let user of currentRoom.users">
           <a href="javascript:void(0);">
             <i class="icon icon-link"></i>
-            <span class="status"></span>
+            <span class="status" [ngClass]="getClassForUserStatus(user.status)"></span>
             {{ user.username }}
           </a>
         </li>
@@ -97,6 +97,7 @@
         <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i>
         Disconnect
       </button> -->
+      <!-- <button (click)="debug()">Debug</button> -->
     </div>
   </div>
 </nav>

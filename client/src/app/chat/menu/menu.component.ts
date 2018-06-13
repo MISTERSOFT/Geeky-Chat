@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/index';
-import { Room, User } from '@shared/models';
+import { Room, User, UserStatus } from '@shared/models';
 import { ChatService } from 'app/chat/chat.service';
 
 @Component({
@@ -35,15 +35,12 @@ export class MenuComponent implements OnInit {
     });
     this.user = this.auth.user;
 
-    this.chat.on('disconnect', () => {
-      console.log('User disconnected...');
-      this.auth.clear();
-      this.router.navigate(['signin']);
-    });
+    this.chat.on('disconnect', this.onDisconnect.bind(this));
   }
 
   ngOnDestroy() {
     this._destroy = true;
+    this.chat.removeListener('disconnect');
   }
 
   toggleShowMore() {
@@ -72,12 +69,28 @@ export class MenuComponent implements OnInit {
     // this.router.navigate(['chat', roomId]);
   }
 
-  debug(v) {
-    console.log('debug', v);
+  getClassForUserStatus(status: UserStatus) {
+    switch (status) {
+      case UserStatus.OFFLINE: return 'offline';
+      case UserStatus.AFK: return 'afk';
+      case UserStatus.BUSY: return 'busy';
+      case UserStatus.ONLINE: return 'online';
+      default: return 'offline';
+    }
+  }
+
+  debug() {
     // this.core.loadServerInfo();
+    this.chat.debug();
   }
 
   disconnect() {
     this.chat.disconnect();
+  }
+
+  onDisconnect() {
+    console.log('User disconnected...');
+    this.auth.clear();
+    this.router.navigate(['signin']);
   }
 }
