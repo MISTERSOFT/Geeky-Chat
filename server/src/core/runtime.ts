@@ -12,6 +12,12 @@ export class RuntimeChatState {
     })
     return states
   }
+
+  setStatusForUser(userId: string, status: UserStatus) {
+    this.rooms.forEach(room => {
+      room.users.find(user => user.userId === userId).status = status;
+    })
+  }
 }
 
 export class RuntimeRoomState {

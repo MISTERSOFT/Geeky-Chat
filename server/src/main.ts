@@ -5,7 +5,7 @@ import * as socketIO from 'socket.io';
 import * as UIDGenerator from 'uid-generator';
 import { API } from './api';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
-import { Env, Response, RuntimeChatState, RuntimeUserState } from './core';
+import { Env, Response, RuntimeChatState, RuntimeUserState, UserStatus } from './core';
 import { messageRepository, roomRepository, userRepository } from './database';
 import { MessageLiteDTO, UserDTO } from './dtos';
 import { JoinToken, Room } from './entities';
@@ -265,7 +265,8 @@ io.on('connection', (socket) => {
             // Send data to client
             respond(Response.compose(roomsDtos))
             // Send user's rooms states
-            const roomIds = roomsDtos.map(r => r.id);
+            CHAT_RUNTIME.setStatusForUser(userId, UserStatus.ONLINE)
+            const roomIds = roomsDtos.map(r => r.id)
             const states = CHAT_RUNTIME.getRoomsStates(roomIds)
             socket.emit('CHAT_STATE', Response.compose(states))
           })
