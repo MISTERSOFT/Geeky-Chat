@@ -5,9 +5,9 @@ import * as socketIO from 'socket.io';
 import * as UIDGenerator from 'uid-generator';
 import { API } from './api';
 import { MessageConverter, RoomConverter, UserConverter } from './converters';
-import { Env, Response, RuntimeChatState, RuntimeUserState, UserStatus } from './core';
+import { ChatStateChangeMultiple, ChatStateChangeSingle, Env, Response, RuntimeChatState, RuntimeUserState } from './core';
 import { messageRepository, roomRepository, userRepository } from './database';
-import { MessageLiteDTO, UserDTO } from './dtos';
+import { MessageLiteDTO } from './dtos';
 import { JoinToken, Room } from './entities';
 
 // const app = express()
@@ -23,7 +23,7 @@ const _roomConverter = new RoomConverter()
  * Contains all rooms with users per room
  * Runtime constant that help to know things like:
  * - Users status
- * - Users typing event
+ * - Users keyboards event
  * - Maybe many things...
  */
 const CHAT_RUNTIME = new RuntimeChatState();
@@ -174,35 +174,35 @@ io.on('connection', (socket) => {
     socket.emit('CHAT_STATE', Response.compose(states))
   })
 
-  socket.on('SIGNUP', (userInfo: UserDTO, respond: Function) => {
-    // const model = ModelBuilder.user.toEntity(userInfo)
-    const model = _userConverter.toEntity(userInfo);
-    // Create the user
-    userRepository.storeUser(model).then(isOK => {
-      if (isOK) {
-        // socket.emit('SIGNUP_RESPONSE', Response.compose())
-        respond(Response.compose())
-      } else {
-        // socket.emit('SIGNUP_RESPONSE', Response.compose({}, false, ['E_SIGNIN_ERROR']))
-        respond(Response.compose({}, false, ['E_SIGNIN_ERROR']))
-      }
-    })
-  })
+  // socket.on('SIGNUP', (userInfo: UserDTO, respond: Function) => {
+  //   // const model = ModelBuilder.user.toEntity(userInfo)
+  //   const model = _userConverter.toEntity(userInfo);
+  //   // Create the user
+  //   userRepository.storeUser(model).then(isOK => {
+  //     if (isOK) {
+  //       // socket.emit('SIGNUP_RESPONSE', Response.compose())
+  //       respond(Response.compose())
+  //     } else {
+  //       // socket.emit('SIGNUP_RESPONSE', Response.compose({}, false, ['E_SIGNIN_ERROR']))
+  //       respond(Response.compose({}, false, ['E_SIGNIN_ERROR']))
+  //     }
+  //   })
+  // })
 
-  socket.on('SIGNIN', (user, respond: Function) => {
-    console.log('LOGIN...', user)
-    const model = _userConverter.toEntity(user);
-    userRepository.isUserExist(model)
-      .then(user => {
-        if (user) {
-          // socket.emit('SIGNIN_RESPONSE', Response.compose(_userConverter.toDTO(user)))
-          respond(Response.compose(_userConverter.toDTO(user)))
-        } else {
-          // socket.emit('SIGNIN_RESPONSE', Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
-          respond(Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
-        }
-      });
-  })
+  // socket.on('SIGNIN', (user, respond: Function) => {
+  //   console.log('LOGIN...', user)
+  //   const model = _userConverter.toEntity(user);
+  //   userRepository.isUserExist(model)
+  //     .then(user => {
+  //       if (user) {
+  //         // socket.emit('SIGNIN_RESPONSE', Response.compose(_userConverter.toDTO(user)))
+  //         respond(Response.compose(_userConverter.toDTO(user)))
+  //       } else {
+  //         // socket.emit('SIGNIN_RESPONSE', Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
+  //         respond(Response.compose({}, false, ['E_INVALID_USER_CREDENTIALS']))
+  //       }
+  //     });
+  // })
 
   socket.on('SEND_MESSAGE', (message: MessageLiteDTO) => {
     console.log('SEND_MESSAGE...', message)
@@ -212,7 +212,6 @@ io.on('connection', (socket) => {
     messageRepository.storeMessage(model).then(result => {
       if (result) {
         const data = _messageConverter.toDTO(result)
-        console.log('Message to EMIT after save')
         // Emit the message with user data to the emitter
         socket.emit('SEND_MESSAGE_RESPONSE', Response.compose(data))
         // Broadcast the message sent by the user to the room.
@@ -221,6 +220,23 @@ io.on('connection', (socket) => {
         socket.to(result.room_id).emit('BROADCAST_SEND_MESSAGE', Response.compose(data))
       }
     })
+  })
+
+  socket.on('CHAT_STATE_CHANGE', (changes: ChatStateChangeSingle|ChatStateChangeMultiple) => {
+    CHAT_RUNTIME.applyChanges(changes);
+    if (ChatStateChangeSingle.isInstance(changes)) {
+      console.log('Chat state changed - Single')
+      const state = CHAT_RUNTIME.getRoomStateByUser(changes.roomId, changes.userId)
+      socket.emit('CHAT_STATE', Response.compose(state))
+      socket.to(changes.roomId).emit('CHAT_STATE', Response.compose(state))
+    } else {
+      console.log('Chat state changed - Multiple')
+      const states = CHAT_RUNTIME.getRoomsStateByUser(changes.roomIds, changes.userId)
+      socket.emit('CHAT_STATE', Response.compose(states))
+      changes.roomIds.forEach(roomId => {
+        socket.to(roomId).emit('CHAT_STATE', Response.compose(states))
+      })
+    }
   })
 
   socket.on('FETCH_USER_ROOMS_V2', (userId, respond: Function) => {
@@ -265,10 +281,14 @@ io.on('connection', (socket) => {
             // Send data to client
             respond(Response.compose(roomsDtos))
             // Send user's rooms states
-            CHAT_RUNTIME.setStatusForUser(userId, UserStatus.ONLINE)
+            // CHAT_RUNTIME.setStatusForUser(userId, UserStatus.ONLINE)
             const roomIds = roomsDtos.map(r => r.id)
             const states = CHAT_RUNTIME.getRoomsStates(roomIds)
             socket.emit('CHAT_STATE', Response.compose(states))
+            // Broadcast to all users rooms states
+            states.forEach(room => {
+              socket.to(room.roomId).emit('CHAT_STATE', Response.compose(states))
+            })
           })
 
 

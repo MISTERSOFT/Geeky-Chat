@@ -35,7 +35,7 @@ export class AuthService extends HttpService { // extends WebSocketService {
       .pipe(
         map((token: string) => {
           // localStorage.setItem(`${environment.localStorageKey.token}`, token);
-          this.storage.set('token', token);
+          this.storage.set(`${environment.localStorageKey.token}`, token);
           const userData: User = jwtDecode(token);
           const opts = Object.assign({}, environment.socketConfig);
           if (token) {

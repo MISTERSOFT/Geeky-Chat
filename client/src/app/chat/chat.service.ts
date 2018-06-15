@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../core/auth.service';
-import { Message, MessageSent, Response, Room, RoomState, User } from '../shared/models';
+import { ChatStateChangeMultiple, ChatStateChangeSingle, Message, MessageSent, Response, Room, RoomState, User, UserStatus } from '../shared/models';
 import { environment } from './../../environments/environment';
 
 @Injectable()
@@ -35,17 +35,33 @@ export class ChatService extends Socket implements OnDestroy {
   }
 
   listenChatState() {
-    this.on('CHAT_STATE', (response: Response<RoomState[]>) => {
+    this.on('CHAT_STATE', (response: Response<RoomState|RoomState[]>) => {
       console.log('Chat state', response);
       if (response.success) {
-        response.data.forEach(roomState => {
+        if (Array.isArray(response.data)) {
+          response.data.forEach(roomState => {
+            this.rooms.find(r => r.id === roomState.roomId).users.forEach(roomUser => {
+              const userState = roomState.users.find(u => u.userId === roomUser.id);
+              if (userState) {
+                roomUser.status = userState.status;
+              }
+            })
+          })
+        } else {
+          const roomState = response.data;
           this.rooms.find(r => r.id === roomState.roomId).users.forEach(roomUser => {
             const userState = roomState.users.find(u => u.userId === roomUser.id);
-            roomUser.status = userState.status;
+            if (userState) {
+              roomUser.status = userState.status;
+            }
           })
-        })
+        }
       }
     })
+  }
+
+  emitChatState(changes: ChatStateChangeSingle|ChatStateChangeMultiple) {
+    this.emit('CHAT_STATE_CHANGE', changes);
   }
 
   debug() {
@@ -283,6 +299,8 @@ export class ChatService extends Socket implements OnDestroy {
   }
 
   load() {
+    this.listenChatState();
+
     this.emit('FETCH_USER_ROOMS_V2', this.auth.user.id, (response: Response<Room[]>) => {
       if (!response.success) {
         // TODO: Display error
@@ -294,10 +312,23 @@ export class ChatService extends Socket implements OnDestroy {
         this.currentRoom = this.rooms[0];
         this.onCurrentRoomChanged.next(this.rooms[0]);
       }
+
+      this.emitChatState({
+        roomIds: this.rooms.map(r => r.id),
+        userId: this.auth.user.id,
+        status: UserStatus.ONLINE,
+        isTyping: false
+      });
     });
   }
 
   disconnect() {
+    this.emitChatState({
+      roomIds: this.rooms.map(r => r.id),
+      userId: this.auth.user.id,
+      status: UserStatus.OFFLINE,
+      isTyping: false
+    });
     super.disconnect();
   }
 }
