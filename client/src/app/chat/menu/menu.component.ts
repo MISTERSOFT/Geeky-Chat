@@ -14,6 +14,12 @@ export class MenuComponent implements OnInit {
   rooms: Room[];
   currentRoom: Room;
   user: User;
+  statuses = [
+    { text: 'Online', value: UserStatus.ONLINE },
+    { text: 'Busy', value: UserStatus.BUSY },
+    { text: 'Away', value: UserStatus.AFK },
+    { text: 'Offline', value: UserStatus.OFFLINE }
+  ];
   showMore = false;
   showRoomPopup = false;
   showInvitationPopup = false;
@@ -69,7 +75,7 @@ export class MenuComponent implements OnInit {
     // this.router.navigate(['chat', roomId]);
   }
 
-  getClassForUserStatus(status: UserStatus) {
+  getClassForStatus(status: UserStatus) {
     switch (status) {
       case UserStatus.OFFLINE: return 'offline';
       case UserStatus.AFK: return 'afk';
@@ -77,6 +83,11 @@ export class MenuComponent implements OnInit {
       case UserStatus.ONLINE: return 'online';
       default: return 'offline';
     }
+  }
+
+  setStatus(status: UserStatus) {
+    console.log('status clicked', status);
+    this.chat.changeUserStatus(status);
   }
 
   debug() {

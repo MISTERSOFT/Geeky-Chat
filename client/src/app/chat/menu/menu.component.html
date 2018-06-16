@@ -42,10 +42,11 @@
           <div class="tile tile-centered">
             <div class="tile-icon">
               <figure class="avatar" [attr.data-initial]="user.username | slice:0:1" style="background-color: rgb(44, 44, 44);">
-                <img [src]="user.avatar">
+                <img *ngIf="user.avatar" [src]="user.avatar">
               </figure>
             </div>
             <div class="tile-content">
+              <span class="status" [ngClass]="getClassForStatus(user.status)"></span>
               {{ user.username }}
             </div>
           </div>
@@ -53,6 +54,14 @@
         </a>
         <!-- Dropdown content - on click username -->
         <ul class="menu">
+          <li class="menu-item" *ngFor="let status of statuses">
+            <a href="javascript:void(0);" (click)="setStatus(status.value)">
+              <i class="icon icon-link"></i>
+              <span class="status" [ngClass]="getClassForStatus(status.value)"></span>
+              {{ status.text }}
+            </a>
+          </li>
+          <li class="divider"></li>
           <li class="menu-item">
             <a href="javascript:void(0);" (click)="disconnect()">
               <i class="icon icon-link"></i>
@@ -84,7 +93,7 @@
         <li class="menu-item" *ngFor="let user of currentRoom.users">
           <a href="javascript:void(0);">
             <i class="icon icon-link"></i>
-            <span class="status" [ngClass]="getClassForUserStatus(user.status)"></span>
+            <span class="status" [ngClass]="getClassForStatus(user.status)"></span>
             {{ user.username }}
           </a>
         </li>

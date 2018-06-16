@@ -39,15 +39,20 @@ export class ChatService extends Socket implements OnDestroy {
       console.log('Chat state', response);
       if (response.success) {
         if (Array.isArray(response.data)) {
+          console.log('Chat state IS ARRAY');
           response.data.forEach(roomState => {
             this.rooms.find(r => r.id === roomState.roomId).users.forEach(roomUser => {
               const userState = roomState.users.find(u => u.userId === roomUser.id);
               if (userState) {
                 roomUser.status = userState.status;
+                if (userState.userId === this.auth.user.id) {
+                  this.auth.user.status = userState.status;
+                }
               }
             })
           })
         } else {
+          console.log('Chat state IS NOT ARRAY');
           const roomState = response.data;
           this.rooms.find(r => r.id === roomState.roomId).users.forEach(roomUser => {
             const userState = roomState.users.find(u => u.userId === roomUser.id);
@@ -62,6 +67,15 @@ export class ChatService extends Socket implements OnDestroy {
 
   emitChatState(changes: ChatStateChangeSingle|ChatStateChangeMultiple) {
     this.emit('CHAT_STATE_CHANGE', changes);
+  }
+
+  changeUserStatus(status: UserStatus) {
+    this.emitChatState({
+      roomIds: this.rooms.map(r => r.id),
+      userId: this.auth.user.id,
+      status: status,
+      isTyping: false
+    });
   }
 
   debug() {
