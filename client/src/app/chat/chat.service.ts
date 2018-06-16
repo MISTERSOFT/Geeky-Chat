@@ -78,10 +78,6 @@ export class ChatService extends Socket implements OnDestroy {
     });
   }
 
-  debug() {
-    this.emit('DEBUG', ['3038c03c9ba32116a19b9374560156d0']);
-  }
-
   pushMessageInCurrentRoom(message: Message) {
     this.currentRoom.messages.push(message);
   }

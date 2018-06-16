@@ -166,14 +166,6 @@ io.on('connection', (socket) => {
   })
   // console.log('TOKEN FOR EVENT', socket.handshake.query.token) // ! Keep this code
 
-  // TODO: Remove
-  socket.on('DEBUG', (data) => {
-    console.log('debug', data)
-    const states = CHAT_RUNTIME.getRoomsStates(data)
-    console.log('debug state', states)
-    socket.emit('CHAT_STATE', Response.compose(states))
-  })
-
   // socket.on('SIGNUP', (userInfo: UserDTO, respond: Function) => {
   //   // const model = ModelBuilder.user.toEntity(userInfo)
   //   const model = _userConverter.toEntity(userInfo);

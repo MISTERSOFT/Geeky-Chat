@@ -63,23 +63,29 @@
           </li>
           <li class="divider"></li>
           <li class="menu-item">
+            <a href="javascript:void(0);" (click)="openRoomParameters()">
+              <i class="mdi mdi-settings mdi-18px"></i>
+              Options
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li class="menu-item">
             <a href="javascript:void(0);" (click)="disconnect()">
-              <i class="icon icon-link"></i>
+              <i class="mdi mdi-logout-variant mdi-18px"></i>
               Disconnect
             </a>
           </li>
         </ul>
       </div>
       <!-- Option menu item -->
-      <li class="menu-item">
-          <!-- routerLink="/options" -->
-        <a (click)="openOptionsPopup()">
+      <!-- <li class="menu-item">
+        <a href="javascript:void(0);" (click)="openOptionsPopup()">
           <i class="icon icon-link"></i>
           <i class="mdi mdi-settings mdi-18px"></i>
           Options
         </a>
       </li>
-      <li class="divider"></li>
+      <li class="divider"></li> -->
       <li class="menu-item">
         <a href="javascript:void(0);" (click)="openInvitationPopup()">
           <i class="icon icon-link"></i>
@@ -100,13 +106,34 @@
       </div>
     </ul>
 
-    <div class="channel-info">
-      <!-- <button (click)="debug()">Debug</button> -->
-      <!-- <button class="btn btn-primary" (click)="disconnect()">
-        <i class="mdi mdi-logout-variant mdi-36px mdi-flip-h text-light"></i>
-        Disconnect
-      </button> -->
-      <!-- <button (click)="debug()">Debug</button> -->
+    <div class="current-room-management">
+      <ul class="menu">
+        <div class="menu-item dropdown dropup">
+          <a href="javascript:void(0);" class="dropdown-toggle">
+            <div class="tile tile-centered">
+              <div class="tile-content">
+                {{ currentRoom.name }}
+              </div>
+            </div>
+            <i class="mdi mdi-menu-up mdi-18px fix-caret"></i>
+          </a>
+          <!-- Dropdown content - on click room name -->
+          <ul class="menu">
+            <li class="menu-item">
+              <a href="javascript:void(0);" (click)="openSearchToolbar()">
+                <i class="mdi mdi-magnify mdi-18px"></i>
+                Search into the conversation
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:void(0);" (click)="openOptionsPopup()">
+                <i class="mdi mdi-settings mdi-18px"></i>
+                Parameters
+              </a>
+            </li>
+          </ul>
+        </div>
+      </ul>
     </div>
   </div>
 </nav>

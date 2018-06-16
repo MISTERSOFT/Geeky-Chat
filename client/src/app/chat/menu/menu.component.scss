@@ -9,15 +9,6 @@ nav {
   width: $nav-total-width;
   font-family: Arial, Helvetica, sans-serif;
   z-index: 10;
-
-  //   & .channel-info {
-  //     position: absolute;
-  //     height: 50px;
-  //     left: 0;
-  //     bottom: 0;
-  //     right: 0;
-  //   }
-  // }
 }
 
 .rooms {
@@ -74,6 +65,15 @@ nav {
   left: $nav-rooms-width;
   bottom: 0;
   width: $nav-curr-room-width;
+  border-right: 1px solid $app-color-neutral;
+}
+
+.current-room-management {
+  position: absolute;
+  height: 54px;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .menu-container {
@@ -81,15 +81,15 @@ nav {
   transform: none;
   box-shadow: none;
   height: 100%;
-  border-right: 1px solid $app-color-neutral;
+  padding-bottom: 62px;
 }
 
 .users-list {
   position: absolute;
-  top: 170px;
+  top: 125px;
   left: 12px;
   right: 10px;
-  bottom: 50px;
+  bottom: 62px;
   padding: 0;
 }
 
@@ -116,6 +116,22 @@ nav {
 
 .dropdown {
   width: 100%;
+}
+
+.dropup .menu {
+  animation: slide-up .15s ease 1;
+  transform: translateY(-7.4rem);
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-7.4rem);
+  }
 }
 
 .fix-caret {

@@ -65,6 +65,14 @@ export class MenuComponent implements OnInit {
     this.showOptionsPopup = true;
   }
 
+  openRoomParameters() {
+    console.log('TODO: openRoomParameters');
+  }
+
+  openSearchToolbar() {
+    console.log('TODO: openSearchToolbar');
+  }
+
   isCurrentRoom(room: Room) {
     return room.id === this.currentRoom.id;
   }
@@ -85,14 +93,12 @@ export class MenuComponent implements OnInit {
     }
   }
 
+  /**
+   * Change user status
+   * @param status {UserStatus}
+   */
   setStatus(status: UserStatus) {
-    console.log('status clicked', status);
     this.chat.changeUserStatus(status);
-  }
-
-  debug() {
-    // this.core.loadServerInfo();
-    this.chat.debug();
   }
 
   disconnect() {
