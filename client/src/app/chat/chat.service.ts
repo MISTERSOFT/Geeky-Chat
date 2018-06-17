@@ -35,7 +35,7 @@ export class ChatService extends Socket implements OnDestroy {
   }
 
   listenChatState() {
-    this.on('CHAT_STATE', (response: Response<RoomState|RoomState[]>) => {
+    this.on('CHAT_STATE', (response: Response<RoomState | RoomState[]>) => {
       console.log('Chat state', response);
       if (response.success) {
         if (Array.isArray(response.data)) {
@@ -65,7 +65,7 @@ export class ChatService extends Socket implements OnDestroy {
     })
   }
 
-  emitChatState(changes: ChatStateChangeSingle|ChatStateChangeMultiple) {
+  emitChatState(changes: ChatStateChangeSingle | ChatStateChangeMultiple) {
     this.emit('CHAT_STATE_CHANGE', changes);
   }
 
@@ -261,7 +261,7 @@ export class ChatService extends Socket implements OnDestroy {
     this.emit('FETCH_ROOM_MESSAGES', roomId, (response: Response<Message[]>) => {
       if (response.success) {
         // Sort all message by date asc
-        response.data.sort((a, b) => {
+        response.data.map(msg => new Message(msg)).sort((a, b) => {
           const msgA = new Date(a.created_at).getTime();
           const msgB = new Date(b.created_at).getTime();
           return (msgA === msgB) ? 0 : (msgA < msgB) ? -1 : 1;
@@ -284,10 +284,10 @@ export class ChatService extends Socket implements OnDestroy {
     this.currentRoom = room;
     this.onCurrentRoomChanged.next(room);
   }
-  listenBroadcastedMessages() : Observable<Message> {
+  listenBroadcastedMessages(): Observable<Message> {
     return this.fromEvent('BROADCAST_SEND_MESSAGE')
       .pipe(
-        map((response: Response<Message>) => response.success ? response.data : null)
+        map((response: Response<Message>) => response.success ? new Message(response.data) : null)
       );
   }
   listenJoiningUser() {
@@ -317,6 +317,9 @@ export class ChatService extends Socket implements OnDestroy {
         return;
       }
       this.rooms = response.data;
+      this.rooms.forEach(room => {
+        room.messages = room.messages.map(msg => msg = new Message(msg));
+      });
       this.onRoomsChanged.next(this.rooms);
       if (this.rooms.length > 0) {
         this.currentRoom = this.rooms[0];

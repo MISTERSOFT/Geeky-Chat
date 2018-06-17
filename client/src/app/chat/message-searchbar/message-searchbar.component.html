@@ -1,0 +1,6 @@
+<div *ngIf="visible" class="searchbar">
+  <i class="mdi mdi-chevron-up mdi-24px" (click)="onSearchPrevious.next(true)"></i>
+  <i class="mdi mdi-chevron-down mdi-24px" (click)="onSearchNext.next(true)"></i>
+  <input autofocus type="text" class="form-input" placeholder="Search messages..." (keyup)="search$.next($event)">
+  <i class="mdi mdi-close mdi-24px" (click)="close()"></i>
+</div>

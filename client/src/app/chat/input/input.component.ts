@@ -34,7 +34,7 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
   ngOnInit() {
     this.chat.fromEvent('SEND_MESSAGE_RESPONSE').takeWhile(() => !this._destroy).subscribe((response: Response<Message>) => {
       if (response.success) {
-        this.chat.pushMessageInCurrentRoom(response.data);
+        this.chat.pushMessageInCurrentRoom(new Message(response.data));
       }
     });
 

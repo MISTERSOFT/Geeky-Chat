@@ -1,10 +1,15 @@
 import { User } from ".";
 
-export interface Message {
+export class Message {
   created_at: Date;
   text: string;
   user: User;
   isMine: boolean;
+  constructor(data) {
+    this.created_at = data.created_at;
+    this.text = data.text;
+    this.user = data.user;
+  }
 }
 
 export interface MessageSent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/index';
 import { Room, User, UserStatus } from '@shared/models';
@@ -11,6 +11,7 @@ import { ChatService } from 'app/chat/chat.service';
 })
 
 export class MenuComponent implements OnInit {
+  @Output() onSearchBarOpen = new EventEmitter<boolean>();
   rooms: Room[];
   currentRoom: Room;
   user: User;
@@ -69,8 +70,8 @@ export class MenuComponent implements OnInit {
     console.log('TODO: openRoomParameters');
   }
 
-  openSearchToolbar() {
-    console.log('TODO: openSearchToolbar');
+  openSearchBar() {
+    this.onSearchBarOpen.next(true);
   }
 
   isCurrentRoom(room: Room) {

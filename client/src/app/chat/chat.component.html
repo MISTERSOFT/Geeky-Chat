@@ -1,6 +1,12 @@
-<app-menu></app-menu>
+<app-menu (onSearchBarOpen)="onSearchBarOpen()"></app-menu>
 <main *ngIf="room">
-  <div class="messages-container scrollable" #messagesContainer [scrollTop]="messagesContainer.scrollHeight" [style.bottom]="fromBottom">
+  <app-message-searchbar
+    [(visible)]="isSearchBarVisible"
+    (visibleChange)="onSearchBarClosed()"
+    (onSearch)="onSearch($event)"
+    (onSearchPrevious)="onSearchPrevious()"
+    (onSearchNext)="onSearchNext()"></app-message-searchbar>
+  <div #messagesContainer class="messages-container scrollable" [scrollTop]="scrollTop || messagesContainer.scrollHeight" [style.bottom]="fromBottom" [style.top]="isSearchBarVisible ? '50px' : '0px'">
     <app-chat-message *ngFor="let message of room.messages" [message]="message"></app-chat-message>
   </div>
   <app-input [roomId]="room.id" (onMessageSent)="onMessageSent($event)" (onInputHeightChange)="onInputHeightChange($event)"></app-input>

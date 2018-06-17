@@ -65,3 +65,9 @@ button[disabled] {
     background: darken($app-color-neutral, 20%);
   }
 }
+
+.search-highlight {
+  background-color: $app-color-02;
+  color: white;
+  padding: 2px;
+}

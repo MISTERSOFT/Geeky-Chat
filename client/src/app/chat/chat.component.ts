@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 import { Room } from '../shared/models';
 import { AuthService } from './../core/auth.service';
 import { ChatService } from './chat.service';
+import { MessageComponent } from './message/message.component';
 
 @Component({
   selector: 'app-chat',
@@ -11,11 +12,14 @@ import { ChatService } from './chat.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  // messages: Message[];
-  // @ViewChild('messagesContainer') $messagesContainer: ElementRef;
+  @ViewChild('messagesContainer') $messagesContainer: ElementRef;
+  @ViewChildren(MessageComponent) $messages: QueryList<MessageComponent>;
+  surroundedMessagesPosition = new Array<number>();
+  private currentSurroundedMessagePosition: number;
   room: Room;
-  text: string; // Message to send
+  scrollTop;
   fromBottom: string;
+  isSearchBarVisible;
   /**
    * Is component will be destroyed
    */
@@ -28,33 +32,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     private auth: AuthService) { }
 
   ngOnInit() {
-    // Data not loaded already
-    // We are in: /r
-    // if (this.route.snapshot.url.length === 0) {
-    //   // this.chat.loadUserRooms(); // .subscribe();
-    //   this.chat.load();
-    //   this.chat.onCurrentRoomChanged.subscribe(room => {
-    //     if (room) {
-    //       this.router.navigate(['chat', room.id]);
-    //     }
-    //   });
-    // } else {
-    //   // Data loaded
-    //   // We are in: /r/:id
-    //   this.route.params.subscribe(params => {
-    //     this.chat.onCurrentRoomChanged.subscribe(room => {
-    //       this.room = room;
-    //     });
-    //     this.chat.changeRoom(params['id']);
-    //   });
-    //   this.chat.listenBroadcastedMessages().subscribe((message) => {
-    //     if (message) {
-    //       this.room.messages.push(message);
-    //     }
-    //   });
-    //   this.chat.listenJoiningUser();
-    // }
-
     // Connect socket if necessary
     if (this.chat.ioSocket.disconnected) {
       this.chat.connect();
@@ -71,7 +48,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chat.listenJoiningUser();
 
     this.chat.on('error', (err) => {
-      console.log('unauthorized', err);
+      console.log('server emitted by server', err);
     });
   }
 
@@ -88,5 +65,51 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   onInputHeightChange(height) {
     this.fromBottom = height;
+  }
+
+  onSearchBarOpen() {
+    this.isSearchBarVisible = true;
+  }
+
+  onSearchBarClosed() {
+    this.$messages.forEach(msg => msg.removeSurroundedText());
+    this.scrollTop = null;
+  }
+
+  onSearch(searchValue) {
+    this.surroundedMessagesPosition = [];
+    this.currentSurroundedMessagePosition = null;
+    this.$messages.forEach(messageCmpInstance => {
+      const surrounded = messageCmpInstance.surroundSearchedValue(searchValue);
+      if (surrounded) {
+        this.surroundedMessagesPosition.push(messageCmpInstance.offsetTop);
+      }
+    });
+    if (this.surroundedMessagesPosition.length > 0) {
+      this.currentSurroundedMessagePosition = 0;
+      this.scrollTop = this.surroundedMessagesPosition[0];
+    }
+  }
+
+  onSearchPrevious() {
+    if (this.currentSurroundedMessagePosition) {
+      this.currentSurroundedMessagePosition--;
+      if (this.currentSurroundedMessagePosition >= 0 && this.currentSurroundedMessagePosition < this.surroundedMessagesPosition.length) {
+        this.scrollTop = this.surroundedMessagesPosition[this.currentSurroundedMessagePosition];
+      } else {
+        this.currentSurroundedMessagePosition++;
+      }
+    }
+  }
+
+  onSearchNext() {
+    if (this.currentSurroundedMessagePosition) {
+      this.currentSurroundedMessagePosition++;
+      if (this.currentSurroundedMessagePosition < this.surroundedMessagesPosition.length) {
+        this.scrollTop = this.surroundedMessagesPosition[this.currentSurroundedMessagePosition];
+      } else {
+        this.currentSurroundedMessagePosition--;
+      }
+    }
   }
 }

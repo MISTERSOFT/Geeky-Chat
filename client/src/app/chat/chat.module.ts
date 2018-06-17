@@ -14,6 +14,7 @@ import { OptionsPopupComponent } from './menu/options-popup/options-popup.compon
 import { OptionsService } from './menu/options-popup/options.service';
 import { ProfileComponent } from './menu/options-popup/profile/profile.component';
 import { RoomPopupComponent } from './menu/room-popup/room-popup.component';
+import { MessageSearchBarComponent } from './message-searchbar/message-searchbar.component';
 import { MessageComponent } from './message/message.component';
 
 
@@ -35,7 +36,8 @@ import { MessageComponent } from './message/message.component';
     RoomPopupComponent,
     InvitationPopupComponent,
     OptionsPopupComponent,
-    ProfileComponent
+    ProfileComponent,
+    MessageSearchBarComponent
   ],
   providers: [
     ChatService,
