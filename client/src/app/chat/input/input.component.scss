@@ -7,6 +7,7 @@
   bottom: 0;
   height: 60px;
   padding: 10px;
+  margin-bottom: 10px;
   // background: $app-color-03;
   & .inputs {
     position: relative;
@@ -75,4 +76,10 @@
       }
     }
   }
+}
+
+.is-typing {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
 }

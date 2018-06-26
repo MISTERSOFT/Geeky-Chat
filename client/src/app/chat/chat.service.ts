@@ -16,6 +16,7 @@ export class ChatService extends Socket implements OnDestroy {
   onRoomsChanged = new Subject<Room[]>();
   onCurrentRoomChanged = new Subject<Room>();
   showMenu = new Subject<boolean>();
+  isTypings$ = new Subject<string>();
 
   constructor(private auth: AuthService, private router: Router) {
     super(environment.socketConfig);
@@ -49,8 +50,8 @@ export class ChatService extends Socket implements OnDestroy {
                   this.auth.user.status = userState.status;
                 }
               }
-            })
-          })
+            });
+          });
         } else {
           console.log('Chat state IS NOT ARRAY');
           const roomState = response.data;
@@ -59,10 +60,24 @@ export class ChatService extends Socket implements OnDestroy {
             if (userState) {
               roomUser.status = userState.status;
             }
-          })
+          });
+          // Check who is typing a message
+          const whoIsTyping = [];
+          const usersTyping = roomState.users.filter(u => u.isTyping);
+          if (usersTyping.length > 0) {
+            usersTyping.forEach(u => {
+              for (let i = 0; i < this.currentRoom.users.length; i++) {
+                if (u.userId === this.currentRoom.users[i].id) {
+                  whoIsTyping.push(this.currentRoom.users[i].username);
+                  break;
+                }
+              }
+            });
+          }
+          this.isTypings$.next(whoIsTyping.join(', '));
         }
       }
-    })
+    });
   }
 
   emitChatState(changes: ChatStateChangeSingle | ChatStateChangeMultiple) {
@@ -73,8 +88,7 @@ export class ChatService extends Socket implements OnDestroy {
     this.emitChatState({
       roomIds: this.rooms.map(r => r.id),
       userId: this.auth.user.id,
-      status: status,
-      isTyping: false
+      status: status
     });
   }
 
@@ -329,8 +343,7 @@ export class ChatService extends Socket implements OnDestroy {
       this.emitChatState({
         roomIds: this.rooms.map(r => r.id),
         userId: this.auth.user.id,
-        status: UserStatus.ONLINE,
-        isTyping: false
+        status: UserStatus.ONLINE
       });
     });
   }

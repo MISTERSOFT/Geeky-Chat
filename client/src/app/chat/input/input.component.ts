@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, DoCheck, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { AuthService } from '@core/index';
 import { Message, MessageSent, Response } from '@shared/models';
-import { Subject } from 'rxjs/Subject';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { tap, throttleTime } from 'rxjs/operators';
 import { ChatService } from './../chat.service';
 
 @Component({
@@ -18,12 +19,11 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
   @ViewChild('textarea') $textarea: ElementRef;
   @Output() onInputHeightChange = new EventEmitter<string>();
   text: string = ''; // Message to send
+  whoIsTyping = '';
   charsLimit = 5000;
   charsCount = 5000;
   rowsInTextarea = 1;
   maxRowsToDisplay = 8;
-  typing$: Subject<KeyboardEvent> = new Subject<KeyboardEvent>();
-  // private _textareaBaseHeight;
   private _destroy = false;
 
   constructor(
@@ -37,18 +37,20 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
         this.chat.pushMessageInCurrentRoom(new Message(response.data));
       }
     });
-
-    // this.typing$
-    //   .pipe(
-    //     map(e => )
-    //   )
+    this.chat.isTypings$.subscribe(who => this.whoIsTyping = who);
   }
   ngDoCheck() {
     this.charsCount = this.charsLimit - this.text.length;
   }
   ngAfterViewInit() {
-    // this._textareaBaseHeight = (this.$container.nativeElement as HTMLDivElement).style.height
-    // console.log('Container', this.$container.nativeElement);
+    // When user typing, new user state is sent to the server
+    fromEvent(this.$textarea.nativeElement, 'input')
+      .pipe(
+        throttleTime(1000),
+        tap(() => this.changeUserState(true))
+      )
+      .debounceTime(3000)
+      .subscribe((e) => this.changeUserState(false));
   }
   ngOnDestroy() {
     this._destroy = true;
@@ -75,8 +77,8 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
     const elementPadLeft = 7;
     const elementWidth = target.clientWidth - elementPadLeft;
     const elementHeight = target.clientHeight;
-    console.log('textarea length textLength', textLength);
-    console.log('textarea width', elementWidth);
+    // console.log('textarea length textLength', textLength);
+    // console.log('textarea width', elementWidth);
     // If the text return to a new row, we calculate the number of rows
     if (textLength > elementWidth) {
       this.rowsInTextarea = Math.ceil(textLength / elementWidth);
@@ -87,7 +89,7 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
         const height = (this.rowsInTextarea * fontSize) + 60;
         // const height = elementHeight + (this._textareaRows * fontSize);
         this.onInputHeightChange.next(height + 'px');
-        console.log('row, new height', this.rowsInTextarea, height);
+        // console.log('row, new height', this.rowsInTextarea, height);
         this.renderer.setStyle(this.$textarea.nativeElement, 'overflow-y', 'hidden');
         this.renderer.setStyle(this.$container.nativeElement, 'height', height + 'px');
       }
@@ -117,6 +119,7 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
       console.log('Send message...', message);
       // const subscribe =
       this.chat.sendMessage(message);
+      this.changeUserState(false);
       // .subscribe(response => {
       //   this.onMessageSent.next(response.data);
       //   // subscribe.unsubscribe();
@@ -126,5 +129,13 @@ export class InputComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy
 
   onEmojiPicked(emoji) {
     this.text += emoji;
+  }
+
+  private changeUserState(isTyping: boolean) {
+    this.chat.emitChatState({
+      roomId: this.roomId,
+      userId: this.auth.user.id,
+      isTyping: isTyping
+    });
   }
 }

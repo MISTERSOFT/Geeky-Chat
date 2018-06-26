@@ -19,14 +19,14 @@ export class RuntimeChatState {
       states.push(Object.assign({}, this.rooms.find(r => r.roomId === roomId)))
     })
     states.forEach(state => {
-      state.users = state.users.filter(u => u.userId === userId)
+      state.users = Object.assign([], state.users.filter(u => u.userId === userId))
     })
     return states
   }
 
   getRoomStateByUser(roomId: string, userId: string): RuntimeRoomState {
     const state = Object.assign({}, this.rooms.find(r => r.roomId === roomId))
-    state.users = state.users.filter(u => u.userId !== userId)
+    // state.users = Object.assign([], state.users.filter(u => u.userId === userId))
     return state
   }
 
@@ -34,13 +34,25 @@ export class RuntimeChatState {
     if (ChatStateChangeMultiple.isInstance(changes)) {
       changes.roomIds.forEach(roomId => {
         const user = this.rooms.find(r => r.roomId === roomId).users.find(u => u.userId === changes.userId)
-        user.status = changes.status
-        user.isTyping = changes.isTyping
+        for (const key in changes) {
+          if (user.hasOwnProperty(key)) {
+            console.log('Multiple - User has key = ', key)
+            user[key] = changes[key];
+          }
+        }
+        // user.status = changes.status
+        // user.isTyping = changes.isTyping
       })
     } else {
       const user = this.rooms.find(r => r.roomId === changes.roomId).users.find(u => u.userId === changes.userId)
-      user.status = changes.status
-      user.isTyping = changes.isTyping
+      for (const key in changes) {
+        if (user.hasOwnProperty(key)) {
+          console.log('Single - User has key = ', key, changes[key])
+          user[key] = changes[key]
+        }
+      }
+      // user.status = changes.status
+      // user.isTyping = changes.isTyping
     }
   }
 }
@@ -74,8 +86,8 @@ export enum UserStatus {
 
 export interface ChatStateChange {
   userId: string;
-  status: UserStatus;
-  isTyping: boolean;
+  status?: UserStatus;
+  isTyping?: boolean;
 }
 
 /**
@@ -83,8 +95,8 @@ export interface ChatStateChange {
  */
 export class ChatStateChangeSingle implements ChatStateChange {
   userId: string;
-  status: UserStatus;
-  isTyping: boolean;
+  status?: UserStatus;
+  isTyping?: boolean;
   roomId: string;
   static isInstance(obj): obj is ChatStateChangeSingle {
     return 'roomId' in obj;
@@ -96,8 +108,8 @@ export class ChatStateChangeSingle implements ChatStateChange {
  */
 export class ChatStateChangeMultiple implements ChatStateChange {
   userId: string;
-  status: UserStatus;
-  isTyping: boolean;
+  status?: UserStatus;
+  isTyping?: boolean;
   roomIds: string[];
   static isInstance(obj): obj is ChatStateChangeMultiple {
     return 'roomIds' in obj;

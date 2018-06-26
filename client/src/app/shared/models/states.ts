@@ -18,8 +18,8 @@ export enum UserStatus {
 
 export interface ChatStateChange {
   userId: string;
-  status: UserStatus;
-  isTyping: boolean;
+  status?: UserStatus;
+  isTyping?: boolean;
 }
 
 export interface ChatStateChangeSingle extends ChatStateChange {

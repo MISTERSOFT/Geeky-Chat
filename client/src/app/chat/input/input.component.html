@@ -18,13 +18,17 @@
       <textarea
         #textarea
         [ngClass]="{ 'scrollable': rowsInTextarea >= maxRowsToDisplay }"
-        placeholder="Message..." [(ngModel)]="text" (keydown)="onKeyDown($event)" [maxlength]="charsLimit"></textarea>
+        placeholder="Message..."
+        [(ngModel)]="text"
+        (keydown)="onKeyDown($event)"
+        [maxlength]="charsLimit"></textarea>
     </div>
     <div class="buttons-container">
       <span class="chars-limit">{{ charsCount }}</span>
       <button appEmojiTriggerer>😄</button>
     </div>
   </div>
+  <p class="is-typing">{{ whoIsTyping ? whoIsTyping + ' is typing...' : '' }}</p>
 </div>
 
 <app-emoji-picker (onEmojiPicked)="onEmojiPicked($event)"></app-emoji-picker>

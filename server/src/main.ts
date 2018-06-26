@@ -219,7 +219,7 @@ io.on('connection', (socket) => {
     if (ChatStateChangeSingle.isInstance(changes)) {
       console.log('Chat state changed - Single')
       const state = CHAT_RUNTIME.getRoomStateByUser(changes.roomId, changes.userId)
-      socket.emit('CHAT_STATE', Response.compose(state))
+      // socket.emit('CHAT_STATE', Response.compose(state))
       socket.to(changes.roomId).emit('CHAT_STATE', Response.compose(state))
     } else {
       console.log('Chat state changed - Multiple')
