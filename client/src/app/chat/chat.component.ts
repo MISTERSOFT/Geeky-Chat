@@ -92,7 +92,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onSearchPrevious() {
-    if (this.currentSurroundedMessagePosition) {
+    if (Number.isInteger(this.currentSurroundedMessagePosition)) {
       this.currentSurroundedMessagePosition--;
       if (this.currentSurroundedMessagePosition >= 0 && this.currentSurroundedMessagePosition < this.surroundedMessagesPosition.length) {
         this.scrollTop = this.surroundedMessagesPosition[this.currentSurroundedMessagePosition];
@@ -103,7 +103,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onSearchNext() {
-    if (this.currentSurroundedMessagePosition) {
+    if (Number.isInteger(this.currentSurroundedMessagePosition)) {
       this.currentSurroundedMessagePosition++;
       if (this.currentSurroundedMessagePosition < this.surroundedMessagesPosition.length) {
         this.scrollTop = this.surroundedMessagesPosition[this.currentSurroundedMessagePosition];
